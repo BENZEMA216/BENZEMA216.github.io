@@ -59,14 +59,14 @@
             background: #f5f5f5;
         }
 
-        /* Bilingual text switching */
+        /* Bilingual text switching — inline elements */
         .lang-en { display: none; }
         .lang-zh { display: inline; }
 
         body.en .lang-en { display: inline; }
         body.en .lang-zh { display: none; }
 
-        /* Block-level bilingual */
+        /* Block-level bilingual — div, p, ul, li, section */
         div.lang-en, p.lang-en, ul.lang-en, li.lang-en, section.lang-en { display: none; }
         div.lang-zh, p.lang-zh, ul.lang-zh, li.lang-zh, section.lang-zh { display: block; }
 
@@ -74,21 +74,17 @@
         body.en li.lang-en { display: list-item; }
         body.en div.lang-zh, body.en p.lang-zh, body.en ul.lang-zh, body.en li.lang-zh, body.en section.lang-zh { display: none; }
 
-        /* Flex items */
-        .strengths-top5 .lang-en { display: none; }
-        .strengths-top5 .lang-zh { display: flex; }
-        body.en .strengths-top5 .lang-en { display: flex; }
-        body.en .strengths-top5 .lang-zh { display: none; }
+        /* Flex containers — strengths-top5 (no space = same element) */
+        .strengths-top5.lang-en { display: none; }
+        .strengths-top5.lang-zh { display: flex; }
+        body.en .strengths-top5.lang-en { display: flex; }
+        body.en .strengths-top5.lang-zh { display: none; }
 
+        /* Grid containers — strengths-grid */
         .strengths-grid.lang-en { display: none; }
         .strengths-grid.lang-zh { display: grid; }
         body.en .strengths-grid.lang-en { display: grid; }
         body.en .strengths-grid.lang-zh { display: none; }
-
-        ul.lang-en { display: none; }
-        ul.lang-zh { display: block; }
-        body.en ul.lang-en { display: block; }
-        body.en ul.lang-zh { display: none; }
 
         /* Header */
         .header {
