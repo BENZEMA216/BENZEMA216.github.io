@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dongzhe Zhu — AI Product Manager × Builder</title>
+    <title>朱东哲 — AI 产品经理 × Builder</title>
     <style>
         * {
             margin: 0;
@@ -25,6 +25,71 @@
             padding: 80px 24px;
         }
 
+        /* Language Toggle */
+        .lang-toggle {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            font-size: 0.8rem;
+            z-index: 100;
+            background: #fff;
+        }
+
+        .lang-toggle button {
+            border: none;
+            background: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: #999;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .lang-toggle button.active {
+            background: #111;
+            color: #fff;
+        }
+
+        .lang-toggle button:hover:not(.active) {
+            background: #f5f5f5;
+        }
+
+        /* Bilingual text switching */
+        .lang-en { display: none; }
+        .lang-zh { display: inline; }
+
+        body.en .lang-en { display: inline; }
+        body.en .lang-zh { display: none; }
+
+        /* Block-level bilingual */
+        div.lang-en, p.lang-en, ul.lang-en, li.lang-en, section.lang-en { display: none; }
+        div.lang-zh, p.lang-zh, ul.lang-zh, li.lang-zh, section.lang-zh { display: block; }
+
+        body.en div.lang-en, body.en p.lang-en, body.en ul.lang-en, body.en section.lang-en { display: block; }
+        body.en li.lang-en { display: list-item; }
+        body.en div.lang-zh, body.en p.lang-zh, body.en ul.lang-zh, body.en li.lang-zh, body.en section.lang-zh { display: none; }
+
+        /* Flex items */
+        .strengths-top5 .lang-en { display: none; }
+        .strengths-top5 .lang-zh { display: flex; }
+        body.en .strengths-top5 .lang-en { display: flex; }
+        body.en .strengths-top5 .lang-zh { display: none; }
+
+        .strengths-grid.lang-en { display: none; }
+        .strengths-grid.lang-zh { display: grid; }
+        body.en .strengths-grid.lang-en { display: grid; }
+        body.en .strengths-grid.lang-zh { display: none; }
+
+        ul.lang-en { display: none; }
+        ul.lang-zh { display: block; }
+        body.en ul.lang-en { display: block; }
+        body.en ul.lang-zh { display: none; }
+
         /* Header */
         .header {
             margin-bottom: 64px;
@@ -37,7 +102,7 @@
             margin-bottom: 4px;
         }
 
-        .header .name-zh {
+        .header .name-sub {
             font-size: 0.9rem;
             color: #999;
             margin-bottom: 12px;
@@ -55,7 +120,7 @@
             max-width: 600px;
         }
 
-        .header .bio-zh {
+        .header .bio-secondary {
             font-size: 0.9rem;
             color: #888;
             margin-top: 8px;
@@ -205,7 +270,7 @@
             color: #999;
         }
 
-        .project .lang {
+        .project .lang-tag {
             font-size: 0.75rem;
             color: #999;
             background: #f5f5f5;
@@ -368,12 +433,6 @@
             padding: 12px 0;
             border-top: 1px solid #f0f0f0;
             margin-top: 8px;
-        }
-
-        .strength-insight-zh {
-            color: #888;
-            font-size: 0.85rem;
-            margin-top: 4px;
         }
 
         /* Test result subsections */
@@ -595,33 +654,78 @@
             .strengths-grid {
                 grid-template-columns: 1fr;
             }
+
+            .lang-toggle {
+                top: 12px;
+                right: 12px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="lang-toggle">
+        <button id="btn-zh" class="active" onclick="setLang('zh')">ZH</button>
+        <button id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+
     <div class="container">
         <header class="header">
-            <h1>Dongzhe Zhu</h1>
-            <p class="name-zh">朱东哲</p>
-            <p class="tagline">AI Product Manager &times; Builder</p>
-            <p class="bio">
-                Building the Creative AGENT at <strong>ByteDance Jimeng</strong> — from 0 to 200K+ DAU.
-                Previously shipped LLM-powered products at <strong>Tencent</strong>.
-                On the side, I build open-source AI tools for creators.
+            <h1>
+                <span class="lang-zh">朱东哲</span>
+                <span class="lang-en">Dongzhe Zhu</span>
+            </h1>
+            <p class="name-sub">
+                <span class="lang-zh">Dongzhe Zhu</span>
+                <span class="lang-en">朱东哲</span>
             </p>
-            <p class="bio-zh">在工作中做产品，在业余时间造工具。我相信最好的 AI 产品来自对用户创作流程的深刻理解。</p>
+            <p class="tagline">
+                <span class="lang-zh">AI 产品经理 &times; Builder</span>
+                <span class="lang-en">AI Product Manager &times; Builder</span>
+            </p>
+            <p class="bio">
+                <span class="lang-zh">
+                    在<strong>字节跳动即梦</strong>从 0 到 1 构建 Creative AGENT，<span class="highlight-metric">200K+ DAU</span>。
+                    此前在<strong>腾讯</strong>打造 LLM 驱动的数据产品。业余时间造开源 AI 工具。
+                </span>
+                <span class="lang-en">
+                    Building the Creative AGENT at <strong>ByteDance Jimeng</strong> — from 0 to 200K+ DAU.
+                    Previously shipped LLM-powered products at <strong>Tencent</strong>.
+                    On the side, I build open-source AI tools for creators.
+                </span>
+            </p>
+            <p class="bio-secondary">
+                <span class="lang-zh">在工作中做产品，在业余时间造工具。我相信最好的 AI 产品来自对用户创作流程的深刻理解。</span>
+                <span class="lang-en">I build products at work and tools in my spare time. I believe the best AI products come from a deep understanding of how creators actually work.</span>
+            </p>
         </header>
 
         <section>
-            <h2>Experience</h2>
+            <h2>
+                <span class="lang-zh">工作经历</span>
+                <span class="lang-en">Experience</span>
+            </h2>
 
             <div class="experience-item">
                 <div class="experience-header">
-                    <span class="role">AI Product Manager</span>
-                    <span class="period">2024.07 — Present</span>
+                    <span class="role">
+                        <span class="lang-zh">AI 产品经理</span>
+                        <span class="lang-en">AI Product Manager</span>
+                    </span>
+                    <span class="period">2024.07 —
+                        <span class="lang-zh">至今</span>
+                        <span class="lang-en">Present</span>
+                    </span>
                 </div>
-                <div class="company">ByteDance · Jianying & Jimeng</div>
-                <ul class="highlights">
+                <div class="company">
+                    <span class="lang-zh">字节跳动 · 剪映 & 即梦</span>
+                    <span class="lang-en">ByteDance · Jianying & Jimeng</span>
+                </div>
+                <ul class="highlights lang-zh">
+                    <li><strong>即梦 Creative AGENT</strong> Owner：0→1 产品构建，<span class="highlight-metric">200K+ DAU</span>，<span class="highlight-metric">51% UV 导出率</span>，现为即梦 Web 主入口</li>
+                    <li>主导 AGENT 后训练：创意模型 RL 训练，自动化 SFT pipeline，双周 A/B 迭代</li>
+                    <li>定义剪映智能视频 VLM 能力：端到端效果规格、训练数据 pipeline、评估体系</li>
+                </ul>
+                <ul class="highlights lang-en">
                     <li>Owner of <strong>Jimeng Creative AGENT</strong>: 0→1 product build, <span class="highlight-metric">200K+ DAU</span>, <span class="highlight-metric">51% UV export rate</span>, now the main entry of Jimeng Web</li>
                     <li>Led AGENT post-training: RL for creative model, automated SFT pipeline with biweekly A/B iterations</li>
                     <li>Defined VLM capability for Jianying Smart Video: end-to-end effect spec, training data pipeline, and evaluation system</li>
@@ -630,11 +734,22 @@
 
             <div class="experience-item">
                 <div class="experience-header">
-                    <span class="role">Product Specialist</span>
+                    <span class="role">
+                        <span class="lang-zh">产品专家</span>
+                        <span class="lang-en">Product Specialist</span>
+                    </span>
                     <span class="period">2023.02 — 2024.07</span>
                 </div>
-                <div class="company">Tencent · Overseas Publishing AI Platform</div>
-                <ul class="highlights">
+                <div class="company">
+                    <span class="lang-zh">腾讯 · 海外发行 AI 平台</span>
+                    <span class="lang-en">Tencent · Overseas Publishing AI Platform</span>
+                </div>
+                <ul class="highlights lang-zh">
+                    <li>用 LLM 重构游戏舆情监控 — 多语言、多时区、全自动化 <span class="award">2023 业务突破奖</span></li>
+                    <li>打造 <strong>ChatBI</strong>：基于 LLM + RAG 的 AI 原生数据产品，改变团队查询游戏数据的方式</li>
+                    <li>探索 AI + 游戏：Trovo 虚拟角色对话、AIUGC 活动与定制 LoRA</li>
+                </ul>
+                <ul class="highlights lang-en">
                     <li>Rebuilt game sentiment monitoring with LLM — multi-language, multi-timezone, fully automated <span class="award">2023 Business Breakthrough Award</span></li>
                     <li>Built <strong>ChatBI</strong>: AI-native data product with LLM + RAG, transforming how teams query game analytics</li>
                     <li>Explored AI + Gaming: Trovo virtual character dialogue, AIUGC campaigns with custom LoRAs</li>
@@ -643,11 +758,21 @@
 
             <div class="experience-item">
                 <div class="experience-header">
-                    <span class="role">Data Product Manager</span>
+                    <span class="role">
+                        <span class="lang-zh">数据产品经理</span>
+                        <span class="lang-en">Data Product Manager</span>
+                    </span>
                     <span class="period">2022.03 — 2023.02</span>
                 </div>
-                <div class="company">Tencent · Overseas Publishing Data Platform</div>
-                <ul class="highlights">
+                <div class="company">
+                    <span class="lang-zh">腾讯 · 海外发行数据平台</span>
+                    <span class="lang-en">Tencent · Overseas Publishing Data Platform</span>
+                </div>
+                <ul class="highlights lang-zh">
+                    <li>负责 DataBrain 舆情产品（王者荣耀、PUBG Mobile 等头部游戏）：上线实时预警、周期报告，<span class="highlight-metric">3 个月 PV/UV 翻倍</span></li>
+                    <li>从 0→1 构建 DataLab：可视化分析平台，让运营团队无需 SQL 即可分析数据</li>
+                </ul>
+                <ul class="highlights lang-en">
                     <li>Owned DataBrain sentiment product for top titles (Honor of Kings, PUBG Mobile): shipped real-time alerts, periodic reports; <span class="highlight-metric">doubled PV/UV in 3 months</span></li>
                     <li>Built DataLab from 0→1: visual analytics platform enabling no-SQL data analysis for operations teams</li>
                 </ul>
@@ -655,76 +780,129 @@
         </section>
 
         <section>
-            <h2>Education</h2>
+            <h2>
+                <span class="lang-zh">教育背景</span>
+                <span class="lang-en">Education</span>
+            </h2>
 
             <div class="education-item">
-                <div class="school">Nanyang Technological University</div>
-                <div class="degree">M.Sc. Computer Control & Automation</div>
+                <div class="school">
+                    <span class="lang-zh">南洋理工大学</span>
+                    <span class="lang-en">Nanyang Technological University</span>
+                </div>
+                <div class="degree">
+                    <span class="lang-zh">计算机控制与自动化 硕士</span>
+                    <span class="lang-en">M.Sc. Computer Control & Automation</span>
+                </div>
                 <div class="detail">GPA 4.6/5 · Top 10% · 2020 — 2022</div>
             </div>
 
             <div class="education-item">
-                <div class="school">Tongji University</div>
-                <div class="degree">B.Eng. Automation</div>
+                <div class="school">
+                    <span class="lang-zh">同济大学</span>
+                    <span class="lang-en">Tongji University</span>
+                </div>
+                <div class="degree">
+                    <span class="lang-zh">自动化 学士</span>
+                    <span class="lang-en">B.Eng. Automation</span>
+                </div>
                 <div class="detail">2016 — 2020</div>
             </div>
         </section>
 
         <section>
-            <h2>Open Source</h2>
+            <h2>
+                <span class="lang-zh">开源项目</span>
+                <span class="lang-en">Open Source</span>
+            </h2>
 
             <div class="project">
                 <div class="project-header">
                     <a href="https://github.com/BENZEMA216/dreamina-claude-skills">dreamina-claude-skills</a>
-                    <span class="lang">Python</span>
+                    <span class="lang-tag">Python</span>
                     <span class="stars">&#9733; 12</span>
                 </div>
-                <p>Dreamina Agent Skills for Claude Code — 即梦 AI 创作工具技能集</p>
+                <p>
+                    <span class="lang-zh">即梦 AI 创作工具技能集 — Dreamina Agent Skills for Claude Code</span>
+                    <span class="lang-en">Dreamina Agent Skills for Claude Code</span>
+                </p>
             </div>
 
             <div class="project">
                 <div class="project-header">
                     <a href="https://github.com/BENZEMA216/creative-think">creative-think</a>
                 </div>
-                <p>创意思考推理链 — from creative brief to structured design prompt</p>
+                <p>
+                    <span class="lang-zh">创意思考推理链 — 从创意简报到结构化设计 prompt</span>
+                    <span class="lang-en">Creative thinking chain — from creative brief to structured design prompt</span>
+                </p>
             </div>
 
             <div class="project">
                 <div class="project-header">
                     <a href="https://github.com/BENZEMA216/music-analyzer">music-analyzer</a>
-                    <span class="lang">Python</span>
+                    <span class="lang-tag">Python</span>
                 </div>
-                <p>Analyze audio files, extract musical features, generate Dreamina prompts & storyboards</p>
+                <p>
+                    <span class="lang-zh">音频分析与分镜脚本生成插件</span>
+                    <span class="lang-en">Analyze audio files, extract musical features, generate Dreamina prompts & storyboards</span>
+                </p>
             </div>
 
             <div class="project">
                 <div class="project-header">
                     <a href="https://github.com/BENZEMA216/self-purify">self-purify</a>
-                    <span class="lang">Shell</span>
+                    <span class="lang-tag">Shell</span>
                 </div>
-                <p>Claude Code self-purification — security audit & session pattern analysis</p>
+                <p>
+                    <span class="lang-zh">Claude Code 自净化 — 安全审计与会话模式分析</span>
+                    <span class="lang-en">Claude Code self-purification — security audit & session pattern analysis</span>
+                </p>
             </div>
 
             <div class="project">
                 <div class="project-header">
                     <a href="https://github.com/BENZEMA216/clawdbot-skill-web3-pay">clawdbot-skill-web3-pay</a>
-                    <span class="lang">Python</span>
+                    <span class="lang-tag">Python</span>
                 </div>
-                <p>Crypto payments (USDC) on Base/Polygon/ETH/Arbitrum for Clawdbot</p>
+                <p>
+                    <span class="lang-zh">Clawdbot 加密货币支付（USDC），支持 Base/Polygon/ETH/Arbitrum</span>
+                    <span class="lang-en">Crypto payments (USDC) on Base/Polygon/ETH/Arbitrum for Clawdbot</span>
+                </p>
             </div>
 
             <div class="project">
                 <div class="project-header">
                     <a href="https://github.com/BENZEMA216/rss-reader">rss-reader</a>
-                    <span class="lang">Python</span>
+                    <span class="lang-tag">Python</span>
                 </div>
-                <p>RSS AI Reader — 自动抓取、摘要、推送到飞书</p>
+                <p>
+                    <span class="lang-zh">RSS AI 阅读器 — 自动抓取、摘要、推送到飞书</span>
+                    <span class="lang-en">RSS AI Reader — auto-fetch, summarize, push to Lark/Feishu</span>
+                </p>
             </div>
         </section>
 
         <section>
-            <h2>What I Think About</h2>
-            <ul class="thinking-list">
+            <h2>
+                <span class="lang-zh">我在思考什么</span>
+                <span class="lang-en">What I Think About</span>
+            </h2>
+            <ul class="thinking-list lang-zh">
+                <li>
+                    <span class="label">AI 原生创作工具</span>
+                    <span class="desc"> — AI 是创作伙伴，而不只是一个功能</span>
+                </li>
+                <li>
+                    <span class="label">AGENT 产品设计</span>
+                    <span class="desc"> — 上下文工程、后训练、AI Agent 的用户体验</span>
+                </li>
+                <li>
+                    <span class="label">创作者工作流</span>
+                    <span class="desc"> — 工具提供的能力和创作者实际需求之间的鸿沟</span>
+                </li>
+            </ul>
+            <ul class="thinking-list lang-en">
                 <li>
                     <span class="label">AI-Native Creative Tools</span>
                     <span class="desc"> — AI as a creative partner, not just a feature</span>
@@ -741,12 +919,22 @@
         </section>
 
         <section>
-            <h2>Personality Profile</h2>
+            <h2>
+                <span class="lang-zh">性格画像</span>
+                <span class="lang-en">Personality Profile</span>
+            </h2>
 
-            <div class="profile-section-title">CliftonStrengths — Top 5 Signature Themes</div>
-            <div class="profile-section-subtitle">战略思维主导型 · Strategic Thinking Dominant</div>
+            <!-- CliftonStrengths -->
+            <div class="profile-section-title">
+                <span class="lang-zh">CliftonStrengths — Top 5 标志主题</span>
+                <span class="lang-en">CliftonStrengths — Top 5 Signature Themes</span>
+            </div>
+            <div class="profile-section-subtitle">
+                <span class="lang-zh">战略思维主导型</span>
+                <span class="lang-en">Strategic Thinking Dominant</span>
+            </div>
 
-            <div class="strengths-top5">
+            <div class="strengths-top5 lang-zh">
                 <div class="strength-card">
                     <div class="strength-rank">#1</div>
                     <div class="strength-name-zh">理念</div>
@@ -774,9 +962,37 @@
                 </div>
             </div>
 
-            <div class="strengths-grid">
+            <div class="strengths-top5 lang-en">
+                <div class="strength-card">
+                    <div class="strength-rank">#1</div>
+                    <div class="strength-name-zh">Ideation</div>
+                    <div class="strength-name-en"><span class="strength-domain-dot dot-strategic"></span>理念</div>
+                </div>
+                <div class="strength-card">
+                    <div class="strength-rank">#2</div>
+                    <div class="strength-name-zh">Learner</div>
+                    <div class="strength-name-en"><span class="strength-domain-dot dot-strategic"></span>学习</div>
+                </div>
+                <div class="strength-card">
+                    <div class="strength-rank">#3</div>
+                    <div class="strength-name-zh">Input</div>
+                    <div class="strength-name-en"><span class="strength-domain-dot dot-strategic"></span>搜集</div>
+                </div>
+                <div class="strength-card">
+                    <div class="strength-rank">#4</div>
+                    <div class="strength-name-zh">Positivity</div>
+                    <div class="strength-name-en"><span class="strength-domain-dot dot-relationship"></span>积极</div>
+                </div>
+                <div class="strength-card">
+                    <div class="strength-rank">#5</div>
+                    <div class="strength-name-zh">Achiever</div>
+                    <div class="strength-name-en"><span class="strength-domain-dot dot-executing"></span>成就</div>
+                </div>
+            </div>
+
+            <div class="strengths-grid lang-zh">
                 <div class="domain-group">
-                    <div class="domain-title"><span class="domain-bar bar-strategic"></span>Strategic Thinking 战略思维</div>
+                    <div class="domain-title"><span class="domain-bar bar-strategic"></span>战略思维</div>
                     <div class="domain-items">
                         <span class="domain-item top10">#1 理念</span>
                         <span class="domain-item top10">#2 学习</span>
@@ -789,7 +1005,7 @@
                     </div>
                 </div>
                 <div class="domain-group">
-                    <div class="domain-title"><span class="domain-bar bar-executing"></span>Executing 执行力</div>
+                    <div class="domain-title"><span class="domain-bar bar-executing"></span>执行力</div>
                     <div class="domain-items">
                         <span class="domain-item top10">#5 成就</span>
                         <span class="domain-item top10">#6 统筹</span>
@@ -803,7 +1019,7 @@
                     </div>
                 </div>
                 <div class="domain-group">
-                    <div class="domain-title"><span class="domain-bar bar-influencing"></span>Influencing 影响力</div>
+                    <div class="domain-title"><span class="domain-bar bar-influencing"></span>影响力</div>
                     <div class="domain-items">
                         <span class="domain-item top10">#7 行动</span>
                         <span class="domain-item top10">#10 自信</span>
@@ -816,7 +1032,7 @@
                     </div>
                 </div>
                 <div class="domain-group">
-                    <div class="domain-title"><span class="domain-bar bar-relationship"></span>Relationship Building 关系建立</div>
+                    <div class="domain-title"><span class="domain-bar bar-relationship"></span>关系建立</div>
                     <div class="domain-items">
                         <span class="domain-item top10">#4 积极</span>
                         <span class="domain-item top10">#9 伯乐</span>
@@ -831,201 +1047,299 @@
                 </div>
             </div>
 
-            <div class="strength-insight">
-                Core drive: Curiosity for new ideas → Absorb information → Form unique insights → Act fast
+            <div class="strengths-grid lang-en">
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar bar-strategic"></span>Strategic Thinking</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">#1 Ideation</span>
+                        <span class="domain-item top10">#2 Learner</span>
+                        <span class="domain-item top10">#3 Input</span>
+                        <span class="domain-item top10">#8 Intellection</span>
+                        <span class="domain-item">#12 Strategic</span>
+                        <span class="domain-item">#21 Futuristic</span>
+                        <span class="domain-item">#25 Analytical</span>
+                        <span class="domain-item">#32 Context</span>
+                    </div>
+                </div>
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar bar-executing"></span>Executing</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">#5 Achiever</span>
+                        <span class="domain-item top10">#6 Arranger</span>
+                        <span class="domain-item">#20 Responsibility</span>
+                        <span class="domain-item">#23 Restorative</span>
+                        <span class="domain-item">#24 Focus</span>
+                        <span class="domain-item">#27 Belief</span>
+                        <span class="domain-item">#31 Discipline</span>
+                        <span class="domain-item">#33 Deliberative</span>
+                        <span class="domain-item">#34 Consistency</span>
+                    </div>
+                </div>
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar bar-influencing"></span>Influencing</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">#7 Activator</span>
+                        <span class="domain-item top10">#10 Self-Assurance</span>
+                        <span class="domain-item">#11 Woo</span>
+                        <span class="domain-item">#15 Maximizer</span>
+                        <span class="domain-item">#16 Communication</span>
+                        <span class="domain-item">#17 Command</span>
+                        <span class="domain-item">#26 Significance</span>
+                        <span class="domain-item">#28 Competition</span>
+                    </div>
+                </div>
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar bar-relationship"></span>Relationship Building</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">#4 Positivity</span>
+                        <span class="domain-item top10">#9 Developer</span>
+                        <span class="domain-item">#13 Empathy</span>
+                        <span class="domain-item">#14 Individualization</span>
+                        <span class="domain-item">#18 Connectedness</span>
+                        <span class="domain-item">#19 Includer</span>
+                        <span class="domain-item">#22 Adaptability</span>
+                        <span class="domain-item">#29 Relator</span>
+                        <span class="domain-item">#30 Harmony</span>
+                    </div>
+                </div>
             </div>
-            <div class="strength-insight-zh">
-                核心驱动力：对新理念的好奇 → 大量吸收信息 → 形成独特洞察 → 快速付诸行动
+
+            <div class="strength-insight">
+                <span class="lang-zh">核心驱动力：对新理念的好奇 → 大量吸收信息 → 形成独特洞察 → 快速付诸行动</span>
+                <span class="lang-en">Core drive: Curiosity for new ideas → Absorb information → Form unique insights → Act fast</span>
             </div>
 
             <details class="image-attachment">
-                <summary>📎 View original CliftonStrengths result</summary>
+                <summary>
+                    <span class="lang-zh">📎 查看 CliftonStrengths 原始结果</span>
+                    <span class="lang-en">📎 View original CliftonStrengths result</span>
+                </summary>
                 <img src="images/cliftonstrengths.png" alt="CliftonStrengths full result">
             </details>
 
             <!-- Primal World Beliefs -->
             <div class="test-divider"></div>
 
-            <div class="profile-section-title">Primal World Beliefs — "I believe the world is..."</div>
-            <div class="profile-section-subtitle">Based on the framework by Jeremy D. W. Clifton</div>
+            <div class="profile-section-title">
+                <span class="lang-zh">Primal World Beliefs — "我相信这个世界是……"</span>
+                <span class="lang-en">Primal World Beliefs — "I believe the world is..."</span>
+            </div>
+            <div class="profile-section-subtitle">
+                <span class="lang-zh">基于 Jeremy D. W. Clifton 的原始世界信念框架</span>
+                <span class="lang-en">Based on the framework by Jeremy D. W. Clifton</span>
+            </div>
 
             <div class="primal-level">
-                <div class="primal-level-label">Level 1 — Overall</div>
+                <div class="primal-level-label">
+                    <span class="lang-zh">第一层 — 总体</span>
+                    <span class="lang-en">Level 1 — Overall</span>
+                </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Bad</span>
+                    <span class="primal-neg">
+                        <span class="lang-zh">坏的</span>
+                        <span class="lang-en">Bad</span>
+                    </span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 41%"></div></div>
-                    <span class="primal-pos">Good</span>
+                    <span class="primal-pos">
+                        <span class="lang-zh">好的</span>
+                        <span class="lang-en">Good</span>
+                    </span>
                     <span class="primal-pct">41st</span>
                 </div>
             </div>
 
             <div class="primal-level">
-                <div class="primal-level-label">Level 2 — Three dimensions</div>
+                <div class="primal-level-label">
+                    <span class="lang-zh">第二层 — 三个维度</span>
+                    <span class="lang-en">Level 2 — Three dimensions</span>
+                </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Mechanistic</span>
+                    <span class="primal-neg">
+                        <span class="lang-zh">机械的</span>
+                        <span class="lang-en">Mechanistic</span>
+                    </span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-high" style="left: 92%"></div></div>
-                    <span class="primal-pos"><strong>Alive</strong></span>
+                    <span class="primal-pos"><strong>
+                        <span class="lang-zh">有生命的</span>
+                        <span class="lang-en">Alive</span>
+                    </strong></span>
                     <span class="primal-pct high">92nd</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg"><strong>Dull</strong></span>
+                    <span class="primal-neg"><strong>
+                        <span class="lang-zh">乏味的</span>
+                        <span class="lang-en">Dull</span>
+                    </strong></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 30%"></div></div>
-                    <span class="primal-pos">Enticing</span>
+                    <span class="primal-pos">
+                        <span class="lang-zh">诱人的</span>
+                        <span class="lang-en">Enticing</span>
+                    </span>
                     <span class="primal-pct">30th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg"><strong>Dangerous</strong></span>
+                    <span class="primal-neg"><strong>
+                        <span class="lang-zh">危险的</span>
+                        <span class="lang-en">Dangerous</span>
+                    </strong></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 24%"></div></div>
-                    <span class="primal-pos">Safe</span>
+                    <span class="primal-pos">
+                        <span class="lang-zh">安全的</span>
+                        <span class="lang-en">Safe</span>
+                    </span>
                     <span class="primal-pct">24th</span>
                 </div>
             </div>
 
             <div class="primal-level">
-                <div class="primal-level-label">Level 3 — 22 sub-beliefs (sorted by percentile)</div>
+                <div class="primal-level-label">
+                    <span class="lang-zh">第三层 — 22 项子信念（按百分位排序）</span>
+                    <span class="lang-en">Level 3 — 22 sub-beliefs (sorted by percentile)</span>
+                </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Too Hard to Improve</span>
+                    <span class="primal-neg"><span class="lang-zh">难以改善</span><span class="lang-en">Too Hard to Improve</span></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-high" style="left: 99%"></div></div>
-                    <span class="primal-pos"><strong>Improvable</strong></span>
+                    <span class="primal-pos"><strong><span class="lang-zh">可改善的</span><span class="lang-en">Improvable</span></strong></span>
                     <span class="primal-pct high">99th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Separable</span>
+                    <span class="primal-neg"><span class="lang-zh">割裂的</span><span class="lang-en">Separable</span></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-high" style="left: 99%"></div></div>
-                    <span class="primal-pos"><strong>Interconnected</strong></span>
+                    <span class="primal-pos"><strong><span class="lang-zh">互联的</span><span class="lang-en">Interconnected</span></strong></span>
                     <span class="primal-pct high">99th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Doesn't Need Me</span>
+                    <span class="primal-neg"><span class="lang-zh">不需要我</span><span class="lang-en">Doesn't Need Me</span></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-high" style="left: 99%"></div></div>
-                    <span class="primal-pos"><strong>Needs Me</strong></span>
+                    <span class="primal-pos"><strong><span class="lang-zh">需要我</span><span class="lang-en">Needs Me</span></strong></span>
                     <span class="primal-pct high">99th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Nonhierarchical</span>
+                    <span class="primal-neg"><span class="lang-zh">无等级的</span><span class="lang-en">Nonhierarchical</span></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-high" style="left: 94%"></div></div>
-                    <span class="primal-pos"><strong>Hierarchical</strong></span>
+                    <span class="primal-pos"><strong><span class="lang-zh">有层级的</span><span class="lang-en">Hierarchical</span></strong></span>
                     <span class="primal-pct high">94th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Static</span>
+                    <span class="primal-neg"><span class="lang-zh">静止的</span><span class="lang-en">Static</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 82%"></div></div>
-                    <span class="primal-pos"><strong>Changing</strong></span>
+                    <span class="primal-pos"><strong><span class="lang-zh">变化的</span><span class="lang-en">Changing</span></strong></span>
                     <span class="primal-pct">82nd</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Unintentional</span>
+                    <span class="primal-neg"><span class="lang-zh">无意的</span><span class="lang-en">Unintentional</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 78%"></div></div>
-                    <span class="primal-pos"><strong>Intentional</strong></span>
+                    <span class="primal-pos"><strong><span class="lang-zh">有意图的</span><span class="lang-en">Intentional</span></strong></span>
                     <span class="primal-pct">78th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Unjust</span>
+                    <span class="primal-neg"><span class="lang-zh">不公的</span><span class="lang-en">Unjust</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 73%"></div></div>
-                    <span class="primal-pos"><strong>Just</strong></span>
+                    <span class="primal-pos"><strong><span class="lang-zh">公正的</span><span class="lang-en">Just</span></strong></span>
                     <span class="primal-pct">73rd</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Declining</span>
+                    <span class="primal-neg"><span class="lang-zh">衰退的</span><span class="lang-en">Declining</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 72%"></div></div>
-                    <span class="primal-pos"><strong>Progressing</strong></span>
+                    <span class="primal-pos"><strong><span class="lang-zh">进步的</span><span class="lang-en">Progressing</span></strong></span>
                     <span class="primal-pct">72nd</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Indifferent</span>
+                    <span class="primal-neg"><span class="lang-zh">冷漠的</span><span class="lang-en">Indifferent</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 69%"></div></div>
-                    <span class="primal-pos">Interactive</span>
+                    <span class="primal-pos"><span class="lang-zh">互动的</span><span class="lang-en">Interactive</span></span>
                     <span class="primal-pct">69th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Too Hard to Understand</span>
+                    <span class="primal-neg"><span class="lang-zh">难以理解</span><span class="lang-en">Too Hard to Understand</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 67%"></div></div>
-                    <span class="primal-pos">Understandable</span>
+                    <span class="primal-pos"><span class="lang-zh">可理解的</span><span class="lang-en">Understandable</span></span>
                     <span class="primal-pct">67th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Competitive</span>
+                    <span class="primal-neg"><span class="lang-zh">竞争的</span><span class="lang-en">Competitive</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 64%"></div></div>
-                    <span class="primal-pos">Cooperative</span>
+                    <span class="primal-pos"><span class="lang-zh">合作的</span><span class="lang-en">Cooperative</span></span>
                     <span class="primal-pct">64th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Not Worth Exploring</span>
+                    <span class="primal-neg"><span class="lang-zh">不值得探索</span><span class="lang-en">Not Worth Exploring</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 61%"></div></div>
-                    <span class="primal-pos">Worth Exploring</span>
+                    <span class="primal-pos"><span class="lang-zh">值得探索</span><span class="lang-en">Worth Exploring</span></span>
                     <span class="primal-pct">61st</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Meaningless</span>
+                    <span class="primal-neg"><span class="lang-zh">无意义的</span><span class="lang-en">Meaningless</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 59%"></div></div>
-                    <span class="primal-pos">Meaningful</span>
+                    <span class="primal-pos"><span class="lang-zh">有意义的</span><span class="lang-en">Meaningful</span></span>
                     <span class="primal-pct">59th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Threatening</span>
+                    <span class="primal-neg"><span class="lang-zh">有威胁的</span><span class="lang-en">Threatening</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 59%"></div></div>
-                    <span class="primal-pos">Harmless</span>
+                    <span class="primal-pos"><span class="lang-zh">无害的</span><span class="lang-en">Harmless</span></span>
                     <span class="primal-pct">59th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Ugly</span>
+                    <span class="primal-neg"><span class="lang-zh">丑陋的</span><span class="lang-en">Ugly</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 33%"></div></div>
-                    <span class="primal-pos">Beautiful</span>
+                    <span class="primal-pos"><span class="lang-zh">美丽的</span><span class="lang-en">Beautiful</span></span>
                     <span class="primal-pct">33rd</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg">Barren</span>
+                    <span class="primal-neg"><span class="lang-zh">贫瘠的</span><span class="lang-en">Barren</span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 13%"></div></div>
-                    <span class="primal-pos">Abundant</span>
+                    <span class="primal-pos"><span class="lang-zh">丰富的</span><span class="lang-en">Abundant</span></span>
                     <span class="primal-pct">13th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg"><strong>Miserable</strong></span>
+                    <span class="primal-neg"><strong><span class="lang-zh">痛苦的</span><span class="lang-en">Miserable</span></strong></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 12%"></div></div>
-                    <span class="primal-pos">Pleasurable</span>
+                    <span class="primal-pos"><span class="lang-zh">愉悦的</span><span class="lang-en">Pleasurable</span></span>
                     <span class="primal-pct low">12th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg"><strong>Boring</strong></span>
+                    <span class="primal-neg"><strong><span class="lang-zh">无聊的</span><span class="lang-en">Boring</span></strong></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 9%"></div></div>
-                    <span class="primal-pos">Interesting</span>
+                    <span class="primal-pos"><span class="lang-zh">有趣的</span><span class="lang-en">Interesting</span></span>
                     <span class="primal-pct low">9th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg"><strong>Not Funny</strong></span>
+                    <span class="primal-neg"><strong><span class="lang-zh">不好笑的</span><span class="lang-en">Not Funny</span></strong></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 6%"></div></div>
-                    <span class="primal-pos">Funny</span>
+                    <span class="primal-pos"><span class="lang-zh">好笑的</span><span class="lang-en">Funny</span></span>
                     <span class="primal-pct low">6th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg"><strong>Degenerative</strong></span>
+                    <span class="primal-neg"><strong><span class="lang-zh">退化的</span><span class="lang-en">Degenerative</span></strong></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 5%"></div></div>
-                    <span class="primal-pos">Regenerative</span>
+                    <span class="primal-pos"><span class="lang-zh">再生的</span><span class="lang-en">Regenerative</span></span>
                     <span class="primal-pct low">5th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg"><strong>Unacceptable</strong></span>
+                    <span class="primal-neg"><strong><span class="lang-zh">不可接受</span><span class="lang-en">Unacceptable</span></strong></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 4%"></div></div>
-                    <span class="primal-pos">Acceptable</span>
+                    <span class="primal-pos"><span class="lang-zh">可接受的</span><span class="lang-en">Acceptable</span></span>
                     <span class="primal-pct low">4th</span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg"><strong>Fragile</strong></span>
+                    <span class="primal-neg"><strong><span class="lang-zh">脆弱的</span><span class="lang-en">Fragile</span></strong></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 2%"></div></div>
-                    <span class="primal-pos">Stable</span>
+                    <span class="primal-pos"><span class="lang-zh">稳定的</span><span class="lang-en">Stable</span></span>
                     <span class="primal-pct low">2nd</span>
                 </div>
             </div>
 
             <div class="strength-insight">
-                The world is alive, interconnected, improvable, and needs me — but also fragile, degenerating, and unacceptable.
-            </div>
-            <div class="strength-insight-zh">
-                世界是活的、互联的、可以改善的、需要我的 — 但也是脆弱的、退化的、不可接受的。一个改革者的世界观。
+                <span class="lang-zh">世界是活的、互联的、可以改善的、需要我的 — 但也是脆弱的、退化的、不可接受的。一个改革者的世界观。</span>
+                <span class="lang-en">The world is alive, interconnected, improvable, and needs me — but also fragile, degenerating, and unacceptable. A reformer's worldview.</span>
             </div>
 
             <details class="image-attachment">
-                <summary>📎 View original Primal World Beliefs result</summary>
+                <summary>
+                    <span class="lang-zh">📎 查看 Primal World Beliefs 原始结果</span>
+                    <span class="lang-en">📎 View original Primal World Beliefs result</span>
+                </summary>
                 <img src="images/primal-world-beliefs.png" alt="Primal World Beliefs full result">
             </details>
 
@@ -1033,47 +1347,98 @@
             <div class="test-divider"></div>
 
             <div class="profile-section-title">200+ Personality Measures — Revised NEO PI-R Big Five</div>
-            <div class="profile-section-subtitle">Scores range 0–50 · Top traits at 99th: Experience-Seeking, Tough-Mindedness, Resourcefulness, Ambitious, Disorderliness</div>
+            <div class="profile-section-subtitle">
+                <span class="lang-zh">分数范围 0–50 · 99th 百分位特质：Experience-Seeking, Tough-Mindedness, Resourcefulness, Ambitious, Disorderliness</span>
+                <span class="lang-en">Scores range 0–50 · Top traits at 99th: Experience-Seeking, Tough-Mindedness, Resourcefulness, Ambitious, Disorderliness</span>
+            </div>
 
             <!-- Big Five Overview bars -->
             <div class="primal-level">
-                <div class="primal-level-label">Big Five Overview</div>
+                <div class="primal-level-label">
+                    <span class="lang-zh">大五人格总览</span>
+                    <span class="lang-en">Big Five Overview</span>
+                </div>
                 <div class="primal-row">
-                    <span class="primal-neg" style="text-align:left"><strong>Extraversion</strong> <span style="color:#999">外向</span></span>
+                    <span class="primal-neg" style="text-align:left"><strong>Extraversion</strong> <span style="color:#999"><span class="lang-zh">外向</span></span></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-high" style="left: 89%"></div></div>
-                    <span class="primal-pos"><strong>89th</strong> High</span>
+                    <span class="primal-pos"><strong>89th</strong> <span class="lang-zh">高</span><span class="lang-en">High</span></span>
                     <span class="primal-pct"></span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg" style="text-align:left"><strong>Conscientiousness</strong> <span style="color:#999">责任心</span></span>
+                    <span class="primal-neg" style="text-align:left"><strong>Conscientiousness</strong> <span style="color:#999"><span class="lang-zh">责任心</span></span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 72%"></div></div>
-                    <span class="primal-pos"><strong>72nd</strong> Above Avg</span>
+                    <span class="primal-pos"><strong>72nd</strong> <span class="lang-zh">中上</span><span class="lang-en">Above Avg</span></span>
                     <span class="primal-pct"></span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg" style="text-align:left"><strong>Openness</strong> <span style="color:#999">开放性</span></span>
+                    <span class="primal-neg" style="text-align:left"><strong>Openness</strong> <span style="color:#999"><span class="lang-zh">开放性</span></span></span>
                     <div class="primal-bar-container"><div class="primal-dot" style="left: 60%"></div></div>
-                    <span class="primal-pos"><strong>60th</strong> Above Avg</span>
+                    <span class="primal-pos"><strong>60th</strong> <span class="lang-zh">中上</span><span class="lang-en">Above Avg</span></span>
                     <span class="primal-pct"></span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg" style="text-align:left"><strong>Agreeableness</strong> <span style="color:#999">宜人性</span></span>
+                    <span class="primal-neg" style="text-align:left"><strong>Agreeableness</strong> <span style="color:#999"><span class="lang-zh">宜人性</span></span></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 10%"></div></div>
-                    <span class="primal-pos"><strong>~10th</strong> Low</span>
+                    <span class="primal-pos"><strong>~10th</strong> <span class="lang-zh">低</span><span class="lang-en">Low</span></span>
                     <span class="primal-pct"></span>
                 </div>
                 <div class="primal-row">
-                    <span class="primal-neg" style="text-align:left"><strong>Neuroticism</strong> <span style="color:#999">神经质</span></span>
+                    <span class="primal-neg" style="text-align:left"><strong>Neuroticism</strong> <span style="color:#999"><span class="lang-zh">神经质</span></span></span>
                     <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 2%"></div></div>
-                    <span class="primal-pos"><strong>2nd</strong> Very Low</span>
+                    <span class="primal-pos"><strong>2nd</strong> <span class="lang-zh">极低</span><span class="lang-en">Very Low</span></span>
                     <span class="primal-pct"></span>
                 </div>
             </div>
 
             <!-- Facet Details -->
-            <div class="strengths-grid" style="margin-top: 20px;">
+            <div class="strengths-grid lang-zh" style="margin-top: 20px;">
                 <div class="domain-group">
-                    <div class="domain-title"><span class="domain-bar" style="background:#1a73e8"></span>Extraversion 外向 · 89th · High</div>
+                    <div class="domain-title"><span class="domain-bar" style="background:#1a73e8"></span>外向 Extraversion · 89th · 高</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">积极情绪 ~93rd ↑</span>
+                        <span class="domain-item top10">合群 ~83rd ↑</span>
+                        <span class="domain-item">寻求刺激 ~77th</span>
+                        <span class="domain-item">温暖 ~67th</span>
+                        <span class="domain-item">活跃 ~57th</span>
+                    </div>
+                </div>
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar" style="background:#7b2d8e"></span>责任心 Conscientiousness · 72nd · 中上</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">成就努力 ~85th ↑</span>
+                        <span class="domain-item top10">尽责 ~85th ↑</span>
+                        <span class="domain-item">能力 ~74th</span>
+                        <span class="domain-item">自律 ~65th</span>
+                        <span class="domain-item" style="color:#c0392b">审议 ~32nd ↓</span>
+                        <span class="domain-item" style="color:#c0392b">秩序 ~15th ↓</span>
+                    </div>
+                </div>
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar" style="background:#2d8a4e"></span>开放性 Openness · 60th · 中上</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">价值观 ~85th ↑</span>
+                        <span class="domain-item">行动 ~70th</span>
+                        <span class="domain-item">感受 ~67th</span>
+                        <span class="domain-item">思想 ~50th</span>
+                        <span class="domain-item" style="color:#c0392b">审美 ~36th ↓</span>
+                        <span class="domain-item" style="color:#c0392b">幻想 低 ↓</span>
+                    </div>
+                </div>
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar" style="background:#e67e22"></span>宜人性 Agreeableness · ~10th · 低</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">信任 ~77th ↑</span>
+                        <span class="domain-item">利他 ~35th</span>
+                        <span class="domain-item" style="color:#c0392b">顺从 ~23rd ↓</span>
+                        <span class="domain-item" style="color:#c0392b">温柔 极低 ↓</span>
+                        <span class="domain-item" style="color:#c0392b">注意力寻求 高 ↑</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="strengths-grid lang-en" style="margin-top: 20px;">
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar" style="background:#1a73e8"></span>Extraversion · 89th · High</div>
                     <div class="domain-items">
                         <span class="domain-item top10">Positive Emotions ~93rd ↑</span>
                         <span class="domain-item top10">Gregariousness ~83rd ↑</span>
@@ -1083,7 +1448,7 @@
                     </div>
                 </div>
                 <div class="domain-group">
-                    <div class="domain-title"><span class="domain-bar" style="background:#7b2d8e"></span>Conscientiousness 责任心 · 72nd · Above Avg</div>
+                    <div class="domain-title"><span class="domain-bar" style="background:#7b2d8e"></span>Conscientiousness · 72nd · Above Avg</div>
                     <div class="domain-items">
                         <span class="domain-item top10">Achievement-Striving ~85th ↑</span>
                         <span class="domain-item top10">Dutifulness ~85th ↑</span>
@@ -1094,7 +1459,7 @@
                     </div>
                 </div>
                 <div class="domain-group">
-                    <div class="domain-title"><span class="domain-bar" style="background:#2d8a4e"></span>Openness 开放性 · 60th · Above Avg</div>
+                    <div class="domain-title"><span class="domain-bar" style="background:#2d8a4e"></span>Openness · 60th · Above Avg</div>
                     <div class="domain-items">
                         <span class="domain-item top10">Values ~85th ↑</span>
                         <span class="domain-item">Actions ~70th</span>
@@ -1105,7 +1470,7 @@
                     </div>
                 </div>
                 <div class="domain-group">
-                    <div class="domain-title"><span class="domain-bar" style="background:#e67e22"></span>Agreeableness 宜人性 · ~10th · Low</div>
+                    <div class="domain-title"><span class="domain-bar" style="background:#e67e22"></span>Agreeableness · ~10th · Low</div>
                     <div class="domain-items">
                         <span class="domain-item top10">Trust ~77th ↑</span>
                         <span class="domain-item">Altruism ~35th</span>
@@ -1117,32 +1482,39 @@
             </div>
 
             <div class="domain-group" style="margin-top: 16px; margin-bottom: 20px;">
-                <div class="domain-title"><span class="domain-bar" style="background:#999"></span>Neuroticism 神经质 · 2nd · Very Low (= Extremely Stable)</div>
+                <div class="domain-title"><span class="domain-bar" style="background:#999"></span>
+                    <span class="lang-zh">神经质 Neuroticism · 2nd · 极低（= 极度情绪稳定）</span>
+                    <span class="lang-en">Neuroticism · 2nd · Very Low (= Extremely Stable)</span>
+                </div>
                 <div class="domain-items">
-                    <span class="domain-item" style="color:#2d8a4e">Angry Hostility ~33rd</span>
-                    <span class="domain-item" style="color:#2d8a4e">Anxiety ~14th ↓</span>
-                    <span class="domain-item" style="color:#2d8a4e">Self-Consciousness ~12th ↓</span>
-                    <span class="domain-item" style="color:#2d8a4e">Low Mood ~5th ↓</span>
-                    <span class="domain-item" style="color:#2d8a4e">Vulnerability ~5th ↓</span>
+                    <span class="domain-item" style="color:#2d8a4e"><span class="lang-zh">愤怒 ~33rd</span><span class="lang-en">Angry Hostility ~33rd</span></span>
+                    <span class="domain-item" style="color:#2d8a4e"><span class="lang-zh">焦虑 ~14th ↓</span><span class="lang-en">Anxiety ~14th ↓</span></span>
+                    <span class="domain-item" style="color:#2d8a4e"><span class="lang-zh">自我意识 ~12th ↓</span><span class="lang-en">Self-Consciousness ~12th ↓</span></span>
+                    <span class="domain-item" style="color:#2d8a4e"><span class="lang-zh">情绪低落 ~5th ↓</span><span class="lang-en">Low Mood ~5th ↓</span></span>
+                    <span class="domain-item" style="color:#2d8a4e"><span class="lang-zh">脆弱 ~5th ↓</span><span class="lang-en">Vulnerability ~5th ↓</span></span>
                 </div>
             </div>
 
             <div class="strength-insight">
-                Cross-test: Extraversion 89th ↔ Positivity #4, Activator #7. Tough-Mindedness 99th ↔ Low Agreeableness + Low Neuroticism. Disorderliness 99th ↔ Low Order 15th.
-            </div>
-            <div class="strength-insight-zh">
-                跨测试一致性：外向89th ↔ 积极#4、行动#7；意志不屈99th ↔ 低宜人性+极低神经质；无序99th ↔ 低秩序15th；低审议32nd ↔ 行动#7。
+                <span class="lang-zh">跨测试一致性：外向89th ↔ 积极#4、行动#7；意志不屈99th ↔ 低宜人性+极低神经质；无序99th ↔ 低秩序15th；低审议32nd ↔ 行动#7。</span>
+                <span class="lang-en">Cross-test: Extraversion 89th ↔ Positivity #4, Activator #7. Tough-Mindedness 99th ↔ Low Agreeableness + Low Neuroticism. Disorderliness 99th ↔ Low Order 15th.</span>
             </div>
 
             <details class="image-attachment">
-                <summary>📎 View full 200+ Personality Measures result</summary>
+                <summary>
+                    <span class="lang-zh">📎 查看 200+ Personality Measures 完整结果</span>
+                    <span class="lang-en">📎 View full 200+ Personality Measures result</span>
+                </summary>
                 <img src="images/personality-200-measures.png" alt="200+ Personality Measures full result">
             </details>
 
         </section>
 
         <section>
-            <h2>Contact</h2>
+            <h2>
+                <span class="lang-zh">联系方式</span>
+                <span class="lang-en">Contact</span>
+            </h2>
             <ul class="contact-list">
                 <li><span class="label">Email</span> <a href="mailto:BENZEMAZDZ99@gmail.com">BENZEMAZDZ99@gmail.com</a></li>
                 <li><span class="label">GitHub</span> <a href="https://github.com/BENZEMA216">BENZEMA216</a></li>
@@ -1150,8 +1522,39 @@
         </section>
 
         <footer>
-            Built with curiosity and Claude.
+            <span class="lang-zh">Built with curiosity and Claude.</span>
+            <span class="lang-en">Built with curiosity and Claude.</span>
         </footer>
     </div>
+
+    <script>
+        function setLang(lang) {
+            const body = document.body;
+            const btnZh = document.getElementById('btn-zh');
+            const btnEn = document.getElementById('btn-en');
+
+            if (lang === 'en') {
+                body.classList.add('en');
+                btnEn.classList.add('active');
+                btnZh.classList.remove('active');
+                document.documentElement.lang = 'en';
+                document.title = 'Dongzhe Zhu — AI Product Manager × Builder';
+            } else {
+                body.classList.remove('en');
+                btnZh.classList.add('active');
+                btnEn.classList.remove('active');
+                document.documentElement.lang = 'zh';
+                document.title = '朱东哲 — AI 产品经理 × Builder';
+            }
+
+            localStorage.setItem('lang', lang);
+        }
+
+        // Restore language preference
+        const savedLang = localStorage.getItem('lang');
+        if (savedLang) {
+            setLang(savedLang);
+        }
+    </script>
 </body>
 </html>
