@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BENZEMA — AI Builder × Product Thinker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: #fff;
+            color: #111;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 64px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .header .tagline {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 16px;
+        }
+
+        .header .bio {
+            font-size: 0.95rem;
+            color: #333;
+            max-width: 560px;
+        }
+
+        .header .bio-zh {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 56px;
+        }
+
+        section h2 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+            margin-bottom: 24px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Projects */
+        .project {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .project:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .project-header {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .project a {
+            font-weight: 600;
+            color: #111;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .project a:hover {
+            color: #555;
+        }
+
+        .project .stars {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .project .lang {
+            font-size: 0.75rem;
+            color: #999;
+            background: #f5f5f5;
+            padding: 1px 6px;
+            border-radius: 3px;
+        }
+
+        .project p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Thinking */
+        .thinking-list {
+            list-style: none;
+        }
+
+        .thinking-list li {
+            padding: 8px 0;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .thinking-list li:last-child {
+            border-bottom: none;
+        }
+
+        .thinking-list .label {
+            font-weight: 600;
+            color: #111;
+        }
+
+        .thinking-list .desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Experience */
+        .experience-item {
+            margin-bottom: 16px;
+        }
+
+        .experience-item .role {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .experience-item .company {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .experience-item .period {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .placeholder {
+            color: #ccc;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* Contact */
+        .contact-list {
+            list-style: none;
+        }
+
+        .contact-list li {
+            padding: 6px 0;
+            font-size: 0.9rem;
+        }
+
+        .contact-list a {
+            color: #111;
+            text-decoration: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .contact-list a:hover {
+            border-bottom-color: #111;
+        }
+
+        .contact-list .label {
+            display: inline-block;
+            width: 80px;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            padding-top: 24px;
+            border-top: 1px solid #eee;
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 48px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .header {
+                margin-bottom: 48px;
+            }
+
+            section {
+                margin-bottom: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>BENZEMA</h1>
+            <p class="tagline">AI Builder &times; Product Thinker</p>
+            <p class="bio">
+                I build tools that empower creators with AI.
+                Currently designing <strong>Creative CoWork</strong> — an AI-powered creative workbench for professional creators.
+            </p>
+            <p class="bio-zh">我相信 AI 应该让创作者更强大，而不是替代他们。</p>
+        </header>
+
+        <section>
+            <h2>Projects</h2>
+
+            <div class="project">
+                <div class="project-header">
+                    <a href="https://github.com/BENZEMA216/dreamina-claude-skills">dreamina-claude-skills</a>
+                    <span class="lang">Python</span>
+                    <span class="stars">&#9733; 12</span>
+                </div>
+                <p>Dreamina Agent Skills for Claude Code — 即梦 AI 创作工具技能集</p>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <a href="https://github.com/BENZEMA216/creative-think">creative-think</a>
+                </div>
+                <p>创意思考推理链 — from creative brief to structured design prompt</p>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <a href="https://github.com/BENZEMA216/music-analyzer">music-analyzer</a>
+                    <span class="lang">Python</span>
+                </div>
+                <p>Analyze audio files, extract musical features, generate Dreamina prompts & storyboards</p>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <a href="https://github.com/BENZEMA216/self-purify">self-purify</a>
+                    <span class="lang">Shell</span>
+                </div>
+                <p>Claude Code self-purification — security audit & session pattern analysis</p>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <a href="https://github.com/BENZEMA216/clawdbot-skill-web3-pay">clawdbot-skill-web3-pay</a>
+                    <span class="lang">Python</span>
+                </div>
+                <p>Accept crypto payments (USDC) on Base/Polygon/ETH/Arbitrum for Clawdbot</p>
+            </div>
+
+            <div class="project">
+                <div class="project-header">
+                    <a href="https://github.com/BENZEMA216/rss-reader">rss-reader</a>
+                    <span class="lang">Python</span>
+                </div>
+                <p>RSS AI Reader — 自动抓取、摘要、推送到飞书</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>What I Think About</h2>
+            <ul class="thinking-list">
+                <li>
+                    <span class="label">AI-Native Creative Tools</span>
+                    <span class="desc"> — How to design tools where AI is a creative partner, not just a feature</span>
+                </li>
+                <li>
+                    <span class="label">Claude Code Ecosystem</span>
+                    <span class="desc"> — Building skills, plugins, and workflows that extend Claude Code</span>
+                </li>
+                <li>
+                    <span class="label">Context Engineering</span>
+                    <span class="desc"> — Making AI understand the full context of creative work</span>
+                </li>
+                <li>
+                    <span class="label">Product Design</span>
+                    <span class="desc"> — The gap between what tools offer and what creators actually need</span>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Experience</h2>
+            <!-- Replace with your actual experience -->
+            <p class="placeholder">Coming soon — 稍后补充</p>
+            <!--
+            <div class="experience-item">
+                <div class="role">Your Role</div>
+                <div class="company">Company Name</div>
+                <div class="period">2023 — Present</div>
+            </div>
+            -->
+        </section>
+
+        <section>
+            <h2>Contact</h2>
+            <!-- Replace with your actual contact info -->
+            <ul class="contact-list">
+                <li><span class="label">GitHub</span> <a href="https://github.com/BENZEMA216">BENZEMA216</a></li>
+                <!--
+                <li><span class="label">Email</span> <a href="mailto:your@email.com">your@email.com</a></li>
+                <li><span class="label">Twitter</span> <a href="https://twitter.com/yourhandle">@yourhandle</a></li>
+                -->
+            </ul>
+            <p class="placeholder" style="margin-top: 12px;">More contact info coming soon — 稍后补充</p>
+        </section>
+
+        <footer>
+            Built with curiosity and Claude.
+        </footer>
+    </div>
+</body>
+</html>
