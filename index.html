@@ -116,10 +116,26 @@
             max-width: 600px;
         }
 
-        .header .bio-secondary {
+        .header-highlights {
+            list-style: none;
+            margin-top: 16px;
+            padding: 0;
+        }
+
+        .header-highlights li {
             font-size: 0.9rem;
-            color: #888;
-            margin-top: 8px;
+            color: #555;
+            padding: 4px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .header-highlights li::before {
+            content: "·";
+            position: absolute;
+            left: 0;
+            color: #bbb;
+            font-weight: 700;
         }
 
         /* Sections */
@@ -680,19 +696,30 @@
             </p>
             <p class="bio">
                 <span class="lang-zh">
-                    在<strong>字节跳动即梦</strong>从 0 到 1 构建 Creative AGENT，现为即梦 Web 主入口。
-                    此前在<strong>腾讯</strong>打造 LLM 驱动的数据产品。业余时间造开源 AI 工具。
+                    在<strong>字节跳动</strong>从 0 到 1 构建即梦 Creative AGENT，现为即梦 Web 主入口。同时在剪映定义 VLM 智能成片模型能力。此前在<strong>腾讯</strong>打造 LLM 驱动的数据产品。
                 </span>
                 <span class="lang-en">
-                    Building the Creative AGENT at <strong>ByteDance Jimeng</strong> from 0→1, now the main entry of Jimeng Web.
-                    Previously shipped LLM-powered products at <strong>Tencent</strong>.
-                    On the side, I build open-source AI tools for creators.
+                    Building the Creative AGENT at <strong>ByteDance Jimeng</strong> from 0→1, now the main entry of Jimeng Web. Also defining VLM-powered Smart Video capabilities at Jianying. Previously shipped LLM-powered products at <strong>Tencent</strong>.
                 </span>
             </p>
-            <p class="bio-secondary">
-                <span class="lang-zh">在工作中做产品，在业余时间造工具。我相信最好的 AI 产品来自对用户创作流程的深刻理解。</span>
-                <span class="lang-en">I build products at work and tools in my spare time. I believe the best AI products come from a deep understanding of how creators actually work.</span>
-            </p>
+            <ul class="header-highlights">
+                <li>
+                    <span class="lang-zh">在字节做过成熟的 agent 产品 — 即梦 Creative AGENT 是 Lovart / Oiioii 的通用版，踩过 agent 产研的所有坑</span>
+                    <span class="lang-en">Hands-on agent practitioner — Jimeng Creative AGENT is the general-purpose version of Lovart / Oiioii; learned all the hard lessons of agent product development</span>
+                </li>
+                <li>
+                    <span class="lang-zh">热情和好奇心充沛的人</span>
+                    <span class="lang-en">Driven by boundless curiosity and enthusiasm</span>
+                </li>
+                <li>
+                    <span class="lang-zh">用 GitHub repo 当 PRD 写，Claude Max 20 倍总量消耗者，用 AI 武装自己和团队</span>
+                    <span class="lang-en">Uses GitHub repos as PRDs; a Claude Max 20x power user pushing AI-augmented workflows for self and team</span>
+                </li>
+                <li>
+                    <span class="lang-zh">Vibe coding 真正做出完整产品并上线的人</span>
+                    <span class="lang-en">Ships real products through vibe coding — actually built and launched complete products</span>
+                </li>
+            </ul>
         </header>
 
         <section>
