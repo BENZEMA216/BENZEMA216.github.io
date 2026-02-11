@@ -376,6 +376,154 @@
             margin-top: 4px;
         }
 
+        /* Test result subsections */
+        .test-divider {
+            height: 1px;
+            background: #eee;
+            margin: 40px 0;
+        }
+
+        /* Primal spectrum */
+        .primal-level {
+            margin-bottom: 24px;
+        }
+
+        .primal-level-label {
+            font-size: 0.75rem;
+            color: #bbb;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+        }
+
+        .primal-row {
+            display: flex;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .primal-row:last-child {
+            border-bottom: none;
+        }
+
+        .primal-neg {
+            width: 130px;
+            text-align: right;
+            color: #999;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .primal-bar-container {
+            flex: 1;
+            height: 4px;
+            background: #f0f0f0;
+            margin: 0 12px;
+            position: relative;
+            border-radius: 2px;
+        }
+
+        .primal-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #111;
+            top: -2px;
+        }
+
+        .primal-dot.extreme-high {
+            background: #2d8a4e;
+        }
+
+        .primal-dot.extreme-low {
+            background: #c0392b;
+        }
+
+        .primal-pos {
+            width: 130px;
+            font-size: 0.85rem;
+            color: #666;
+            flex-shrink: 0;
+        }
+
+        .primal-pos strong, .primal-neg strong {
+            color: #111;
+        }
+
+        .primal-pct {
+            width: 40px;
+            text-align: right;
+            font-size: 0.8rem;
+            color: #bbb;
+            flex-shrink: 0;
+        }
+
+        .primal-pct.high {
+            color: #2d8a4e;
+            font-weight: 600;
+        }
+
+        .primal-pct.low {
+            color: #c0392b;
+            font-weight: 600;
+        }
+
+        /* Collapsible image details */
+        .image-attachment {
+            margin-top: 20px;
+        }
+
+        .image-attachment summary {
+            font-size: 0.85rem;
+            color: #bbb;
+            cursor: pointer;
+            padding: 8px 0;
+        }
+
+        .image-attachment summary:hover {
+            color: #999;
+        }
+
+        .image-attachment img {
+            max-width: 100%;
+            margin-top: 12px;
+            border: 1px solid #f0f0f0;
+            border-radius: 4px;
+        }
+
+        /* 200+ Personality */
+        .big-five-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .big-five-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 0.9rem;
+        }
+
+        .big-five-list li:last-child {
+            border-bottom: none;
+        }
+
+        .big-five-name {
+            font-weight: 600;
+            color: #111;
+        }
+
+        .big-five-zh {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .big-five-desc {
+            color: #666;
+        }
+
         /* Contact */
         .contact-list {
             list-style: none;
@@ -690,7 +838,240 @@
                 核心驱动力：对新理念的好奇 → 大量吸收信息 → 形成独特洞察 → 快速付诸行动
             </div>
 
-            <!-- Add more personality tests here -->
+            <details class="image-attachment">
+                <summary>📎 View original CliftonStrengths result</summary>
+                <img src="images/cliftonstrengths.png" alt="CliftonStrengths full result">
+            </details>
+
+            <!-- Primal World Beliefs -->
+            <div class="test-divider"></div>
+
+            <div class="profile-section-title">Primal World Beliefs — "I believe the world is..."</div>
+            <div class="profile-section-subtitle">Based on the framework by Jeremy D. W. Clifton</div>
+
+            <div class="primal-level">
+                <div class="primal-level-label">Level 1 — Overall</div>
+                <div class="primal-row">
+                    <span class="primal-neg">Bad</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 41%"></div></div>
+                    <span class="primal-pos">Good</span>
+                    <span class="primal-pct">41st</span>
+                </div>
+            </div>
+
+            <div class="primal-level">
+                <div class="primal-level-label">Level 2 — Three dimensions</div>
+                <div class="primal-row">
+                    <span class="primal-neg">Mechanistic</span>
+                    <div class="primal-bar-container"><div class="primal-dot extreme-high" style="left: 92%"></div></div>
+                    <span class="primal-pos"><strong>Alive</strong></span>
+                    <span class="primal-pct high">92nd</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg"><strong>Dull</strong></span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 30%"></div></div>
+                    <span class="primal-pos">Enticing</span>
+                    <span class="primal-pct">30th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg"><strong>Dangerous</strong></span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 24%"></div></div>
+                    <span class="primal-pos">Safe</span>
+                    <span class="primal-pct">24th</span>
+                </div>
+            </div>
+
+            <div class="primal-level">
+                <div class="primal-level-label">Level 3 — 22 sub-beliefs (sorted by percentile)</div>
+                <div class="primal-row">
+                    <span class="primal-neg">Too Hard to Improve</span>
+                    <div class="primal-bar-container"><div class="primal-dot extreme-high" style="left: 99%"></div></div>
+                    <span class="primal-pos"><strong>Improvable</strong></span>
+                    <span class="primal-pct high">99th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Separable</span>
+                    <div class="primal-bar-container"><div class="primal-dot extreme-high" style="left: 99%"></div></div>
+                    <span class="primal-pos"><strong>Interconnected</strong></span>
+                    <span class="primal-pct high">99th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Doesn't Need Me</span>
+                    <div class="primal-bar-container"><div class="primal-dot extreme-high" style="left: 99%"></div></div>
+                    <span class="primal-pos"><strong>Needs Me</strong></span>
+                    <span class="primal-pct high">99th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Nonhierarchical</span>
+                    <div class="primal-bar-container"><div class="primal-dot extreme-high" style="left: 94%"></div></div>
+                    <span class="primal-pos"><strong>Hierarchical</strong></span>
+                    <span class="primal-pct high">94th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Static</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 82%"></div></div>
+                    <span class="primal-pos"><strong>Changing</strong></span>
+                    <span class="primal-pct">82nd</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Unintentional</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 78%"></div></div>
+                    <span class="primal-pos"><strong>Intentional</strong></span>
+                    <span class="primal-pct">78th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Unjust</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 73%"></div></div>
+                    <span class="primal-pos"><strong>Just</strong></span>
+                    <span class="primal-pct">73rd</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Declining</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 72%"></div></div>
+                    <span class="primal-pos"><strong>Progressing</strong></span>
+                    <span class="primal-pct">72nd</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Indifferent</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 69%"></div></div>
+                    <span class="primal-pos">Interactive</span>
+                    <span class="primal-pct">69th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Too Hard to Understand</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 67%"></div></div>
+                    <span class="primal-pos">Understandable</span>
+                    <span class="primal-pct">67th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Competitive</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 64%"></div></div>
+                    <span class="primal-pos">Cooperative</span>
+                    <span class="primal-pct">64th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Not Worth Exploring</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 61%"></div></div>
+                    <span class="primal-pos">Worth Exploring</span>
+                    <span class="primal-pct">61st</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Meaningless</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 59%"></div></div>
+                    <span class="primal-pos">Meaningful</span>
+                    <span class="primal-pct">59th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Threatening</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 59%"></div></div>
+                    <span class="primal-pos">Harmless</span>
+                    <span class="primal-pct">59th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Ugly</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 33%"></div></div>
+                    <span class="primal-pos">Beautiful</span>
+                    <span class="primal-pct">33rd</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg">Barren</span>
+                    <div class="primal-bar-container"><div class="primal-dot" style="left: 13%"></div></div>
+                    <span class="primal-pos">Abundant</span>
+                    <span class="primal-pct">13th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg"><strong>Miserable</strong></span>
+                    <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 12%"></div></div>
+                    <span class="primal-pos">Pleasurable</span>
+                    <span class="primal-pct low">12th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg"><strong>Boring</strong></span>
+                    <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 9%"></div></div>
+                    <span class="primal-pos">Interesting</span>
+                    <span class="primal-pct low">9th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg"><strong>Not Funny</strong></span>
+                    <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 6%"></div></div>
+                    <span class="primal-pos">Funny</span>
+                    <span class="primal-pct low">6th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg"><strong>Degenerative</strong></span>
+                    <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 5%"></div></div>
+                    <span class="primal-pos">Regenerative</span>
+                    <span class="primal-pct low">5th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg"><strong>Unacceptable</strong></span>
+                    <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 4%"></div></div>
+                    <span class="primal-pos">Acceptable</span>
+                    <span class="primal-pct low">4th</span>
+                </div>
+                <div class="primal-row">
+                    <span class="primal-neg"><strong>Fragile</strong></span>
+                    <div class="primal-bar-container"><div class="primal-dot extreme-low" style="left: 2%"></div></div>
+                    <span class="primal-pos">Stable</span>
+                    <span class="primal-pct low">2nd</span>
+                </div>
+            </div>
+
+            <div class="strength-insight">
+                The world is alive, interconnected, improvable, and needs me — but also fragile, degenerating, and unacceptable.
+            </div>
+            <div class="strength-insight-zh">
+                世界是活的、互联的、可以改善的、需要我的 — 但也是脆弱的、退化的、不可接受的。一个改革者的世界观。
+            </div>
+
+            <details class="image-attachment">
+                <summary>📎 View original Primal World Beliefs result</summary>
+                <img src="images/primal-world-beliefs.png" alt="Primal World Beliefs full result">
+            </details>
+
+            <!-- 200+ Personality Measures -->
+            <div class="test-divider"></div>
+
+            <div class="profile-section-title">200+ Personality Measures — Revised NEO PI-R & More</div>
+            <div class="profile-section-subtitle">Comprehensive personality assessment covering Big Five traits and 30 facets</div>
+
+            <ul class="big-five-list">
+                <li>
+                    <span class="big-five-name">Openness to Experience</span>
+                    <span class="big-five-zh">经验开放性</span>
+                    <span class="big-five-desc"> — imagination, aesthetics, feelings, ideas, values</span>
+                </li>
+                <li>
+                    <span class="big-five-name">Conscientiousness</span>
+                    <span class="big-five-zh">尽责性</span>
+                    <span class="big-five-desc"> — competence, order, dutifulness, self-discipline</span>
+                </li>
+                <li>
+                    <span class="big-five-name">Extraversion</span>
+                    <span class="big-five-zh">外向性</span>
+                    <span class="big-five-desc"> — warmth, gregariousness, assertiveness, positive emotions</span>
+                </li>
+                <li>
+                    <span class="big-five-name">Agreeableness</span>
+                    <span class="big-five-zh">宜人性</span>
+                    <span class="big-five-desc"> — trust, straightforwardness, altruism, modesty</span>
+                </li>
+                <li>
+                    <span class="big-five-name">Neuroticism</span>
+                    <span class="big-five-zh">神经质</span>
+                    <span class="big-five-desc"> — anxiety, hostility, depression, vulnerability</span>
+                </li>
+            </ul>
+
+            <div class="strength-insight-zh" style="margin-top: 12px;">
+                完整测试涵盖 200+ 项性格指标，包含 Big Five 五大人格特质及其 30 个子维度。展开下方查看详细结果。
+            </div>
+
+            <details class="image-attachment">
+                <summary>📎 View full 200+ Personality Measures result</summary>
+                <img src="images/personality-200-measures.png" alt="200+ Personality Measures full result">
+            </details>
+
         </section>
 
         <section>
