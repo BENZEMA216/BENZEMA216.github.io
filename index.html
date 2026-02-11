@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BENZEMA — AI Builder × Product Thinker</title>
+    <title>Dongzhe Zhu — AI Product Manager × Builder</title>
     <style>
         * {
             margin: 0;
@@ -34,7 +34,13 @@
             font-size: 2rem;
             font-weight: 700;
             letter-spacing: -0.02em;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
+        }
+
+        .header .name-zh {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 12px;
         }
 
         .header .tagline {
@@ -46,7 +52,7 @@
         .header .bio {
             font-size: 0.95rem;
             color: #333;
-            max-width: 560px;
+            max-width: 600px;
         }
 
         .header .bio-zh {
@@ -69,6 +75,98 @@
             margin-bottom: 24px;
             padding-bottom: 8px;
             border-bottom: 1px solid #eee;
+        }
+
+        /* Experience */
+        .experience-item {
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .experience-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 2px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .experience-item .role {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .experience-item .period {
+            color: #999;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .experience-item .company {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .experience-item .highlights {
+            list-style: none;
+            padding: 0;
+        }
+
+        .experience-item .highlights li {
+            font-size: 0.9rem;
+            color: #444;
+            padding: 3px 0;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .experience-item .highlights li::before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #ccc;
+        }
+
+        .highlight-metric {
+            font-weight: 600;
+            color: #111;
+        }
+
+        .award {
+            background: #f9f9f9;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Education */
+        .education-item {
+            margin-bottom: 12px;
+        }
+
+        .education-item .school {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .education-item .degree {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .education-item .detail {
+            color: #999;
+            font-size: 0.85rem;
         }
 
         /* Projects */
@@ -145,32 +243,6 @@
             font-size: 0.9rem;
         }
 
-        /* Experience */
-        .experience-item {
-            margin-bottom: 16px;
-        }
-
-        .experience-item .role {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .experience-item .company {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .experience-item .period {
-            color: #999;
-            font-size: 0.85rem;
-        }
-
-        .placeholder {
-            color: #ccc;
-            font-style: italic;
-            font-size: 0.9rem;
-        }
-
         /* Contact */
         .contact-list {
             list-style: none;
@@ -224,23 +296,88 @@
             section {
                 margin-bottom: 40px;
             }
+
+            .experience-header {
+                flex-direction: column;
+                gap: 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <h1>BENZEMA</h1>
-            <p class="tagline">AI Builder &times; Product Thinker</p>
+            <h1>Dongzhe Zhu</h1>
+            <p class="name-zh">朱东哲</p>
+            <p class="tagline">AI Product Manager &times; Builder</p>
             <p class="bio">
-                I build tools that empower creators with AI.
-                Currently designing <strong>Creative CoWork</strong> — an AI-powered creative workbench for professional creators.
+                Building the Creative AGENT at <strong>ByteDance Jimeng</strong> — from 0 to 200K+ DAU.
+                Previously shipped LLM-powered products at <strong>Tencent</strong>.
+                On the side, I build open-source AI tools for creators.
             </p>
-            <p class="bio-zh">我相信 AI 应该让创作者更强大，而不是替代他们。</p>
+            <p class="bio-zh">在工作中做产品，在业余时间造工具。我相信最好的 AI 产品来自对用户创作流程的深刻理解。</p>
         </header>
 
         <section>
-            <h2>Projects</h2>
+            <h2>Experience</h2>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <span class="role">AI Product Manager</span>
+                    <span class="period">2024.07 — Present</span>
+                </div>
+                <div class="company">ByteDance · Jianying & Jimeng</div>
+                <ul class="highlights">
+                    <li>Owner of <strong>Jimeng Creative AGENT</strong>: 0→1 product build, <span class="highlight-metric">200K+ DAU</span>, <span class="highlight-metric">51% UV export rate</span>, now the main entry of Jimeng Web</li>
+                    <li>Led AGENT post-training: RL for creative model, automated SFT pipeline with biweekly A/B iterations</li>
+                    <li>Defined VLM capability for Jianying Smart Video: end-to-end effect spec, training data pipeline, and evaluation system</li>
+                </ul>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <span class="role">Product Specialist</span>
+                    <span class="period">2023.02 — 2024.07</span>
+                </div>
+                <div class="company">Tencent · Overseas Publishing AI Platform</div>
+                <ul class="highlights">
+                    <li>Rebuilt game sentiment monitoring with LLM — multi-language, multi-timezone, fully automated <span class="award">2023 Business Breakthrough Award</span></li>
+                    <li>Built <strong>ChatBI</strong>: AI-native data product with LLM + RAG, transforming how teams query game analytics</li>
+                    <li>Explored AI + Gaming: Trovo virtual character dialogue, AIUGC campaigns with custom LoRAs</li>
+                </ul>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <span class="role">Data Product Manager</span>
+                    <span class="period">2022.03 — 2023.02</span>
+                </div>
+                <div class="company">Tencent · Overseas Publishing Data Platform</div>
+                <ul class="highlights">
+                    <li>Owned DataBrain sentiment product for top titles (Honor of Kings, PUBG Mobile): shipped real-time alerts, periodic reports; <span class="highlight-metric">doubled PV/UV in 3 months</span></li>
+                    <li>Built DataLab from 0→1: visual analytics platform enabling no-SQL data analysis for operations teams</li>
+                </ul>
+            </div>
+        </section>
+
+        <section>
+            <h2>Education</h2>
+
+            <div class="education-item">
+                <div class="school">Nanyang Technological University</div>
+                <div class="degree">M.Sc. Computer Control & Automation</div>
+                <div class="detail">GPA 4.6/5 · Top 10% · 2020 — 2022</div>
+            </div>
+
+            <div class="education-item">
+                <div class="school">Tongji University</div>
+                <div class="degree">B.Eng. Automation</div>
+                <div class="detail">2016 — 2020</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Open Source</h2>
 
             <div class="project">
                 <div class="project-header">
@@ -279,7 +416,7 @@
                     <a href="https://github.com/BENZEMA216/clawdbot-skill-web3-pay">clawdbot-skill-web3-pay</a>
                     <span class="lang">Python</span>
                 </div>
-                <p>Accept crypto payments (USDC) on Base/Polygon/ETH/Arbitrum for Clawdbot</p>
+                <p>Crypto payments (USDC) on Base/Polygon/ETH/Arbitrum for Clawdbot</p>
             </div>
 
             <div class="project">
@@ -296,47 +433,25 @@
             <ul class="thinking-list">
                 <li>
                     <span class="label">AI-Native Creative Tools</span>
-                    <span class="desc"> — How to design tools where AI is a creative partner, not just a feature</span>
+                    <span class="desc"> — AI as a creative partner, not just a feature</span>
                 </li>
                 <li>
-                    <span class="label">Claude Code Ecosystem</span>
-                    <span class="desc"> — Building skills, plugins, and workflows that extend Claude Code</span>
+                    <span class="label">AGENT Product Design</span>
+                    <span class="desc"> — Context engineering, post-training, and the UX of AI agents</span>
                 </li>
                 <li>
-                    <span class="label">Context Engineering</span>
-                    <span class="desc"> — Making AI understand the full context of creative work</span>
-                </li>
-                <li>
-                    <span class="label">Product Design</span>
-                    <span class="desc"> — The gap between what tools offer and what creators actually need</span>
+                    <span class="label">Creator Workflows</span>
+                    <span class="desc"> — The gap between what tools offer and how creators actually work</span>
                 </li>
             </ul>
-        </section>
-
-        <section>
-            <h2>Experience</h2>
-            <!-- Replace with your actual experience -->
-            <p class="placeholder">Coming soon — 稍后补充</p>
-            <!--
-            <div class="experience-item">
-                <div class="role">Your Role</div>
-                <div class="company">Company Name</div>
-                <div class="period">2023 — Present</div>
-            </div>
-            -->
         </section>
 
         <section>
             <h2>Contact</h2>
-            <!-- Replace with your actual contact info -->
             <ul class="contact-list">
+                <li><span class="label">Email</span> <a href="mailto:zhudongzhe_product@163.com">zhudongzhe_product@163.com</a></li>
                 <li><span class="label">GitHub</span> <a href="https://github.com/BENZEMA216">BENZEMA216</a></li>
-                <!--
-                <li><span class="label">Email</span> <a href="mailto:your@email.com">your@email.com</a></li>
-                <li><span class="label">Twitter</span> <a href="https://twitter.com/yourhandle">@yourhandle</a></li>
-                -->
             </ul>
-            <p class="placeholder" style="margin-top: 12px;">More contact info coming soon — 稍后补充</p>
         </section>
 
         <footer>
