@@ -243,6 +243,139 @@
             font-size: 0.9rem;
         }
 
+        /* Personality Profile */
+        .profile-section-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .profile-section-subtitle {
+            font-size: 0.85rem;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .strengths-top5 {
+            display: flex;
+            gap: 0;
+            margin-bottom: 24px;
+        }
+
+        .strength-card {
+            flex: 1;
+            text-align: center;
+            padding: 16px 8px;
+            border-right: 1px solid #f0f0f0;
+        }
+
+        .strength-card:last-child {
+            border-right: none;
+        }
+
+        .strength-rank {
+            font-size: 0.75rem;
+            color: #999;
+            margin-bottom: 4px;
+        }
+
+        .strength-name-zh {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 2px;
+        }
+
+        .strength-name-en {
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        .strength-domain-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        .dot-strategic { background: #2d8a4e; }
+        .dot-relationship { background: #1a73e8; }
+        .dot-executing { background: #7b2d8e; }
+        .dot-influencing { background: #e67e22; }
+
+        .strengths-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .domain-group {
+            padding: 16px;
+            background: #fafafa;
+            border-radius: 4px;
+        }
+
+        .domain-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .domain-bar {
+            display: inline-block;
+            width: 3px;
+            height: 12px;
+            border-radius: 1px;
+        }
+
+        .bar-strategic { background: #2d8a4e; }
+        .bar-relationship { background: #1a73e8; }
+        .bar-executing { background: #7b2d8e; }
+        .bar-influencing { background: #e67e22; }
+
+        .domain-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .domain-item {
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 3px;
+            background: #fff;
+            color: #666;
+            border: 1px solid #eee;
+        }
+
+        .domain-item.top10 {
+            font-weight: 600;
+            color: #111;
+            border-color: #ddd;
+        }
+
+        .strength-insight {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            padding: 12px 0;
+            border-top: 1px solid #f0f0f0;
+            margin-top: 8px;
+        }
+
+        .strength-insight-zh {
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+
         /* Contact */
         .contact-list {
             list-style: none;
@@ -300,6 +433,19 @@
             .experience-header {
                 flex-direction: column;
                 gap: 0;
+            }
+
+            .strengths-top5 {
+                flex-wrap: wrap;
+            }
+
+            .strength-card {
+                flex: 0 0 calc(33.3% - 1px);
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .strengths-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -444,6 +590,107 @@
                     <span class="desc"> — The gap between what tools offer and how creators actually work</span>
                 </li>
             </ul>
+        </section>
+
+        <section>
+            <h2>Personality Profile</h2>
+
+            <div class="profile-section-title">CliftonStrengths — Top 5 Signature Themes</div>
+            <div class="profile-section-subtitle">战略思维主导型 · Strategic Thinking Dominant</div>
+
+            <div class="strengths-top5">
+                <div class="strength-card">
+                    <div class="strength-rank">#1</div>
+                    <div class="strength-name-zh">理念</div>
+                    <div class="strength-name-en"><span class="strength-domain-dot dot-strategic"></span>Ideation</div>
+                </div>
+                <div class="strength-card">
+                    <div class="strength-rank">#2</div>
+                    <div class="strength-name-zh">学习</div>
+                    <div class="strength-name-en"><span class="strength-domain-dot dot-strategic"></span>Learner</div>
+                </div>
+                <div class="strength-card">
+                    <div class="strength-rank">#3</div>
+                    <div class="strength-name-zh">搜集</div>
+                    <div class="strength-name-en"><span class="strength-domain-dot dot-strategic"></span>Input</div>
+                </div>
+                <div class="strength-card">
+                    <div class="strength-rank">#4</div>
+                    <div class="strength-name-zh">积极</div>
+                    <div class="strength-name-en"><span class="strength-domain-dot dot-relationship"></span>Positivity</div>
+                </div>
+                <div class="strength-card">
+                    <div class="strength-rank">#5</div>
+                    <div class="strength-name-zh">成就</div>
+                    <div class="strength-name-en"><span class="strength-domain-dot dot-executing"></span>Achiever</div>
+                </div>
+            </div>
+
+            <div class="strengths-grid">
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar bar-strategic"></span>Strategic Thinking 战略思维</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">#1 理念</span>
+                        <span class="domain-item top10">#2 学习</span>
+                        <span class="domain-item top10">#3 搜集</span>
+                        <span class="domain-item top10">#8 思维</span>
+                        <span class="domain-item">#12 战略</span>
+                        <span class="domain-item">#21 前瞻</span>
+                        <span class="domain-item">#25 分析</span>
+                        <span class="domain-item">#32 回顾</span>
+                    </div>
+                </div>
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar bar-executing"></span>Executing 执行力</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">#5 成就</span>
+                        <span class="domain-item top10">#6 统筹</span>
+                        <span class="domain-item">#20 责任</span>
+                        <span class="domain-item">#23 排难</span>
+                        <span class="domain-item">#24 专注</span>
+                        <span class="domain-item">#27 信仰</span>
+                        <span class="domain-item">#31 纪律</span>
+                        <span class="domain-item">#33 审慎</span>
+                        <span class="domain-item">#34 公平</span>
+                    </div>
+                </div>
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar bar-influencing"></span>Influencing 影响力</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">#7 行动</span>
+                        <span class="domain-item top10">#10 自信</span>
+                        <span class="domain-item">#11 取悦</span>
+                        <span class="domain-item">#15 完美</span>
+                        <span class="domain-item">#16 沟通</span>
+                        <span class="domain-item">#17 统率</span>
+                        <span class="domain-item">#26 追求</span>
+                        <span class="domain-item">#28 竞争</span>
+                    </div>
+                </div>
+                <div class="domain-group">
+                    <div class="domain-title"><span class="domain-bar bar-relationship"></span>Relationship Building 关系建立</div>
+                    <div class="domain-items">
+                        <span class="domain-item top10">#4 积极</span>
+                        <span class="domain-item top10">#9 伯乐</span>
+                        <span class="domain-item">#13 体谅</span>
+                        <span class="domain-item">#14 个别</span>
+                        <span class="domain-item">#18 关联</span>
+                        <span class="domain-item">#19 包容</span>
+                        <span class="domain-item">#22 适应</span>
+                        <span class="domain-item">#29 交往</span>
+                        <span class="domain-item">#30 和谐</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="strength-insight">
+                Core drive: Curiosity for new ideas → Absorb information → Form unique insights → Act fast
+            </div>
+            <div class="strength-insight-zh">
+                核心驱动力：对新理念的好奇 → 大量吸收信息 → 形成独特洞察 → 快速付诸行动
+            </div>
+
+            <!-- Add more personality tests here -->
         </section>
 
         <section>
