@@ -1,0 +1,42 @@
+# 渐进式披露（Progressive Disclosure）
+
+> 上下文管理的核心策略：不一次性加载所有信息，而是按需逐层展开，在信息完整性和 token 效率之间取得平衡。
+
+## 核心要点
+
+- 三层结构：L1 = 元数据摘要（轻量索引），L2 = 详细指令（按需展开），L3 = 完整资源（深度调用）
+- 在 Skills 加载、Agent 工具注册、上下文管理中广泛应用
+- 核心收益：减少 token 消耗、降低幻觉风险、提升响应质量
+- 与 Tool Search Tool 的延迟加载（deferred loading）和 SWE-Pruner 的动态裁剪（dynamic pruning）同源
+
+## 详细说明
+
+渐进式披露是应对 LLM 上下文窗口有限这一根本约束的核心策略。即使上下文窗口不断扩大（从 4K 到 1M tokens），研究反复证明：塞入更多信息不等于更好的结果。关键在于在正确的时机提供正确粒度的信息。这一原则在 0201 技术研究的第 6 节被系统性地阐述，并成为后续多个模块设计的基础。
+
+三层结构（L1/L2/L3）是 Creative CoWork 对渐进式披露的具体实现。L1 层只包含元数据和摘要——Agent 知道有什么可用，但不占用大量 token。当 Agent 判断需要某个资源时，请求 L2 层获取详细指令和结构化描述。只有在实际执行时才加载 L3 层的完整资源内容。0205 init 机制中的三层推荐系统正是建立在这一架构之上。
+
+这一策略在工具层面也有体现。Claude Code 的 Tool Search Tool 采用延迟加载：启动时只注册工具名称和简短描述，完整的 JSON Schema 定义在实际调用前才加载。SWE-Pruner 的研究进一步证明，通过动态裁剪不相关的上下文，可以在不损失任务完成率的情况下显著节省 token。04 MVP 需求的第 6 节将这些技术方案整合为 Creative CoWork 的上下文管理策略。
+
+渐进式披露不只是技术优化，更是一种设计哲学：信息的价值不在于数量，而在于与当前任务的相关性。
+
+## 在知识库中的出现
+
+| 来源 | 上下文 |
+|------|--------|
+| [0201 - 技术研究](/raw/projects/creative-cowork/0201%20-%20%E6%8A%80%E6%9C%AF%E7%A0%94%E7%A9%B6/) | 第 6 节系统性阐述渐进式披露策略及三层结构 |
+| [0205 - init 机制设计](/raw/projects/creative-cowork/0205%20-%20init%20%E6%9C%BA%E5%88%B6%E8%AE%BE%E8%AE%A1/) | 三层推荐系统以渐进式披露为基础架构 |
+| [04 Creative CoWork - MVP需求](/raw/projects/creative-cowork/04%20Creative%20CoWork%20-%20MVP%E9%9C%80%E6%B1%82/) | 第 6 节将渐进式披露整合为上下文管理策略 |
+| [Creative CoWork Skills 架构启发](/raw/articles/claude-code-research/Creative%20CoWork%20Skills%20%E6%9E%B6%E6%9E%84%E5%90%AF%E5%8F%91/) | Skills 的按需加载机制体现渐进式披露原则 |
+| [SWE-Pruner 论文笔记](/raw/papers/context-engineering/SWE-Pruner%20%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/) | 动态裁剪研究，证明上下文精简可提升效果并节省 token |
+| [Tool Search Tool 笔记](/raw/papers/agent-infrastructure/Tool%20Search%20Tool%20%E7%AC%94%E8%AE%B0/) | 工具定义的延迟加载（deferred loading）实现案例 |
+| [harness-engineering-deep-research](/raw/articles/harness-engineering/harness-engineering-deep-research/) | "Silence on success; errors only on failure" 原则、工具按需加载 |
+
+## 关联概念
+
+- [context-engineering](/wiki/concepts/context-engineering/) — 渐进式披露是上下文工程的核心实施策略之一
+- [skills-system](/wiki/concepts/skills-system/) — Skills 按需加载是渐进式披露在能力层面的体现
+- [init-mechanism](/wiki/concepts/init-mechanism/) — 初始化阶段的三层推荐基于渐进式披露架构
+- [tool-routing](/wiki/concepts/tool-routing/) — 工具路由中的延迟加载和按需注册
+
+---
+*由 LLM 从 raw/ 数据编译，请勿手动编辑*

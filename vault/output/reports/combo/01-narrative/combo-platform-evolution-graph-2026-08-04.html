@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Combo 2026–2036 平台进化图谱</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07111f;
+      --panel: #0c192b;
+      --panel-2: #101f35;
+      --text: #f4f7fb;
+      --muted: #9fb0c8;
+      --line: #29415f;
+      --blue: #63b3ff;
+      --violet: #9c8cff;
+      --green: #67e7b5;
+      --amber: #f4c76b;
+      --red: #ff8c7a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 78% 4%, rgba(93, 78, 210, 0.24), transparent 31rem),
+        radial-gradient(circle at 12% 28%, rgba(46, 150, 230, 0.18), transparent 26rem),
+        linear-gradient(180deg, #081321 0%, var(--bg) 100%);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    main {
+      max-width: 1700px;
+      margin: 0 auto;
+      padding: 52px 34px 70px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      margin: 0 0 11px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 760;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 4vw, 62px);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+    }
+
+    .subtitle {
+      max-width: 900px;
+      margin: 18px 0 0;
+      color: #c5d2e4;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .thesis {
+      max-width: 355px;
+      padding: 17px 19px;
+      border: 1px solid rgba(103, 231, 181, .28);
+      border-radius: 16px;
+      background: rgba(16, 31, 53, .72);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, .22);
+      color: #dce8f5;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .thesis strong { color: var(--green); }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 18px;
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend span { display: inline-flex; align-items: center; gap: 8px; }
+    .legend i { width: 24px; height: 0; border-top: 2px solid var(--green); }
+    .legend .conditional { border-top-style: dashed; border-color: var(--amber); }
+    .legend .stop { border-top-style: dashed; border-color: #718096; }
+
+    .canvas {
+      overflow-x: auto;
+      border: 1px solid rgba(135, 163, 199, .17);
+      border-radius: 24px;
+      background:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px),
+        rgba(7, 17, 31, .78);
+      background-size: 32px 32px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, .25);
+    }
+
+    svg {
+      display: block;
+      width: 1600px;
+      height: auto;
+      min-width: 1300px;
+    }
+
+    .phase-card { filter: drop-shadow(0 18px 22px rgba(0,0,0,.28)); }
+    .phase-card rect { transition: transform .18s ease, filter .18s ease; transform-box: fill-box; transform-origin: center; }
+    .phase-card:hover rect { transform: translateY(-4px); filter: brightness(1.08); }
+
+    .time { fill: #8ea4c1; font-size: 13px; font-weight: 700; letter-spacing: .08em; }
+    .stage { fill: #fff; font-size: 19px; font-weight: 780; }
+    .role { fill: #c8d5e6; font-size: 12px; font-weight: 650; }
+    .detail { fill: #9db0c9; font-size: 11px; }
+    .tiny { fill: #8fa5c0; font-size: 10px; }
+    .branch-title { fill: #f4f7fb; font-size: 13px; font-weight: 720; }
+    .branch-copy { fill: #9fb0c8; font-size: 10px; }
+    .axis-label { fill: #6f87a5; font-size: 10px; font-weight: 700; letter-spacing: .1em; }
+    .edge-label { fill: #aebfd3; font-size: 10px; font-weight: 650; }
+    .stop-title { fill: #c9d2df; font-size: 11px; font-weight: 720; }
+    .stop-copy { fill: #7f91a9; font-size: 9px; }
+
+    .main-edge { fill: none; stroke: url(#mainGradient); stroke-width: 5; stroke-linecap: round; }
+    .conditional-edge { fill: none; stroke: var(--amber); stroke-width: 1.8; stroke-dasharray: 6 7; opacity: .88; }
+    .stop-edge { fill: none; stroke: #667a94; stroke-width: 1.5; stroke-dasharray: 5 7; opacity: .72; }
+
+    .asset-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .asset {
+      padding: 14px 15px;
+      border: 1px solid rgba(135, 163, 199, .16);
+      border-radius: 14px;
+      background: rgba(12, 25, 43, .72);
+    }
+
+    .asset b { display: block; margin-bottom: 6px; font-size: 12px; color: #eaf2fb; }
+    .asset span { color: var(--muted); font-size: 11px; line-height: 1.5; }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 15px;
+      color: #7187a3;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      main { padding: 30px 16px 48px; }
+      header { grid-template-columns: 1fr; }
+      .thesis { max-width: none; }
+      .asset-strip { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 1400px) {
+      .canvas { overflow-x: hidden; }
+      svg { width: 100%; min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <p class="eyebrow">Combo 平台进化图谱 · 2026–2036</p>
+      <h1>从一项 Agent 服务<br />到 AI 服务经济的经营网络</h1>
+      <p class="subtitle">一条供给主干，四条条件上行，三种可能停留形态。时间代表战略窗口，不代表承诺；每一步必须继续积累同一个服务提供者、服务产品、客户、订单和经营历史。</p>
+    </div>
+    <div class="thesis"><strong>主终局</strong><br />AI 原生服务企业经营与交换网络<br /><br />对服务提供者是经营系统；对合作伙伴是服务扩展经济；对买家与通用 Agent 是专业服务采购网络。</div>
+  </header>
+
+  <div class="legend" aria-label="图例">
+    <span><i></i>连续主干</span>
+    <span><i class="conditional"></i>条件上行</span>
+    <span><i class="stop"></i>可能停留 / 重分类</span>
+  </div>
+
+  <section class="canvas" aria-label="Combo 平台进化图谱">
+    <svg viewBox="0 0 1600 920" role="img" aria-labelledby="svgTitle svgDesc">
+      <title id="svgTitle">Combo 2026 到 2036 平台进化图谱</title>
+      <desc id="svgDesc">Combo 从 Agent 小应用服务发布器，沿 AI 原生服务经营系统、服务扩展经济、AI 服务商业网络，演进至 Agent 专业服务采购网络，并出现内容到结果、需求网络、嵌入式基础设施和专业方法授权等条件分支。</desc>
+
+      <defs>
+        <linearGradient id="mainGradient" x1="0" x2="1">
+          <stop offset="0%" stop-color="#63b3ff" />
+          <stop offset="52%" stop-color="#9c8cff" />
+          <stop offset="100%" stop-color="#67e7b5" />
+        </linearGradient>
+        <linearGradient id="blueCard" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#153a61" />
+          <stop offset="100%" stop-color="#10243c" />
+        </linearGradient>
+        <linearGradient id="violetCard" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#3b3375" />
+          <stop offset="100%" stop-color="#1c2541" />
+        </linearGradient>
+        <linearGradient id="greenCard" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#155949" />
+          <stop offset="100%" stop-color="#112f32" />
+        </linearGradient>
+        <marker id="arrowMain" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#67e7b5" />
+        </marker>
+        <marker id="arrowAmber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#f4c76b" />
+        </marker>
+        <marker id="arrowMuted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#667a94" />
+        </marker>
+      </defs>
+
+      <text class="axis-label" x="74" y="91">平台层级</text>
+      <path d="M 98 730 L 98 116" stroke="#29415f" stroke-width="1.2" />
+      <path d="M 98 730 L 1515 730" stroke="#29415f" stroke-width="1.2" />
+      <text class="axis-label" x="1458" y="756">时间</text>
+
+      <path class="main-edge" marker-end="url(#arrowMain)" d="M 318 640 C 350 620, 365 580, 398 560" />
+      <path class="main-edge" marker-end="url(#arrowMain)" d="M 632 536 C 670 514, 677 462, 716 440" />
+      <path class="main-edge" marker-end="url(#arrowMain)" d="M 950 414 C 988 390, 1000 340, 1036 318" />
+      <path class="main-edge" marker-end="url(#arrowMain)" d="M 1270 292 C 1308 268, 1320 216, 1354 194" />
+
+      <text class="edge-label" x="335" y="590">服务出生</text>
+      <text class="edge-label" x="652" y="486">经营沉淀</text>
+      <text class="edge-label" x="969" y="366">跨边复利</text>
+      <text class="edge-label" x="1290" y="244">机器采购</text>
+
+      <g class="phase-card" transform="translate(130,592)">
+        <title>把专业者的一项重复服务编译成第一项可销售的服务产品</title>
+        <rect width="190" height="108" rx="18" fill="url(#blueCard)" stroke="#3d9eee" />
+        <text class="time" x="17" y="23">2026 · 切入点</text>
+        <text class="stage" x="17" y="50">Agent 小应用</text>
+        <text class="stage" x="17" y="73">服务发布器</text>
+        <text class="role" x="17" y="94">第一项可销售服务</text>
+      </g>
+
+      <g class="phase-card" transform="translate(400,482)">
+        <title>同一服务提供者开始经营多项服务、客户、订单、版本、异常与收益</title>
+        <rect width="234" height="132" rx="18" fill="url(#blueCard)" stroke="#63b3ff" />
+        <text class="time" x="18" y="25">2027–2029 · 经营底座</text>
+        <text class="stage" x="18" y="54">AI 原生服务经营系统</text>
+        <text class="role" x="18" y="81">多项服务 · 客户 · 订单</text>
+        <text class="detail" x="18" y="103">版本 · 异常 · 复购 · 收益</text>
+        <text class="tiny" x="18" y="121">从一次创建进入日常经营</text>
+      </g>
+
+      <g class="phase-card" transform="translate(718,356)">
+        <title>模型、数据、人工与渠道合作伙伴围绕既有服务企业开发一次、多处获利</title>
+        <rect width="234" height="132" rx="18" fill="url(#violetCard)" stroke="#9c8cff" />
+        <text class="time" x="18" y="25">2030–2032 · 首个平台形态</text>
+        <text class="stage" x="18" y="54">服务扩展</text>
+        <text class="stage" x="18" y="77">经济</text>
+        <text class="role" x="18" y="101">伙伴一次开发，多处获利</text>
+        <text class="tiny" x="18" y="120">第一条真实跨边循环</text>
+      </g>
+
+      <g class="phase-card" transform="translate(1038,236)">
+        <title>供给经营、伙伴扩展、内容需求与外部入口汇合成服务商业网络</title>
+        <rect width="234" height="132" rx="18" fill="url(#greenCard)" stroke="#67e7b5" />
+        <text class="time" x="18" y="25">2033–2035 · 交易网络</text>
+        <text class="stage" x="18" y="54">AI 服务商业</text>
+        <text class="stage" x="18" y="77">网络</text>
+        <text class="role" x="18" y="101">经营与交换网络</text>
+        <text class="tiny" x="18" y="120">供给主干 + 条件需求上行</text>
+      </g>
+
+      <g class="phase-card" transform="translate(1355,126)">
+        <title>个人与企业 Agent 发现、组合、授权、采购、验收和补救专业服务</title>
+        <rect width="190" height="132" rx="18" fill="url(#greenCard)" stroke="#67e7b5" />
+        <text class="time" x="17" y="25">2036+ · 采购接口</text>
+        <text class="stage" x="17" y="54">Agent 专业服务</text>
+        <text class="stage" x="17" y="77">采购网络</text>
+        <text class="role" x="17" y="101">专业能力机器采购</text>
+        <text class="tiny" x="17" y="120">个人 / 企业 Agent 代表买家</text>
+      </g>
+
+      <path class="conditional-edge" marker-end="url(#arrowAmber)" d="M 835 490 C 835 530, 842 548, 842 577" />
+      <path class="conditional-edge" marker-end="url(#arrowAmber)" d="M 885 487 C 920 520, 987 548, 1032 576" />
+      <path class="conditional-edge" marker-end="url(#arrowAmber)" d="M 928 474 C 1005 501, 1180 528, 1220 576" />
+      <path class="conditional-edge" marker-end="url(#arrowAmber)" d="M 580 612 C 650 674, 820 695, 954 668" />
+
+      <path class="conditional-edge" marker-end="url(#arrowAmber)" d="M 918 579 C 978 520, 1003 421, 1080 367" />
+      <path class="conditional-edge" marker-end="url(#arrowAmber)" d="M 1108 579 C 1115 512, 1128 424, 1140 368" />
+      <path class="conditional-edge" marker-end="url(#arrowAmber)" d="M 1298 579 C 1282 495, 1245 408, 1210 367" />
+      <path class="conditional-edge" marker-end="url(#arrowAmber)" d="M 1103 668 C 1132 562, 1145 444, 1160 368" />
+
+      <g transform="translate(770,577)">
+        <rect width="148" height="70" rx="13" fill="#282b35" stroke="#f4c76b" />
+        <text class="branch-title" x="14" y="25">内容到结果网络</text>
+        <text class="branch-copy" x="14" y="46">案例持续唤醒需求</text>
+        <text class="branch-copy" x="14" y="60">“按这个方法替我做”</text>
+      </g>
+
+      <g transform="translate(960,577)">
+        <rect width="148" height="70" rx="13" fill="#282b35" stroke="#f4c76b" />
+        <text class="branch-title" x="14" y="25">结果需求网络</text>
+        <text class="branch-copy" x="14" y="46">Combo 获得新增买家</text>
+        <text class="branch-copy" x="14" y="60">跨服务提供者组合结果</text>
+      </g>
+
+      <g transform="translate(1150,577)">
+        <rect width="148" height="70" rx="13" fill="#282b35" stroke="#f4c76b" />
+        <text class="branch-title" x="14" y="25">嵌入式服务基础设施</text>
+        <text class="branch-copy" x="14" y="46">ChatGPT / 微信掌握入口</text>
+        <text class="branch-copy" x="14" y="60">Combo 成为经营后台</text>
+      </g>
+
+      <g transform="translate(954,668)">
+        <rect width="149" height="70" rx="13" fill="#282b35" stroke="#f4c76b" />
+        <text class="branch-title" x="14" y="25">专业方法授权网络</text>
+        <text class="branch-copy" x="14" y="46">方法可独立授权迁移</text>
+        <text class="branch-copy" x="14" y="60">版本、范围与版税</text>
+      </g>
+
+      <path class="stop-edge" marker-end="url(#arrowMuted)" d="M 225 700 C 225 745, 240 764, 260 785" />
+      <path class="stop-edge" marker-end="url(#arrowMuted)" d="M 520 614 C 510 705, 500 742, 500 785" />
+      <path class="stop-edge" marker-end="url(#arrowMuted)" d="M 835 488 C 785 658, 760 733, 748 785" />
+
+      <g transform="translate(162,785)">
+        <rect width="196" height="62" rx="12" fill="#141f2d" stroke="#52657d" />
+        <text class="stop-title" x="14" y="24">建站工具 / 渠道服务商</text>
+        <text class="stop-copy" x="14" y="43">没有订单间经营留存</text>
+      </g>
+
+      <g transform="translate(404,785)">
+        <rect width="196" height="62" rx="12" fill="#2a2022" stroke="#ff8c7a" />
+        <text class="stop-title" x="14" y="24">代运营服务</text>
+        <text class="stop-copy" x="14" y="43">人工与专业签字随订单线性</text>
+      </g>
+
+      <g transform="translate(646,785)">
+        <rect width="196" height="62" rx="12" fill="#141f2d" stroke="#52657d" />
+        <text class="stop-title" x="14" y="24">垂直服务经营软件</text>
+        <text class="stop-copy" x="14" y="43">有经营系统，但无伙伴跨边经济</text>
+      </g>
+
+      <g transform="translate(1115,790)">
+        <rect width="366" height="55" rx="12" fill="#0f1d30" stroke="#29415f" />
+        <text class="stop-title" x="16" y="23">最大反论：未来发生，但 Combo 不捕获</text>
+        <text class="stop-copy" x="16" y="41">入口 + 既有平台后台 + 专业供给 + 支付机构 + 开放协议联盟式吸收</text>
+      </g>
+    </svg>
+  </section>
+
+  <section class="asset-strip" aria-label="五类复利">
+    <div class="asset"><b>1 · 服务库存</b><span>服务产品的版本、价格、边界与可交易能力持续增加。</span></div>
+    <div class="asset"><b>2 · 经营关系</b><span>客户、任务背景、异常、复购与多项服务把一次交易变成日常经营。</span></div>
+    <div class="asset"><b>3 · 方法—结果</b><span>采用、失败与补救帮助服务提供者改进方法、定价和人工边界。</span></div>
+    <div class="asset"><b>4 · 伙伴经济</b><span>更多服务企业扩大安装面，更多伙伴提升每家服务企业的能力与收入。</span></div>
+    <div class="asset"><b>5 · 需求路由</b><span>只有 Combo 真正带来新买家，才形成跨服务提供者的需求网络。</span></div>
+  </section>
+
+  <div class="footer">
+    <span>年份是战略窗口，不是经营预测。虚线分支均为创始人假设。</span>
+    <span>品类：AI 原生服务商业 · 平台：AI 原生服务企业经营与交换网络</span>
+  </div>
+</main>
+</body>
+</html>

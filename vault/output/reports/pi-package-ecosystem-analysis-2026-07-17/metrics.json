@@ -1,0 +1,2082 @@
+{
+  "snapshot_at_utc": "2026-07-17T07:43:33.992282+00:00",
+  "scope_note": "Official pi.dev catalog rows joined to npm search metadata. Downloads are HTTP package traffic, not unique users.",
+  "site_collection": {
+    "reported_total": 5305,
+    "pages": 107,
+    "retrieved_rows": 5305,
+    "unique_rows": 5305,
+    "duplicate_rows": 0
+  },
+  "npm_collection": {
+    "reported_total": 5483,
+    "retrieved_rows": 5500,
+    "unique_rows": 5250,
+    "requests": 22,
+    "api_time": "2026-07-17T07:43:55.658Z"
+  },
+  "manifest_collection": {
+    "requested": 5305,
+    "fetched": 5305,
+    "failed": 0,
+    "explicit_pi_manifests": 5166
+  },
+  "missing_weekly_download_collection": {
+    "requested": 55,
+    "fetched": 43,
+    "failed": 12
+  },
+  "joined_rows": 5305,
+  "npm_join_coverage": 5250,
+  "native_confidence": {
+    "explicit_pi_manifest": 5166,
+    "convention_or_self_described": 118,
+    "tag_only_no_manifest_ambiguous": 21
+  },
+  "native_core_rows": 5284,
+  "explicit_pi_manifest_rows": 5166,
+  "manifest_resource_type_counts": {
+    "extension": 4718,
+    "prompt": 220,
+    "skill": 1004,
+    "theme": 144
+  },
+  "manifest_resource_type_combinations": {
+    "extension+prompt+skill+theme": 42,
+    "extension": 3900,
+    "extension+skill": 581,
+    "skill": 248,
+    "extension+prompt+skill": 101,
+    "manifest_without_resources": 115,
+    "extension+theme": 35,
+    "extension+skill+theme": 14,
+    "theme": 52,
+    "prompt+skill": 17,
+    "extension+prompt": 45,
+    "prompt": 15,
+    "skill+theme": 1
+  },
+  "manifest_resource_type_metrics": {
+    "extension": {
+      "packages": 4718,
+      "weekly_downloads": 887593,
+      "monthly_downloads": 3849691,
+      "weekly_median": 25.0
+    },
+    "skill": {
+      "packages": 1004,
+      "weekly_downloads": 287111,
+      "monthly_downloads": 1349498,
+      "weekly_median": 29.0
+    },
+    "theme": {
+      "packages": 144,
+      "weekly_downloads": 27504,
+      "monthly_downloads": 346342,
+      "weekly_median": 26.5
+    },
+    "prompt": {
+      "packages": 220,
+      "weekly_downloads": 76113,
+      "monthly_downloads": 535775,
+      "weekly_median": 29.0
+    }
+  },
+  "catalog_badge_type_counts": {
+    "extension": 2951,
+    "prompt": 77,
+    "skill": 344,
+    "theme": 107
+  },
+  "catalog_badge_type_combinations": {
+    "extension+prompt+skill+theme": 6,
+    "extension": 2741,
+    "untyped": 2072,
+    "extension+prompt": 34,
+    "skill": 195,
+    "extension+skill": 119,
+    "theme": 59,
+    "prompt+skill": 8,
+    "extension+theme": 35,
+    "prompt": 20,
+    "extension+prompt+skill": 9,
+    "extension+skill+theme": 7
+  },
+  "catalog_badge_audit_against_manifest": {
+    "explicit_manifests_audited": 5166,
+    "exact_match": 2705,
+    "missing_one_or_more_manifest_types": 2305,
+    "extra_or_wrong_badge_type": 197,
+    "top_mismatch_examples": [
+      {
+        "name": "pi-web-access",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "extension"
+        ],
+        "downloads_weekly": 27275,
+        "site_url": "https://pi.dev/packages/pi-web-access"
+      },
+      {
+        "name": "pi-subagents",
+        "manifest_types": [
+          "extension",
+          "prompt",
+          "skill"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 19998,
+        "site_url": "https://pi.dev/packages/pi-subagents"
+      },
+      {
+        "name": "context-mode",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 16174,
+        "site_url": "https://pi.dev/packages/context-mode"
+      },
+      {
+        "name": "bigpowers",
+        "manifest_types": [
+          "prompt",
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "skill"
+        ],
+        "downloads_weekly": 13384,
+        "site_url": "https://pi.dev/packages/bigpowers"
+      },
+      {
+        "name": "@remnic/plugin-pi",
+        "manifest_types": [
+          "extension"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 9048,
+        "site_url": "https://pi.dev/packages/@remnic/plugin-pi"
+      },
+      {
+        "name": "pi-lens",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "extension"
+        ],
+        "downloads_weekly": 8045,
+        "site_url": "https://pi.dev/packages/pi-lens"
+      },
+      {
+        "name": "@quintinshaw/pi-dynamic-workflows",
+        "manifest_types": [
+          "extension"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 7781,
+        "site_url": "https://pi.dev/packages/@quintinshaw/pi-dynamic-workflows"
+      },
+      {
+        "name": "@dietrichgebert/ponytail",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "skill"
+        ],
+        "downloads_weekly": 7288,
+        "site_url": "https://pi.dev/packages/@dietrichgebert/ponytail"
+      },
+      {
+        "name": "@plannotator/pi-extension",
+        "manifest_types": [
+          "extension"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 7013,
+        "site_url": "https://pi.dev/packages/@plannotator/pi-extension"
+      },
+      {
+        "name": "gentle-pi",
+        "manifest_types": [
+          "extension",
+          "prompt",
+          "skill",
+          "theme"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 5675,
+        "site_url": "https://pi.dev/packages/gentle-pi"
+      },
+      {
+        "name": "@hypabolic/pi-hypa",
+        "manifest_types": [
+          "extension"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 5055,
+        "site_url": "https://pi.dev/packages/@hypabolic/pi-hypa"
+      },
+      {
+        "name": "@esso0428/pi-sidebar",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 5030,
+        "site_url": "https://pi.dev/packages/@esso0428/pi-sidebar"
+      },
+      {
+        "name": "pi-prompt-template-model",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "extension",
+          "prompt"
+        ],
+        "downloads_weekly": 4676,
+        "site_url": "https://pi.dev/packages/pi-prompt-template-model"
+      },
+      {
+        "name": "@raindrop-ai/pi-agent",
+        "manifest_types": [
+          "extension"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 4628,
+        "site_url": "https://pi.dev/packages/@raindrop-ai/pi-agent"
+      },
+      {
+        "name": "pi-intercom",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 4479,
+        "site_url": "https://pi.dev/packages/pi-intercom"
+      },
+      {
+        "name": "@orangekame3/pi-qdash",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "extension"
+        ],
+        "downloads_weekly": 4289,
+        "site_url": "https://pi.dev/packages/@orangekame3/pi-qdash"
+      },
+      {
+        "name": "pi-hermes-memory",
+        "manifest_types": [
+          "extension"
+        ],
+        "catalog_badge_types": [
+          "extension",
+          "skill"
+        ],
+        "downloads_weekly": 3680,
+        "site_url": "https://pi.dev/packages/pi-hermes-memory"
+      },
+      {
+        "name": "pi-fabric",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "extension"
+        ],
+        "downloads_weekly": 3412,
+        "site_url": "https://pi.dev/packages/pi-fabric"
+      },
+      {
+        "name": "pi-pr-review",
+        "manifest_types": [
+          "extension",
+          "prompt"
+        ],
+        "catalog_badge_types": [
+          "extension"
+        ],
+        "downloads_weekly": 3383,
+        "site_url": "https://pi.dev/packages/pi-pr-review"
+      },
+      {
+        "name": "pi-crew",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 3220,
+        "site_url": "https://pi.dev/packages/pi-crew"
+      },
+      {
+        "name": "projectops",
+        "manifest_types": [
+          "skill"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 3201,
+        "site_url": "https://pi.dev/packages/projectops"
+      },
+      {
+        "name": "opencode-codebase-index",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 3196,
+        "site_url": "https://pi.dev/packages/opencode-codebase-index"
+      },
+      {
+        "name": "pi-experiences",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "extension"
+        ],
+        "downloads_weekly": 3115,
+        "site_url": "https://pi.dev/packages/pi-experiences"
+      },
+      {
+        "name": "cc-safety-net",
+        "manifest_types": [
+          "extension"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 2814,
+        "site_url": "https://pi.dev/packages/cc-safety-net"
+      },
+      {
+        "name": "pi-lean-ctx",
+        "manifest_types": [
+          "extension"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 2694,
+        "site_url": "https://pi.dev/packages/pi-lean-ctx"
+      },
+      {
+        "name": "pi-ask-user",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "extension"
+        ],
+        "downloads_weekly": 2653,
+        "site_url": "https://pi.dev/packages/pi-ask-user"
+      },
+      {
+        "name": "glimpseui",
+        "manifest_types": [
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "prompt"
+        ],
+        "downloads_weekly": 2424,
+        "site_url": "https://pi.dev/packages/glimpseui"
+      },
+      {
+        "name": "pi-btw",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "extension"
+        ],
+        "downloads_weekly": 2422,
+        "site_url": "https://pi.dev/packages/pi-btw"
+      },
+      {
+        "name": "pi-spine",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [],
+        "downloads_weekly": 2361,
+        "site_url": "https://pi.dev/packages/pi-spine"
+      },
+      {
+        "name": "pi-soly",
+        "manifest_types": [
+          "extension",
+          "skill"
+        ],
+        "catalog_badge_types": [
+          "extension"
+        ],
+        "downloads_weekly": 2312,
+        "site_url": "https://pi.dev/packages/pi-soly"
+      }
+    ]
+  },
+  "manifest_quality": {
+    "packages_with_preview": 737,
+    "packages_with_install_lifecycle_script": 117,
+    "packages_with_any_lifecycle_script": 840,
+    "packages_with_repository": 4499,
+    "packages_without_license": 372,
+    "deprecated_packages": 2,
+    "dependency_median": 0,
+    "dependency_p90": 3.0,
+    "dependency_p99": 10.0
+  },
+  "latest_publish_freshness_bins": {
+    "2-7d": 743,
+    "31-90d": 2214,
+    ">90d": 740,
+    "0-1d": 247,
+    "8-30d": 1361
+  },
+  "weekly_activity_bins": {
+    "0": 97,
+    "10-49": 2498,
+    "50-349": 1157,
+    "1-9": 971,
+    ">=350": 582
+  },
+  "run_rate_bins": {
+    "low_volume": 413,
+    "roughly_current": 3771,
+    "accelerating_or_new": 655,
+    "cooling_or_spiky": 466
+  },
+  "weekly_distribution": {
+    "sum": 971323,
+    "mean": 183.09575871819038,
+    "median": 24,
+    "p75": 94.0,
+    "p90": 389.60000000000036,
+    "p95": 727.6000000000004,
+    "p99": 2205.2400000000016,
+    "max": 37872,
+    "zero_count": 97,
+    "lt10_count": 1068,
+    "lt50_count": 3566,
+    "ge350_count": 582,
+    "ge1000_count": 176,
+    "gini": 0.8209843980464928,
+    "top1_share": 0.038990119661533804,
+    "top10_share": 0.16662943222800242,
+    "top50_share": 0.31998212746944116,
+    "top100_share": 0.41189799891488205
+  },
+  "monthly_distribution": {
+    "sum": 4126491,
+    "mean": 777.8493873704052,
+    "median": 146,
+    "p75": 467.0,
+    "p90": 1292.0,
+    "p95": 2442.0000000000027,
+    "p99": 7503.520000000003,
+    "max": 250543,
+    "zero_count": 126,
+    "lt10_count": 130,
+    "lt50_count": 1060,
+    "ge350_count": 1609,
+    "ge1000_count": 702,
+    "gini": 0.8057747169749994,
+    "top1_share": 0.060715750985522565,
+    "top10_share": 0.26496095593083807,
+    "top50_share": 0.404637014839,
+    "top100_share": 0.47440694769478475
+  },
+  "native_core_weekly_distribution": {
+    "sum": 967203,
+    "mean": 183.04371688115063,
+    "median": 24.0,
+    "p75": 94.0,
+    "p90": 386.0,
+    "p95": 727.6999999999989,
+    "p99": 2213.1200000000026,
+    "max": 37872,
+    "zero_count": 96,
+    "lt10_count": 1067,
+    "lt50_count": 3555,
+    "ge350_count": 577,
+    "ge1000_count": 175,
+    "gini": 0.8214385335515832,
+    "top1_share": 0.03915620609117217,
+    "top10_share": 0.16733922454748382,
+    "top50_share": 0.321345157117999,
+    "top100_share": 0.4136525631123973
+  },
+  "native_core_monthly_distribution": {
+    "sum": 4107695,
+    "mean": 777.3836109008327,
+    "median": 145.0,
+    "p75": 466.0,
+    "p90": 1289.499999999999,
+    "p95": 2409.8499999999995,
+    "p99": 7526.040000000008,
+    "max": 250543,
+    "zero_count": 126,
+    "lt10_count": 130,
+    "lt50_count": 1059,
+    "ge350_count": 1599,
+    "ge1000_count": 697,
+    "gini": 0.8062855025791917,
+    "top1_share": 0.06099357425514796,
+    "top10_share": 0.26617336486764476,
+    "top50_share": 0.406488553799637,
+    "top100_share": 0.47657774007076964
+  },
+  "semantic_category_metrics_native_core_multilabel": {
+    "orchestration_tasks": {
+      "packages": 922,
+      "weekly_downloads": 213752,
+      "monthly_downloads": 1049116,
+      "weekly_median": 32.0
+    },
+    "context_memory": {
+      "packages": 1362,
+      "weekly_downloads": 266726,
+      "monthly_downloads": 1478599,
+      "weekly_median": 24.0
+    },
+    "model_provider_usage": {
+      "packages": 934,
+      "weekly_downloads": 251243,
+      "monthly_downloads": 1001813,
+      "weekly_median": 30.0
+    },
+    "web_research": {
+      "packages": 668,
+      "weekly_downloads": 168948,
+      "monthly_downloads": 779482,
+      "weekly_median": 27.5
+    },
+    "developer_quality": {
+      "packages": 526,
+      "weekly_downloads": 148669,
+      "monthly_downloads": 554356,
+      "weekly_median": 27.0
+    },
+    "security_permissions": {
+      "packages": 416,
+      "weekly_downloads": 104660,
+      "monthly_downloads": 663288,
+      "weekly_median": 26.0
+    },
+    "integrations_runtime": {
+      "packages": 583,
+      "weekly_downloads": 153686,
+      "monthly_downloads": 619574,
+      "weekly_median": 28
+    },
+    "ui_experience": {
+      "packages": 794,
+      "weekly_downloads": 133520,
+      "monthly_downloads": 555338,
+      "weekly_median": 24.0
+    },
+    "skills_prompts_rules": {
+      "packages": 948,
+      "weekly_downloads": 174507,
+      "monthly_downloads": 626329,
+      "weekly_median": 24.0
+    },
+    "observability_cost": {
+      "packages": 343,
+      "weekly_downloads": 54523,
+      "monthly_downloads": 210091,
+      "weekly_median": 26
+    }
+  },
+  "authors": {
+    "unique": 2176,
+    "single_package_authors": 1364,
+    "top_by_package_count": [
+      {
+        "author": "artale",
+        "packages": 166,
+        "weekly_downloads": 3277,
+        "monthly_downloads": 11752
+      },
+      {
+        "author": "firstpick",
+        "packages": 66,
+        "weekly_downloads": 11378,
+        "monthly_downloads": 45821
+      },
+      {
+        "author": "eiei114",
+        "packages": 36,
+        "weekly_downloads": 8998,
+        "monthly_downloads": 28069
+      },
+      {
+        "author": "miclivs",
+        "packages": 35,
+        "weekly_downloads": 3313,
+        "monthly_downloads": 12964
+      },
+      {
+        "author": "joao.barros.arvore",
+        "packages": 34,
+        "weekly_downloads": 5590,
+        "monthly_downloads": 21703
+      },
+      {
+        "author": "diegopetrucci",
+        "packages": 32,
+        "weekly_downloads": 3118,
+        "monthly_downloads": 15204
+      },
+      {
+        "author": "xynogen",
+        "packages": 29,
+        "weekly_downloads": 12361,
+        "monthly_downloads": 74159
+      },
+      {
+        "author": "monotykamary",
+        "packages": 28,
+        "weekly_downloads": 5809,
+        "monthly_downloads": 23148
+      },
+      {
+        "author": "realvendex",
+        "packages": 28,
+        "weekly_downloads": 1008,
+        "monthly_downloads": 15246
+      },
+      {
+        "author": "narumitw",
+        "packages": 27,
+        "weekly_downloads": 27345,
+        "monthly_downloads": 80227
+      },
+      {
+        "author": "e9n",
+        "packages": 27,
+        "weekly_downloads": 335,
+        "monthly_downloads": 1398
+      },
+      {
+        "author": "andrestobelem",
+        "packages": 26,
+        "weekly_downloads": 23417,
+        "monthly_downloads": 27694
+      },
+      {
+        "author": "ifiokjr",
+        "packages": 26,
+        "weekly_downloads": 764,
+        "monthly_downloads": 4480
+      },
+      {
+        "author": "howaboua",
+        "packages": 25,
+        "weekly_downloads": 11132,
+        "monthly_downloads": 19660
+      },
+      {
+        "author": "tmustier",
+        "packages": 25,
+        "weekly_downloads": 5416,
+        "monthly_downloads": 15799
+      },
+      {
+        "author": "tryinget",
+        "packages": 25,
+        "weekly_downloads": 1098,
+        "monthly_downloads": 1391
+      },
+      {
+        "author": "neuron-mr-white",
+        "packages": 22,
+        "weekly_downloads": 6439,
+        "monthly_downloads": 22580
+      },
+      {
+        "author": "ryan_nookpi",
+        "packages": 22,
+        "weekly_downloads": 5188,
+        "monthly_downloads": 6846
+      },
+      {
+        "author": "nandal",
+        "packages": 22,
+        "weekly_downloads": 2755,
+        "monthly_downloads": 3915
+      },
+      {
+        "author": "spences10",
+        "packages": 21,
+        "weekly_downloads": 4849,
+        "monthly_downloads": 19609
+      }
+    ],
+    "top_by_weekly_downloads": [
+      {
+        "author": "nicopreme",
+        "packages": 18,
+        "weekly_downloads": 97332,
+        "monthly_downloads": 417168
+      },
+      {
+        "author": "narumitw",
+        "packages": 27,
+        "weekly_downloads": 27345,
+        "monthly_downloads": 80227
+      },
+      {
+        "author": "andrestobelem",
+        "packages": 26,
+        "weekly_downloads": 23417,
+        "monthly_downloads": 27694
+      },
+      {
+        "author": "mksglu",
+        "packages": 1,
+        "weekly_downloads": 16174,
+        "monthly_downloads": 113882
+      },
+      {
+        "author": "vitaliytv",
+        "packages": 2,
+        "weekly_downloads": 14936,
+        "monthly_downloads": 42406
+      },
+      {
+        "author": "danielvm",
+        "packages": 1,
+        "weekly_downloads": 13384,
+        "monthly_downloads": 35832
+      },
+      {
+        "author": "xynogen",
+        "packages": 29,
+        "weekly_downloads": 12361,
+        "monthly_downloads": 74159
+      },
+      {
+        "author": "firstpick",
+        "packages": 66,
+        "weekly_downloads": 11378,
+        "monthly_downloads": 45821
+      },
+      {
+        "author": "mrclrchtr",
+        "packages": 14,
+        "weekly_downloads": 11310,
+        "monthly_downloads": 50503
+      },
+      {
+        "author": "howaboua",
+        "packages": 25,
+        "weekly_downloads": 11132,
+        "monthly_downloads": 19660
+      },
+      {
+        "author": "tintinweb",
+        "packages": 7,
+        "weekly_downloads": 10377,
+        "monthly_downloads": 46717
+      },
+      {
+        "author": "xaccefy",
+        "packages": 10,
+        "weekly_downloads": 10265,
+        "monthly_downloads": 18663
+      },
+      {
+        "author": "juicesharp",
+        "packages": 11,
+        "weekly_downloads": 9984,
+        "monthly_downloads": 78448
+      },
+      {
+        "author": "gotgenes",
+        "packages": 9,
+        "weekly_downloads": 9629,
+        "monthly_downloads": 40429
+      },
+      {
+        "author": "apmantza",
+        "packages": 5,
+        "weekly_downloads": 9557,
+        "monthly_downloads": 38469
+      },
+      {
+        "author": "bacnh85",
+        "packages": 14,
+        "weekly_downloads": 9321,
+        "monthly_downloads": 23101
+      },
+      {
+        "author": "joshuaswarren",
+        "packages": 1,
+        "weekly_downloads": 9048,
+        "monthly_downloads": 30324
+      },
+      {
+        "author": "eiei114",
+        "packages": 36,
+        "weekly_downloads": 8998,
+        "monthly_downloads": 28069
+      },
+      {
+        "author": "avtc",
+        "packages": 15,
+        "weekly_downloads": 8871,
+        "monthly_downloads": 8871
+      },
+      {
+        "author": "alan_buscaglia",
+        "packages": 2,
+        "weekly_downloads": 8188,
+        "monthly_downloads": 24960
+      }
+    ]
+  },
+  "repositories": {
+    "packages_with_repository": 4499,
+    "unique_repositories": 3428,
+    "multi_package_repositories": 189,
+    "top_by_package_count": [
+      {
+        "repository": "https://github.com/Firstp1ck/npm-packages",
+        "packages": 66
+      },
+      {
+        "repository": "https://github.com/arvoreeducacao/arvore-pi-extensions",
+        "packages": 33
+      },
+      {
+        "repository": "https://github.com/xynogen/pix-mono",
+        "packages": 29
+      },
+      {
+        "repository": "https://github.com/diegopetrucci/pi-extensions",
+        "packages": 28
+      },
+      {
+        "repository": "https://github.com/espennilsen/pi",
+        "packages": 26
+      },
+      {
+        "repository": "https://github.com/andrestobelem/pandi-extensions",
+        "packages": 26
+      },
+      {
+        "repository": "https://github.com/IgorWarzocha/howaboua-pi-stuff",
+        "packages": 23
+      },
+      {
+        "repository": "https://github.com/tryingET/pi-extensions",
+        "packages": 23
+      },
+      {
+        "repository": "https://github.com/Jonghakseo/pi-extension",
+        "packages": 22
+      },
+      {
+        "repository": "https://github.com/spences10/my-pi",
+        "packages": 21
+      },
+      {
+        "repository": "https://github.com/w-winter/dot314",
+        "packages": 21
+      },
+      {
+        "repository": "https://github.com/agnishcc/pi-extention-monorepo",
+        "packages": 20
+      },
+      {
+        "repository": "https://github.com/narumiruna/pi-extensions",
+        "packages": 20
+      },
+      {
+        "repository": "https://github.com/ifiokjr/oh-pi",
+        "packages": 19
+      },
+      {
+        "repository": "https://github.com/Neuron-Mr-White/unipi",
+        "packages": 19
+      },
+      {
+        "repository": "https://github.com/vanillagreencom/vstack",
+        "packages": 18
+      },
+      {
+        "repository": "https://github.com/TGYD-helige/pi",
+        "packages": 16
+      },
+      {
+        "repository": "https://github.com/d3ara1n/pi-extensions",
+        "packages": 16
+      },
+      {
+        "repository": "https://github.com/ogulcancelik/pi-extensions",
+        "packages": 16
+      },
+      {
+        "repository": "https://github.com/zigai/pi-tweaks",
+        "packages": 16
+      }
+    ]
+  },
+  "top_monthly": [
+    {
+      "name": "@vigolium/piolium",
+      "description": "Multi-phase security audits with specialist sub-agents, isolated context windows, capped concurrency, and resumable state — packaged as a Pi extension.",
+      "author": "j3ssie",
+      "version": "0.0.12",
+      "manifest_types": [
+        "extension",
+        "prompt",
+        "skill",
+        "theme"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 250543,
+      "downloads_weekly": 157,
+      "weekly_to_monthly_run_rate": 0.0027,
+      "latest_publish_at": "2026-07-04T06:05:50.434Z",
+      "site_url": "https://pi.dev/packages/@vigolium/piolium",
+      "repository": "https://github.com/vigolium/piolium"
+    },
+    {
+      "name": "@hypabolic/pi-hypa",
+      "description": "Pi extension that keeps noisy tool output out of your context window. Automatically rewrites shell commands through Hypa for local, deterministic compression, context-aware file tools, and recoverable evidence.",
+      "author": "atomic-mg",
+      "version": "0.1.11",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 200308,
+      "downloads_weekly": 5055,
+      "weekly_to_monthly_run_rate": 0.1082,
+      "latest_publish_at": "2026-07-13T04:03:10.107Z",
+      "site_url": "https://pi.dev/packages/@hypabolic/pi-hypa",
+      "repository": "https://github.com/Hypabolic/Hypa"
+    },
+    {
+      "name": "pi-web-access",
+      "description": "Web search, URL fetching, GitHub repo cloning, PDF extraction, YouTube video understanding, and local video analysis for Pi coding agent. Supports OpenAI, Brave, Parallel, Tavily, Exa, Perplexity, and Gemini.",
+      "author": "nicopreme",
+      "version": "0.13.0",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 139172,
+      "downloads_weekly": 27275,
+      "weekly_to_monthly_run_rate": 0.8399,
+      "latest_publish_at": "2026-06-25T07:41:38.785Z",
+      "site_url": "https://pi.dev/packages/pi-web-access",
+      "repository": "https://github.com/nicobailon/pi-web-access"
+    },
+    {
+      "name": "pi-mcp-adapter",
+      "description": "MCP (Model Context Protocol) adapter extension for Pi coding agent",
+      "author": "nicopreme",
+      "version": "2.11.0",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 129186,
+      "downloads_weekly": 37872,
+      "weekly_to_monthly_run_rate": 1.2564,
+      "latest_publish_at": "2026-07-03T16:59:56.410Z",
+      "site_url": "https://pi.dev/packages/pi-mcp-adapter",
+      "repository": "https://github.com/nicobailon/pi-mcp-adapter"
+    },
+    {
+      "name": "context-mode",
+      "description": "MCP plugin that saves 98% of your context window. Works with Claude Code, Gemini CLI, VS Code Copilot, OpenCode, and Codex CLI. Sandboxed code execution, FTS5 knowledge base, and intent-driven search.",
+      "author": "mksglu",
+      "version": "1.0.169",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 113882,
+      "downloads_weekly": 16174,
+      "weekly_to_monthly_run_rate": 0.6087,
+      "latest_publish_at": "2026-06-29T18:18:27.670Z",
+      "site_url": "https://pi.dev/packages/context-mode",
+      "repository": "https://github.com/mksglu/context-mode"
+    },
+    {
+      "name": "pi-subagents",
+      "description": "Pi extension for delegating tasks to subagents with chains, parallel execution, and TUI clarification",
+      "author": "nicopreme",
+      "version": "0.34.0",
+      "manifest_types": [
+        "extension",
+        "prompt",
+        "skill"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 112546,
+      "downloads_weekly": 19998,
+      "weekly_to_monthly_run_rate": 0.7615,
+      "latest_publish_at": "2026-07-07T05:05:43.769Z",
+      "site_url": "https://pi.dev/packages/pi-subagents",
+      "repository": "https://github.com/nicobailon/pi-subagents"
+    },
+    {
+      "name": "@nitra/cursor",
+      "description": "CLI для завантаження cursor-правил (префікс n-) у локальний репозиторій",
+      "author": "vitaliytv",
+      "version": "14.33.0",
+      "manifest_types": [],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 40673,
+      "downloads_weekly": 13203,
+      "weekly_to_monthly_run_rate": 1.3912,
+      "latest_publish_at": "2026-07-13T05:25:48.855Z",
+      "site_url": "https://pi.dev/packages/@nitra/cursor",
+      "repository": "https://github.com/n/cursor"
+    },
+    {
+      "name": "@tintinweb/pi-subagents",
+      "description": "A pi extension extension that brings smart Claude Code-style autonomous sub-agents to pi.",
+      "author": "tintinweb",
+      "version": "0.14.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 39580,
+      "downloads_weekly": 8728,
+      "weekly_to_monthly_run_rate": 0.9451,
+      "latest_publish_at": "2026-07-14T09:28:19.651Z",
+      "site_url": "https://pi.dev/packages/@tintinweb/pi-subagents",
+      "repository": "https://github.com/tintinweb/pi-subagents"
+    },
+    {
+      "name": "bigpowers",
+      "description": "73 agent skills synthesizing 17 years of software engineering discipline into a prescriptive methodology for solo developers",
+      "author": "danielvm",
+      "version": "2.77.0",
+      "manifest_types": [
+        "prompt",
+        "skill"
+      ],
+      "catalog_badge_types": [
+        "skill"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 35832,
+      "downloads_weekly": 13384,
+      "weekly_to_monthly_run_rate": 1.6008,
+      "latest_publish_at": "2026-07-13T18:03:30.283Z",
+      "site_url": "https://pi.dev/packages/bigpowers",
+      "repository": "https://github.com/danielvm-git/bigpowers"
+    },
+    {
+      "name": "pi-lens",
+      "description": "Real-time code feedback for pi — LSP, linters, formatters, type-checking, structural analysis & booboo",
+      "author": "apmantza",
+      "version": "3.8.70",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 31637,
+      "downloads_weekly": 8045,
+      "weekly_to_monthly_run_rate": 1.0898,
+      "latest_publish_at": "2026-07-14T20:33:59.831Z",
+      "site_url": "https://pi.dev/packages/pi-lens",
+      "repository": "https://github.com/apmantza/pi-lens"
+    },
+    {
+      "name": "@remnic/plugin-pi",
+      "description": "Remnic memory extension for Pi Coding Agent",
+      "author": "joshuaswarren",
+      "version": "9.7.7",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 30324,
+      "downloads_weekly": 9048,
+      "weekly_to_monthly_run_rate": 1.2788,
+      "latest_publish_at": "2026-07-16T22:18:43.657Z",
+      "site_url": "https://pi.dev/packages/@remnic/plugin-pi",
+      "repository": "https://github.com/joshuaswarren/remnic"
+    },
+    {
+      "name": "@plannotator/pi-extension",
+      "description": "Plannotator Pi extension - interactive plan review with annotations, annotate agent messages, and review code/PRs",
+      "author": "backnotprop",
+      "version": "0.23.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 29548,
+      "downloads_weekly": 7013,
+      "weekly_to_monthly_run_rate": 1.0172,
+      "latest_publish_at": "2026-07-12T21:44:35.619Z",
+      "site_url": "https://pi.dev/packages/@plannotator/pi-extension",
+      "repository": "https://github.com/backnotprop/plannotator"
+    },
+    {
+      "name": "@quintinshaw/pi-dynamic-workflows",
+      "description": "Claude-Code-style dynamic workflows for Pi — fan a task out across 100s of subagents with real model routing, token/cost accounting, resume, git-worktree isolation, an interactive /workflows TUI, and a real /deep-research.",
+      "author": "quintinshaw",
+      "version": "2.14.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 24815,
+      "downloads_weekly": 7781,
+      "weekly_to_monthly_run_rate": 1.3438,
+      "latest_publish_at": "2026-07-17T00:39:58.150Z",
+      "site_url": "https://pi.dev/packages/@quintinshaw/pi-dynamic-workflows",
+      "repository": "https://github.com/QuintinShaw/pi-dynamic-workflows"
+    },
+    {
+      "name": "@gotgenes/pi-permission-system",
+      "description": "Permission enforcement extension for the Pi coding agent.",
+      "author": "gotgenes",
+      "version": "20.7.3",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 24561,
+      "downloads_weekly": 8124,
+      "weekly_to_monthly_run_rate": 1.4176,
+      "latest_publish_at": "2026-07-15T14:46:11.909Z",
+      "site_url": "https://pi.dev/packages/@gotgenes/pi-permission-system",
+      "repository": "https://github.com/gotgenes/pi-packages"
+    },
+    {
+      "name": "pi-simplify",
+      "description": "A Pi extension that reviews recently changed code for clarity, consistency, and maintainability.",
+      "author": "mdevy",
+      "version": "0.2.2",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 23730,
+      "downloads_weekly": 6140,
+      "weekly_to_monthly_run_rate": 1.1089,
+      "latest_publish_at": "2026-05-24T15:35:40.081Z",
+      "site_url": "https://pi.dev/packages/pi-simplify",
+      "repository": "https://github.com/MattDevy/pi-extensions"
+    },
+    {
+      "name": "@juicesharp/rpiv-ask-user-question",
+      "description": "Pi extension. A structured questionnaire the model can put to you when it would otherwise guess, with typed options instead of free-form replies.",
+      "author": "juicesharp",
+      "version": "1.20.0",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 22940,
+      "downloads_weekly": 3486,
+      "weekly_to_monthly_run_rate": 0.6513,
+      "latest_publish_at": "2026-06-15T12:35:30.641Z",
+      "site_url": "https://pi.dev/packages/@juicesharp/rpiv-ask-user-question",
+      "repository": "https://github.com/juicesharp/rpiv-mono"
+    },
+    {
+      "name": "@dietrichgebert/ponytail",
+      "description": "Lazy senior dev mode for AI agents. The best code is the code you never wrote.",
+      "author": "dietrichgebert",
+      "version": "4.8.4",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [
+        "skill"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 22582,
+      "downloads_weekly": 7288,
+      "weekly_to_monthly_run_rate": 1.3831,
+      "latest_publish_at": "2026-06-29T05:26:52.344Z",
+      "site_url": "https://pi.dev/packages/@dietrichgebert/ponytail",
+      "repository": "https://github.com/DietrichGebert/ponytail"
+    },
+    {
+      "name": "@ff-labs/pi-fff",
+      "description": "pi extension: FFF-powered fuzzy file and content search",
+      "author": "dmtr.kovalenko",
+      "version": "0.10.0",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 21434,
+      "downloads_weekly": 4451,
+      "weekly_to_monthly_run_rate": 0.89,
+      "latest_publish_at": "2026-07-16T20:03:00.487Z",
+      "site_url": "https://pi.dev/packages/@ff-labs/pi-fff",
+      "repository": "https://github.com/dmtrKovalenko/fff"
+    },
+    {
+      "name": "@mjasnikovs/pi-task",
+      "description": "Deterministic task planning and spec-orchestration for local models — crash-safe /task pipelines with verify/enforce gates, a real-time remote web view, and web/docs/fetch/worker subagent tools.",
+      "author": "mjasnikovs",
+      "version": "0.18.22",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 20039,
+      "downloads_weekly": 3370,
+      "weekly_to_monthly_run_rate": 0.7207,
+      "latest_publish_at": "2026-07-17T05:26:06.782Z",
+      "site_url": "https://pi.dev/packages/@mjasnikovs/pi-task",
+      "repository": "https://github.com/mjasnikovs/pi-task"
+    },
+    {
+      "name": "@juicesharp/rpiv-todo",
+      "description": "Pi extension. A todo list for the model, rendered as a live overlay that survives /reload and conversation compaction.",
+      "author": "juicesharp",
+      "version": "1.20.0",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 19993,
+      "downloads_weekly": 2716,
+      "weekly_to_monthly_run_rate": 0.5822,
+      "latest_publish_at": "2026-06-15T12:35:38.790Z",
+      "site_url": "https://pi.dev/packages/@juicesharp/rpiv-todo",
+      "repository": "https://github.com/juicesharp/rpiv-mono"
+    },
+    {
+      "name": "pi-hermes-memory",
+      "description": "🧠 Persistent memory + 🔍 session search + 🛡️ secret scanning for Pi. Token-aware policy-only memory by default, SQLite FTS5 search, auto-consolidation, procedural skills. 693 tests. Ported from Hermes agent.",
+      "author": "chandra447",
+      "version": "0.8.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension",
+        "skill"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 16575,
+      "downloads_weekly": 3680,
+      "weekly_to_monthly_run_rate": 0.9515,
+      "latest_publish_at": "2026-07-14T10:12:54.373Z",
+      "site_url": "https://pi.dev/packages/pi-hermes-memory",
+      "repository": "https://github.com/chandra447/pi-hermes-memory"
+    },
+    {
+      "name": "@ayulab/pi-rewind",
+      "description": "Pi extension providing /rewind checkpoint navigation",
+      "author": "ayu.exorcist",
+      "version": "0.4.6",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 15556,
+      "downloads_weekly": 1864,
+      "weekly_to_monthly_run_rate": 0.5135,
+      "latest_publish_at": "2026-07-15T06:01:21.357Z",
+      "site_url": "https://pi.dev/packages/@ayulab/pi-rewind",
+      "repository": "https://github.com/ayu-exorcist/oh-my-pi"
+    },
+    {
+      "name": "gentle-pi",
+      "description": "Turn Pi into el Gentleman: a senior-architect development harness with SDD/OpenSpec, subagents, strict TDD evidence, review guardrails, and skill discovery.",
+      "author": "alan_buscaglia",
+      "version": "1.0.6",
+      "manifest_types": [
+        "extension",
+        "prompt",
+        "skill",
+        "theme"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 15419,
+      "downloads_weekly": 5675,
+      "weekly_to_monthly_run_rate": 1.5774,
+      "latest_publish_at": "2026-07-15T16:21:52.643Z",
+      "site_url": "https://pi.dev/packages/gentle-pi",
+      "repository": "https://github.com/Gentleman-Programming/gentle-pi"
+    },
+    {
+      "name": "pi-crew",
+      "description": "Pi extension for coordinated AI teams, workflows, worktrees, and async task orchestration",
+      "author": "bom0792",
+      "version": "0.9.41",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 15397,
+      "downloads_weekly": 3220,
+      "weekly_to_monthly_run_rate": 0.8963,
+      "latest_publish_at": "2026-07-17T01:48:36.261Z",
+      "site_url": "https://pi.dev/packages/pi-crew",
+      "repository": "https://github.com/baphuongna/pi-crew"
+    },
+    {
+      "name": "@raindrop-ai/pi-agent",
+      "description": "Raindrop observability for Pi Agent — automatic tracing via subscriber or pi-coding-agent extension",
+      "author": "rsd-raindrop",
+      "version": "0.1.0",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 15173,
+      "downloads_weekly": 4628,
+      "weekly_to_monthly_run_rate": 1.3072,
+      "latest_publish_at": "2026-07-14T02:31:38.089Z",
+      "site_url": "https://pi.dev/packages/@raindrop-ai/pi-agent",
+      "repository": "https://github.com/raindrop-ai/raindrop-js"
+    },
+    {
+      "name": "@narumitw/pi-goal",
+      "description": "Pi extension for autonomous /goal completion with opt-in experimental ordered queues.",
+      "author": "narumitw",
+      "version": "0.17.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 13940,
+      "downloads_weekly": 4189,
+      "weekly_to_monthly_run_rate": 1.2879,
+      "latest_publish_at": "2026-07-17T01:09:08.031Z",
+      "site_url": "https://pi.dev/packages/@narumitw/pi-goal",
+      "repository": "https://github.com/narumiruna/pi-extensions"
+    },
+    {
+      "name": "@ollama/pi-web-search",
+      "description": "Web search and fetch tools for Pi agent - uses Ollama's web search and fetch APIs",
+      "author": "jmorgan",
+      "version": "0.0.5",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 12495,
+      "downloads_weekly": 2243,
+      "weekly_to_monthly_run_rate": 0.7693,
+      "latest_publish_at": "2026-03-28T20:31:34.540Z",
+      "site_url": "https://pi.dev/packages/@ollama/pi-web-search",
+      "repository": ""
+    },
+    {
+      "name": "pi-readseek",
+      "description": "Pi extension for readseek-backed hash-anchored read/edit/grep, structural code maps, structural search, and file exploration",
+      "author": "jarkkojs",
+      "version": "0.6.6",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 12177,
+      "downloads_weekly": 2032,
+      "weekly_to_monthly_run_rate": 0.7152,
+      "latest_publish_at": "2026-07-15T08:10:58.931Z",
+      "site_url": "https://pi.dev/packages/pi-readseek",
+      "repository": "https://github.com/jarkkojs/readseek"
+    },
+    {
+      "name": "pi-deepseek-search",
+      "description": "Web search for Pi using DeepSeek's server side search. Only works with DeepSeek models.",
+      "author": "bxff",
+      "version": "1.0.15",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 12021,
+      "downloads_weekly": 3136,
+      "weekly_to_monthly_run_rate": 1.118,
+      "latest_publish_at": "2026-05-29T04:59:35.029Z",
+      "site_url": "https://pi.dev/packages/pi-deepseek-search",
+      "repository": "https://github.com/bxff/pi-deepseek-search"
+    },
+    {
+      "name": "pi-agent-browser-native",
+      "description": "pi extension that exposes agent-browser as a native tool for browser automation",
+      "author": "fitchmultz",
+      "version": "0.2.68",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 11946,
+      "downloads_weekly": 2264,
+      "weekly_to_monthly_run_rate": 0.8122,
+      "latest_publish_at": "2026-07-16T19:32:10.102Z",
+      "site_url": "https://pi.dev/packages/pi-agent-browser-native",
+      "repository": "https://github.com/fitchmultz/pi-agent-browser-native"
+    }
+  ],
+  "top_weekly": [
+    {
+      "name": "pi-mcp-adapter",
+      "description": "MCP (Model Context Protocol) adapter extension for Pi coding agent",
+      "author": "nicopreme",
+      "version": "2.11.0",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 129186,
+      "downloads_weekly": 37872,
+      "weekly_to_monthly_run_rate": 1.2564,
+      "latest_publish_at": "2026-07-03T16:59:56.410Z",
+      "site_url": "https://pi.dev/packages/pi-mcp-adapter",
+      "repository": "https://github.com/nicobailon/pi-mcp-adapter"
+    },
+    {
+      "name": "pi-web-access",
+      "description": "Web search, URL fetching, GitHub repo cloning, PDF extraction, YouTube video understanding, and local video analysis for Pi coding agent. Supports OpenAI, Brave, Parallel, Tavily, Exa, Perplexity, and Gemini.",
+      "author": "nicopreme",
+      "version": "0.13.0",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 139172,
+      "downloads_weekly": 27275,
+      "weekly_to_monthly_run_rate": 0.8399,
+      "latest_publish_at": "2026-06-25T07:41:38.785Z",
+      "site_url": "https://pi.dev/packages/pi-web-access",
+      "repository": "https://github.com/nicobailon/pi-web-access"
+    },
+    {
+      "name": "pi-subagents",
+      "description": "Pi extension for delegating tasks to subagents with chains, parallel execution, and TUI clarification",
+      "author": "nicopreme",
+      "version": "0.34.0",
+      "manifest_types": [
+        "extension",
+        "prompt",
+        "skill"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 112546,
+      "downloads_weekly": 19998,
+      "weekly_to_monthly_run_rate": 0.7615,
+      "latest_publish_at": "2026-07-07T05:05:43.769Z",
+      "site_url": "https://pi.dev/packages/pi-subagents",
+      "repository": "https://github.com/nicobailon/pi-subagents"
+    },
+    {
+      "name": "context-mode",
+      "description": "MCP plugin that saves 98% of your context window. Works with Claude Code, Gemini CLI, VS Code Copilot, OpenCode, and Codex CLI. Sandboxed code execution, FTS5 knowledge base, and intent-driven search.",
+      "author": "mksglu",
+      "version": "1.0.169",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 113882,
+      "downloads_weekly": 16174,
+      "weekly_to_monthly_run_rate": 0.6087,
+      "latest_publish_at": "2026-06-29T18:18:27.670Z",
+      "site_url": "https://pi.dev/packages/context-mode",
+      "repository": "https://github.com/mksglu/context-mode"
+    },
+    {
+      "name": "bigpowers",
+      "description": "73 agent skills synthesizing 17 years of software engineering discipline into a prescriptive methodology for solo developers",
+      "author": "danielvm",
+      "version": "2.77.0",
+      "manifest_types": [
+        "prompt",
+        "skill"
+      ],
+      "catalog_badge_types": [
+        "skill"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 35832,
+      "downloads_weekly": 13384,
+      "weekly_to_monthly_run_rate": 1.6008,
+      "latest_publish_at": "2026-07-13T18:03:30.283Z",
+      "site_url": "https://pi.dev/packages/bigpowers",
+      "repository": "https://github.com/danielvm-git/bigpowers"
+    },
+    {
+      "name": "@nitra/cursor",
+      "description": "CLI для завантаження cursor-правил (префікс n-) у локальний репозиторій",
+      "author": "vitaliytv",
+      "version": "14.33.0",
+      "manifest_types": [],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 40673,
+      "downloads_weekly": 13203,
+      "weekly_to_monthly_run_rate": 1.3912,
+      "latest_publish_at": "2026-07-13T05:25:48.855Z",
+      "site_url": "https://pi.dev/packages/@nitra/cursor",
+      "repository": "https://github.com/n/cursor"
+    },
+    {
+      "name": "@remnic/plugin-pi",
+      "description": "Remnic memory extension for Pi Coding Agent",
+      "author": "joshuaswarren",
+      "version": "9.7.7",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 30324,
+      "downloads_weekly": 9048,
+      "weekly_to_monthly_run_rate": 1.2788,
+      "latest_publish_at": "2026-07-16T22:18:43.657Z",
+      "site_url": "https://pi.dev/packages/@remnic/plugin-pi",
+      "repository": "https://github.com/joshuaswarren/remnic"
+    },
+    {
+      "name": "@tintinweb/pi-subagents",
+      "description": "A pi extension extension that brings smart Claude Code-style autonomous sub-agents to pi.",
+      "author": "tintinweb",
+      "version": "0.14.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 39580,
+      "downloads_weekly": 8728,
+      "weekly_to_monthly_run_rate": 0.9451,
+      "latest_publish_at": "2026-07-14T09:28:19.651Z",
+      "site_url": "https://pi.dev/packages/@tintinweb/pi-subagents",
+      "repository": "https://github.com/tintinweb/pi-subagents"
+    },
+    {
+      "name": "@gotgenes/pi-permission-system",
+      "description": "Permission enforcement extension for the Pi coding agent.",
+      "author": "gotgenes",
+      "version": "20.7.3",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 24561,
+      "downloads_weekly": 8124,
+      "weekly_to_monthly_run_rate": 1.4176,
+      "latest_publish_at": "2026-07-15T14:46:11.909Z",
+      "site_url": "https://pi.dev/packages/@gotgenes/pi-permission-system",
+      "repository": "https://github.com/gotgenes/pi-packages"
+    },
+    {
+      "name": "pi-lens",
+      "description": "Real-time code feedback for pi — LSP, linters, formatters, type-checking, structural analysis & booboo",
+      "author": "apmantza",
+      "version": "3.8.70",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 31637,
+      "downloads_weekly": 8045,
+      "weekly_to_monthly_run_rate": 1.0898,
+      "latest_publish_at": "2026-07-14T20:33:59.831Z",
+      "site_url": "https://pi.dev/packages/pi-lens",
+      "repository": "https://github.com/apmantza/pi-lens"
+    },
+    {
+      "name": "@quintinshaw/pi-dynamic-workflows",
+      "description": "Claude-Code-style dynamic workflows for Pi — fan a task out across 100s of subagents with real model routing, token/cost accounting, resume, git-worktree isolation, an interactive /workflows TUI, and a real /deep-research.",
+      "author": "quintinshaw",
+      "version": "2.14.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 24815,
+      "downloads_weekly": 7781,
+      "weekly_to_monthly_run_rate": 1.3438,
+      "latest_publish_at": "2026-07-17T00:39:58.150Z",
+      "site_url": "https://pi.dev/packages/@quintinshaw/pi-dynamic-workflows",
+      "repository": "https://github.com/QuintinShaw/pi-dynamic-workflows"
+    },
+    {
+      "name": "@dietrichgebert/ponytail",
+      "description": "Lazy senior dev mode for AI agents. The best code is the code you never wrote.",
+      "author": "dietrichgebert",
+      "version": "4.8.4",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [
+        "skill"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 22582,
+      "downloads_weekly": 7288,
+      "weekly_to_monthly_run_rate": 1.3831,
+      "latest_publish_at": "2026-06-29T05:26:52.344Z",
+      "site_url": "https://pi.dev/packages/@dietrichgebert/ponytail",
+      "repository": "https://github.com/DietrichGebert/ponytail"
+    },
+    {
+      "name": "@plannotator/pi-extension",
+      "description": "Plannotator Pi extension - interactive plan review with annotations, annotate agent messages, and review code/PRs",
+      "author": "backnotprop",
+      "version": "0.23.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 29548,
+      "downloads_weekly": 7013,
+      "weekly_to_monthly_run_rate": 1.0172,
+      "latest_publish_at": "2026-07-12T21:44:35.619Z",
+      "site_url": "https://pi.dev/packages/@plannotator/pi-extension",
+      "repository": "https://github.com/backnotprop/plannotator"
+    },
+    {
+      "name": "pi-simplify",
+      "description": "A Pi extension that reviews recently changed code for clarity, consistency, and maintainability.",
+      "author": "mdevy",
+      "version": "0.2.2",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 23730,
+      "downloads_weekly": 6140,
+      "weekly_to_monthly_run_rate": 1.1089,
+      "latest_publish_at": "2026-05-24T15:35:40.081Z",
+      "site_url": "https://pi.dev/packages/pi-simplify",
+      "repository": "https://github.com/MattDevy/pi-extensions"
+    },
+    {
+      "name": "gentle-pi",
+      "description": "Turn Pi into el Gentleman: a senior-architect development harness with SDD/OpenSpec, subagents, strict TDD evidence, review guardrails, and skill discovery.",
+      "author": "alan_buscaglia",
+      "version": "1.0.6",
+      "manifest_types": [
+        "extension",
+        "prompt",
+        "skill",
+        "theme"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 15419,
+      "downloads_weekly": 5675,
+      "weekly_to_monthly_run_rate": 1.5774,
+      "latest_publish_at": "2026-07-15T16:21:52.643Z",
+      "site_url": "https://pi.dev/packages/gentle-pi",
+      "repository": "https://github.com/Gentleman-Programming/gentle-pi"
+    },
+    {
+      "name": "@hypabolic/pi-hypa",
+      "description": "Pi extension that keeps noisy tool output out of your context window. Automatically rewrites shell commands through Hypa for local, deterministic compression, context-aware file tools, and recoverable evidence.",
+      "author": "atomic-mg",
+      "version": "0.1.11",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 200308,
+      "downloads_weekly": 5055,
+      "weekly_to_monthly_run_rate": 0.1082,
+      "latest_publish_at": "2026-07-13T04:03:10.107Z",
+      "site_url": "https://pi.dev/packages/@hypabolic/pi-hypa",
+      "repository": "https://github.com/Hypabolic/Hypa"
+    },
+    {
+      "name": "@esso0428/pi-sidebar",
+      "description": "Floating right sidebar for pi with git diff/status and session metadata (unofficial fork).",
+      "author": "esso0428",
+      "version": "0.1.35",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 5030,
+      "downloads_weekly": 5030,
+      "weekly_to_monthly_run_rate": 4.2857,
+      "latest_publish_at": "2026-07-14T12:29:22.019Z",
+      "site_url": "https://pi.dev/packages/@esso0428/pi-sidebar",
+      "repository": "https://github.com/esso0428/pi-sidebar"
+    },
+    {
+      "name": "pi-prompt-template-model",
+      "description": "Prompt template model selector extension for pi coding agent",
+      "author": "nicopreme",
+      "version": "0.10.0",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [
+        "extension",
+        "prompt"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 9707,
+      "downloads_weekly": 4676,
+      "weekly_to_monthly_run_rate": 2.0645,
+      "latest_publish_at": "2026-07-01T04:56:01.864Z",
+      "site_url": "https://pi.dev/packages/pi-prompt-template-model",
+      "repository": "https://github.com/nicobailon/pi-prompt-template-model"
+    },
+    {
+      "name": "@raindrop-ai/pi-agent",
+      "description": "Raindrop observability for Pi Agent — automatic tracing via subscriber or pi-coding-agent extension",
+      "author": "rsd-raindrop",
+      "version": "0.1.0",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 15173,
+      "downloads_weekly": 4628,
+      "weekly_to_monthly_run_rate": 1.3072,
+      "latest_publish_at": "2026-07-14T02:31:38.089Z",
+      "site_url": "https://pi.dev/packages/@raindrop-ai/pi-agent",
+      "repository": "https://github.com/raindrop-ai/raindrop-js"
+    },
+    {
+      "name": "pi-intercom",
+      "description": "<p>   <img src=\"banner.png\" alt=\"pi-intercom\" width=\"1100\"> </p>",
+      "author": "nicopreme",
+      "version": "0.6.0",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 9772,
+      "downloads_weekly": 4479,
+      "weekly_to_monthly_run_rate": 1.9644,
+      "latest_publish_at": "2026-05-03T07:05:18.221Z",
+      "site_url": "https://pi.dev/packages/pi-intercom",
+      "repository": ""
+    },
+    {
+      "name": "@ff-labs/pi-fff",
+      "description": "pi extension: FFF-powered fuzzy file and content search",
+      "author": "dmtr.kovalenko",
+      "version": "0.10.0",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 21434,
+      "downloads_weekly": 4451,
+      "weekly_to_monthly_run_rate": 0.89,
+      "latest_publish_at": "2026-07-16T20:03:00.487Z",
+      "site_url": "https://pi.dev/packages/@ff-labs/pi-fff",
+      "repository": "https://github.com/dmtrKovalenko/fff"
+    },
+    {
+      "name": "@orangekame3/pi-qdash",
+      "description": "Pi extension for querying QDash via @oqtopus-team/qdash-client",
+      "author": "orangekame3",
+      "version": "0.15.16",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 4289,
+      "downloads_weekly": 4289,
+      "weekly_to_monthly_run_rate": 4.2857,
+      "latest_publish_at": "2026-07-16T00:48:08.681Z",
+      "site_url": "https://pi.dev/packages/@orangekame3/pi-qdash",
+      "repository": "https://github.com/orangekame3/pi-qdash"
+    },
+    {
+      "name": "@narumitw/pi-goal",
+      "description": "Pi extension for autonomous /goal completion with opt-in experimental ordered queues.",
+      "author": "narumitw",
+      "version": "0.17.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 13940,
+      "downloads_weekly": 4189,
+      "weekly_to_monthly_run_rate": 1.2879,
+      "latest_publish_at": "2026-07-17T01:09:08.031Z",
+      "site_url": "https://pi.dev/packages/@narumitw/pi-goal",
+      "repository": "https://github.com/narumiruna/pi-extensions"
+    },
+    {
+      "name": "@narumitw/pi-lsp",
+      "description": "Pi extension that exposes configurable, language-agnostic LSP tools through a shared runner.",
+      "author": "narumitw",
+      "version": "0.17.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 7716,
+      "downloads_weekly": 3905,
+      "weekly_to_monthly_run_rate": 2.169,
+      "latest_publish_at": "2026-07-17T01:09:20.601Z",
+      "site_url": "https://pi.dev/packages/@narumitw/pi-lsp",
+      "repository": "https://github.com/narumiruna/pi-extensions"
+    },
+    {
+      "name": "@pi-stef/atlassian",
+      "description": "Pi extension and CLI for verified Atlassian Jira and Confluence tools.",
+      "author": "sfiorini",
+      "version": "0.4.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 8184,
+      "downloads_weekly": 3707,
+      "weekly_to_monthly_run_rate": 1.9412,
+      "latest_publish_at": "2026-06-18T03:27:27.098Z",
+      "site_url": "https://pi.dev/packages/@pi-stef/atlassian",
+      "repository": "https://github.com/sfiorini/pi-stef"
+    },
+    {
+      "name": "pi-hermes-memory",
+      "description": "🧠 Persistent memory + 🔍 session search + 🛡️ secret scanning for Pi. Token-aware policy-only memory by default, SQLite FTS5 search, auto-consolidation, procedural skills. 693 tests. Ported from Hermes agent.",
+      "author": "chandra447",
+      "version": "0.8.1",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension",
+        "skill"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 16575,
+      "downloads_weekly": 3680,
+      "weekly_to_monthly_run_rate": 0.9515,
+      "latest_publish_at": "2026-07-14T10:12:54.373Z",
+      "site_url": "https://pi.dev/packages/pi-hermes-memory",
+      "repository": "https://github.com/chandra447/pi-hermes-memory"
+    },
+    {
+      "name": "@juicesharp/rpiv-ask-user-question",
+      "description": "Pi extension. A structured questionnaire the model can put to you when it would otherwise guess, with typed options instead of free-form replies.",
+      "author": "juicesharp",
+      "version": "1.20.0",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 22940,
+      "downloads_weekly": 3486,
+      "weekly_to_monthly_run_rate": 0.6513,
+      "latest_publish_at": "2026-06-15T12:35:30.641Z",
+      "site_url": "https://pi.dev/packages/@juicesharp/rpiv-ask-user-question",
+      "repository": "https://github.com/juicesharp/rpiv-mono"
+    },
+    {
+      "name": "pi-fabric",
+      "description": "A programmable tool and agent runtime for Pi",
+      "author": "monotykamary",
+      "version": "0.18.3",
+      "manifest_types": [
+        "extension",
+        "skill"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 3412,
+      "downloads_weekly": 3412,
+      "weekly_to_monthly_run_rate": 4.2857,
+      "latest_publish_at": "2026-07-17T05:21:26.757Z",
+      "site_url": "https://pi.dev/packages/pi-fabric",
+      "repository": "https://github.com/monotykamary/pi-fabric"
+    },
+    {
+      "name": "pi-pr-review",
+      "description": "Parallel AI code review for GitHub pull requests in the Pi coding agent, with model-agnostic tiered subagents, structured findings, optional verification, and safe COMMENT-only publishing.",
+      "author": "10ego",
+      "version": "1.10.6",
+      "manifest_types": [
+        "extension",
+        "prompt"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 3383,
+      "downloads_weekly": 3383,
+      "weekly_to_monthly_run_rate": 4.2857,
+      "latest_publish_at": "2026-07-17T01:29:10.784Z",
+      "site_url": "https://pi.dev/packages/pi-pr-review",
+      "repository": "https://github.com/10ego/pi-pr-review"
+    },
+    {
+      "name": "@mjasnikovs/pi-task",
+      "description": "Deterministic task planning and spec-orchestration for local models — crash-safe /task pipelines with verify/enforce gates, a real-time remote web view, and web/docs/fetch/worker subagent tools.",
+      "author": "mjasnikovs",
+      "version": "0.18.22",
+      "manifest_types": [
+        "extension"
+      ],
+      "catalog_badge_types": [
+        "extension"
+      ],
+      "native_confidence": "explicit_pi_manifest",
+      "downloads_monthly": 20039,
+      "downloads_weekly": 3370,
+      "weekly_to_monthly_run_rate": 0.7207,
+      "latest_publish_at": "2026-07-17T05:26:06.782Z",
+      "site_url": "https://pi.dev/packages/@mjasnikovs/pi-task",
+      "repository": "https://github.com/mjasnikovs/pi-task"
+    }
+  ],
+  "pi_manifest_schema_audit": {
+    "valid_nonempty_resource_arrays": 5051,
+    "no_valid_loadable_resources": 115,
+    "resource_value_wrong_type": 3,
+    "no_current_resource_keys": 93,
+    "all_resource_arrays_empty": 19
+  }
+}

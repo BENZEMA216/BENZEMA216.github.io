@@ -1,0 +1,1146 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>MPAI 消息关系图</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #5b6575;
+      --line: #d9dee7;
+      --blue: #1d5fd1;
+      --blue-soft: #eaf2ff;
+      --orange: #b85d05;
+      --orange-soft: #fff2df;
+      --green: #087a55;
+      --green-soft: #e7f7f0;
+      --purple: #7450a6;
+      --purple-soft: #f2ecfa;
+      --red: #b4232e;
+      --red-soft: #fff0f1;
+      --slate: #475569;
+      --shadow: 0 16px 44px rgba(23, 32, 51, .08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(29, 95, 209, .08), transparent 28rem),
+        radial-gradient(circle at 94% 16%, rgba(184, 93, 5, .08), transparent 26rem),
+        var(--bg);
+      font: 15px/1.6 ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    button, input { font: inherit; }
+
+    button:focus-visible, input:focus-visible {
+      outline: 3px solid rgba(29, 95, 209, .35);
+      outline-offset: 3px;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0 64px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 850px;
+      margin-bottom: 16px;
+      font-size: clamp(34px, 6vw, 68px);
+      line-height: 1.05;
+      letter-spacing: -.045em;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-size: clamp(23px, 3vw, 34px);
+      line-height: 1.2;
+      letter-spacing: -.02em;
+    }
+
+    h3 { font-size: 16px; }
+
+    .hero-copy {
+      max-width: 820px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .thesis {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: center;
+      margin: 26px 0 22px;
+      padding: 20px 22px;
+      border: 1px solid #b9c9e7;
+      border-left: 5px solid var(--blue);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .8);
+      box-shadow: var(--shadow);
+    }
+
+    .thesis-mark {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      place-items: center;
+      border-radius: 13px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 900;
+      font-size: 22px;
+    }
+
+    .thesis strong { font-size: 18px; }
+    .thesis p { margin: 3px 0 0; color: var(--muted); }
+
+    .not-a2a {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--red);
+      background: var(--red-soft);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .not-a2a::before { content: "×"; font-size: 17px; }
+
+    .tabs {
+      position: sticky;
+      z-index: 20;
+      top: 10px;
+      display: flex;
+      gap: 6px;
+      width: fit-content;
+      max-width: 100%;
+      margin: 30px 0 18px;
+      padding: 5px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .92);
+      box-shadow: 0 8px 28px rgba(23, 32, 51, .08);
+      backdrop-filter: blur(14px);
+    }
+
+    [role="tab"] {
+      min-height: 44px;
+      padding: 9px 15px;
+      border: 0;
+      border-radius: 10px;
+      color: var(--muted);
+      background: transparent;
+      white-space: nowrap;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    [role="tab"][aria-selected="true"] {
+      color: #fff;
+      background: var(--ink);
+    }
+
+    [role="tabpanel"] { display: none; }
+    [role="tabpanel"].active { display: block; }
+
+    .panel-shell {
+      padding: clamp(20px, 4vw, 36px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, .9);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-intro {
+      display: flex;
+      gap: 24px;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 26px;
+    }
+
+    .panel-intro p { max-width: 700px; margin-bottom: 0; color: var(--muted); }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend span { display: inline-flex; gap: 6px; align-items: center; }
+    .legend i { width: 18px; height: 3px; border-radius: 2px; background: var(--slate); }
+    .legend .human { background: var(--blue); }
+    .legend .resume { background: var(--orange); }
+    .legend .stream { background: var(--green); }
+    .legend .poll { height: 0; border-top: 2px dashed var(--slate); background: none; }
+
+    .topology {
+      display: grid;
+      grid-template-columns: minmax(200px, .85fr) 62px minmax(240px, 1.05fr) 62px minmax(260px, 1.2fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .lane {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fbfcfd;
+    }
+
+    .lane-label {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .people { display: grid; gap: 10px; }
+
+    .person {
+      position: relative;
+      width: 100%;
+      min-height: 72px;
+      padding: 12px 12px 12px 54px;
+      text-align: left;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      color: var(--ink);
+      background: #fff;
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .person:hover { transform: translateY(-2px); }
+    .person.active {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(29, 95, 209, .12);
+    }
+
+    .avatar {
+      position: absolute;
+      top: 13px;
+      left: 12px;
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      border-radius: 10px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 900;
+    }
+
+    .person[data-actor="maya"] .avatar { background: #6d45a2; }
+    .person[data-actor="host"] .avatar { background: var(--slate); }
+    .person strong, .person small { display: block; }
+    .person small { color: var(--muted); }
+
+    .connector {
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      min-height: 120px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .connector-line {
+      position: relative;
+      width: 100%;
+      height: 3px;
+      margin: 8px 0;
+      border-radius: 2px;
+      background: var(--blue);
+    }
+
+    .connector-line.orange { background: var(--orange); }
+    .connector-line::after {
+      position: absolute;
+      top: 50%;
+      right: -1px;
+      width: 9px;
+      height: 9px;
+      border-top: 3px solid currentColor;
+      border-right: 3px solid currentColor;
+      content: "";
+      transform: translateY(-50%) rotate(45deg);
+    }
+    .connector.blue { color: var(--blue); }
+    .connector.orange { color: var(--orange); }
+
+    .gateway {
+      display: grid;
+      gap: 9px;
+    }
+
+    .gateway-step {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 9px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid #ebd3b3;
+      border-radius: 12px;
+      background: var(--orange-soft);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+
+    .gateway-step b {
+      display: grid;
+      width: 26px;
+      height: 26px;
+      place-items: center;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--orange);
+      font-size: 12px;
+    }
+
+    .gateway-step span { font-weight: 800; }
+    .gateway-step small { display: block; color: #74502c; }
+
+    .sessions { display: grid; gap: 12px; }
+
+    .session {
+      padding: 15px;
+      border: 1px solid #bcdacb;
+      border-radius: 15px;
+      background: var(--green-soft);
+    }
+
+    .session-head {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      margin-bottom: 11px;
+    }
+
+    .session-head strong { color: var(--green); }
+    .provider-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      color: var(--green);
+      background: #fff;
+      font: 800 11px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .transcript {
+      display: grid;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 12px;
+    }
+
+    .transcript li {
+      padding: 7px 9px;
+      border-radius: 9px;
+      color: #365449;
+      background: rgba(255,255,255,.72);
+    }
+
+    .transcript code { color: var(--green); font-weight: 800; }
+
+    .no-route {
+      position: relative;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
+      padding: 11px 12px;
+      border: 1px dashed #d9a1a7;
+      border-radius: 12px;
+      color: var(--red);
+      background: var(--red-soft);
+      font-weight: 800;
+    }
+
+    .no-route .strike { font-size: 20px; }
+
+    .inspector-grid {
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .inspector, .note-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .inspector h3, .note-card h3 { margin-bottom: 12px; }
+
+    .kv {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0;
+    }
+
+    .kv div {
+      min-width: 0;
+      padding: 10px;
+      border-radius: 11px;
+      background: #f5f7fa;
+    }
+
+    .kv dt { color: var(--muted); font-size: 11px; font-weight: 800; }
+    .kv dd { margin: 3px 0 0; overflow-wrap: anywhere; font: 800 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    .note-card p { margin-bottom: 0; color: var(--muted); font-size: 13px; }
+
+    .poll-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .micro-card {
+      padding: 14px;
+      border: 1px dashed #b7c0cd;
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+    .micro-card strong { display: block; margin-bottom: 4px; }
+    .micro-card p { margin: 0; color: var(--muted); font-size: 13px; }
+
+    .flow-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(280px, .55fr);
+      gap: 20px;
+    }
+
+    .flow-list {
+      position: relative;
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .flow-list::before {
+      position: absolute;
+      top: 24px;
+      bottom: 24px;
+      left: 23px;
+      width: 2px;
+      background: #cbd5df;
+      content: "";
+    }
+
+    .flow-step {
+      position: relative;
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      width: 100%;
+      min-height: 78px;
+      padding: 12px;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      color: var(--ink);
+      background: #fff;
+      cursor: pointer;
+      transition: border-color .16s ease, transform .16s ease, background .16s ease;
+    }
+
+    .flow-step:hover { transform: translateX(3px); }
+    .flow-step.active { border-color: var(--blue); background: var(--blue-soft); }
+
+    .step-number {
+      z-index: 1;
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border-radius: 11px;
+      color: #fff;
+      background: var(--ink);
+      font-weight: 900;
+    }
+
+    .flow-step.active .step-number { background: var(--blue); }
+    .flow-step strong, .flow-step small { display: block; }
+    .flow-step small { color: var(--muted); }
+    .flow-step code { color: var(--blue); font-size: 12px; }
+
+    .step-type {
+      padding: 4px 8px;
+      border-radius: 999px;
+      color: var(--slate);
+      background: #eef1f5;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .detail-panel {
+      position: sticky;
+      top: 86px;
+      height: fit-content;
+      padding: 20px;
+      border: 1px solid #c4d2ea;
+      border-radius: 18px;
+      background: #f7faff;
+    }
+
+    .detail-panel .detail-number {
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .detail-panel h3 { margin: 5px 0 10px; font-size: 20px; }
+    .detail-panel p { color: var(--muted); }
+
+    pre {
+      max-width: 100%;
+      margin: 14px 0 0;
+      padding: 14px;
+      overflow: auto;
+      border-radius: 12px;
+      color: #dce6f5;
+      background: #172033;
+      font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .concurrency {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: start;
+      margin-top: 22px;
+      padding: 18px;
+      border: 1px solid #e0b5b9;
+      border-radius: 17px;
+      background: #fff8f8;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-flex;
+      width: 56px;
+      height: 32px;
+      margin-top: 3px;
+    }
+    .switch input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    .switch span { width: 100%; border-radius: 999px; background: #aab3bf; cursor: pointer; transition: background .2s; }
+    .switch span::after {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 2px 7px rgba(0,0,0,.2);
+      content: "";
+      transition: transform .2s;
+    }
+    .switch input:checked + span { background: var(--red); }
+    .switch input:checked + span::after { transform: translateX(24px); }
+
+    .concurrency h3 { margin-bottom: 5px; }
+    .concurrency p { margin-bottom: 10px; color: var(--muted); }
+    .race-result {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+    }
+    .race-message {
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: #fff;
+      font-size: 12px;
+    }
+    .race-message b { display: block; }
+    .race-message.blocked { border-color: #e2a7ac; color: var(--red); background: var(--red-soft); }
+
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .entity {
+      position: relative;
+      grid-column: span 4;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--slate);
+      border-radius: 15px;
+      background: #fff;
+    }
+
+    .entity.human { border-top-color: var(--blue); }
+    .entity.gateway-entity { border-top-color: var(--orange); }
+    .entity.provider { border-top-color: var(--green); }
+    .entity.audit { border-top-color: var(--purple); }
+    .entity.ephemeral { border-top-color: var(--slate); border-style: dashed; }
+    .entity.absent { border-top-color: var(--red); background: var(--red-soft); }
+    .entity h3 { margin-bottom: 9px; }
+    .entity p { margin: 0; color: var(--muted); font-size: 13px; }
+    .entity code { color: var(--blue); font-weight: 800; }
+
+    .relation-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .relation-key {
+      padding: 14px;
+      border-radius: 14px;
+      color: #fff;
+      background: var(--ink);
+    }
+    .relation-key:nth-child(2) { background: var(--blue); }
+    .relation-key:nth-child(3) { background: var(--green); }
+    .relation-key:nth-child(4) { background: var(--orange); }
+    .relation-key:nth-child(5) { background: var(--purple); }
+    .relation-key code { display: block; color: #fff; font-weight: 900; }
+    .relation-key small { display: block; margin-top: 4px; color: rgba(255,255,255,.8); }
+
+    .formula {
+      margin: 0 0 18px;
+      padding: 18px;
+      overflow-x: auto;
+      border-radius: 16px;
+      color: #dfe9f8;
+      background: #172033;
+      font: 800 clamp(12px, 1.7vw, 16px)/1.7 ui-monospace, SFMono-Regular, Menlo, monospace;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .formula .blue { color: #84b8ff; }
+    .formula .green { color: #78e0b7; }
+    .formula .orange { color: #ffc47e; }
+
+    .join-gap {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      margin: -6px 0 18px;
+      padding: 10px 14px;
+      border: 1px dashed #d6a3a9;
+      border-radius: 12px;
+      color: var(--red);
+      background: var(--red-soft);
+      font: 800 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+      text-align: center;
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .fact {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #fff;
+    }
+    .fact .tag {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 3px 7px;
+      border-radius: 7px;
+      color: var(--slate);
+      background: #eef1f5;
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+    .fact p { margin: 0; color: var(--muted); font-size: 13px; }
+
+    .bottom-line {
+      margin-top: 24px;
+      padding: 20px;
+      border: 1px solid #d6a3a9;
+      border-radius: 17px;
+      color: #7d1d27;
+      background: var(--red-soft);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .source-note {
+      margin: 22px 2px 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .dim { opacity: .3; }
+    .chain-highlight { transform: translateY(-2px); filter: saturate(1.2); }
+
+    @media (max-width: 920px) {
+      .topology { grid-template-columns: 1fr; }
+      .connector { min-height: 62px; }
+      .connector-line { width: 3px; height: 42px; }
+      .connector-line::after { top: auto; right: 50%; bottom: -1px; transform: translateX(50%) rotate(135deg); }
+      .inspector-grid, .flow-layout { grid-template-columns: 1fr; }
+      .detail-panel { position: static; }
+      .kv { grid-template-columns: repeat(2, 1fr); }
+      .entity { grid-column: span 6; }
+      .relation-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 680px) {
+      .page { width: min(100% - 20px, 1180px); padding-top: 24px; }
+      .thesis { grid-template-columns: 1fr; }
+      .thesis-mark { width: 38px; height: 38px; }
+      .panel-shell { padding: 16px; border-radius: 18px; }
+      .panel-intro { display: block; }
+      .legend { margin-top: 14px; }
+      .poll-row, .facts, .race-result { grid-template-columns: 1fr; }
+      .flow-step { grid-template-columns: 42px 1fr; }
+      .step-type { display: none; }
+      .entity { grid-column: 1 / -1; }
+      .relation-strip { grid-template-columns: 1fr; }
+      .kv { grid-template-columns: 1fr; }
+      .concurrency { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <p class="eyebrow">MPAI · Message Relationship Model</p>
+      <h1>每条消息到底和谁有关系？</h1>
+      <p class="hero-copy">把“多人 Agent 通信”拆开看，MPAI 实际管理的是：谁把哪条输入，送进哪一个 Host 已有的原生 Agent session，并如何把这一轮的流事件、完成状态与审计记录串起来。</p>
+
+      <div class="thesis">
+        <div class="thesis-mark" aria-hidden="true">!</div>
+        <div>
+          <strong>MPAI 不是 Agent ↔ Agent；它是 Human → Host-owned Agent Session。</strong>
+          <p>多人可以进入同一会话，也可以切换不同会话；但 Codex session 和 Claude session 之间没有消息转发关系。</p>
+          <span class="not-a2a">没有跨 Agent message bus / reply graph</span>
+        </div>
+      </div>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="图解视图">
+      <button id="tab-topology" role="tab" aria-selected="true" aria-controls="panel-topology">1. 实际拓扑</button>
+      <button id="tab-lifecycle" role="tab" aria-selected="false" aria-controls="panel-lifecycle" tabindex="-1">2. 单条消息生命周期</button>
+      <button id="tab-model" role="tab" aria-selected="false" aria-controls="panel-model" tabindex="-1">3. 关系数据模型</button>
+    </nav>
+
+    <section id="panel-topology" class="active" role="tabpanel" aria-labelledby="tab-topology">
+      <div class="panel-shell">
+        <div class="panel-intro">
+          <div>
+            <p class="eyebrow">Topology</p>
+            <h2>多人入口，单一 session 落点</h2>
+            <p>点击 Alex 或 Maya，观察一条人类消息如何穿过 Gateway，最终只落到一个 provider-owned session。</p>
+          </div>
+          <div class="legend" aria-label="连线图例">
+            <span><i class="human"></i>人类 prompt</span>
+            <span><i class="resume"></i>resume session</span>
+            <span><i class="stream"></i>流式返回</span>
+            <span><i class="poll"></i>轮询 transcript</span>
+          </div>
+        </div>
+
+        <figure style="margin:0">
+          <div class="topology" id="topology">
+            <section class="lane">
+              <div class="lane-label">01 · Humans</div>
+              <div class="people">
+                <button class="person" data-actor="host" type="button" aria-pressed="false">
+                  <span class="avatar">H</span>
+                  <strong>Host</strong>
+                  <small>本机原生客户端也能输入</small>
+                </button>
+                <button class="person active" data-actor="alex" type="button" aria-pressed="true">
+                  <span class="avatar">A</span>
+                  <strong>Alex</strong>
+                  <small>“帮我检查登录流程” → Codex</small>
+                </button>
+                <button class="person" data-actor="maya" type="button" aria-pressed="false">
+                  <span class="avatar">M</span>
+                  <strong>Maya</strong>
+                  <small>“总结这次回归” → Claude</small>
+                </button>
+              </div>
+            </section>
+
+            <div class="connector blue" data-chain-node>
+              <span>HTTP + NDJSON</span>
+              <div class="connector-line"></div>
+              <span>taskId · actor<br>requestId · text</span>
+            </div>
+
+            <section class="lane">
+              <div class="lane-label">02 · MPAI Gateway</div>
+              <div class="gateway">
+                <div class="gateway-step" data-chain-node><b>1</b><span>Auth + Scope<small>invite、role、selected task</small></span></div>
+                <div class="gateway-step" data-chain-node><b>2</b><span>Idempotency<small>requestId 去重</small></span></div>
+                <div class="gateway-step" data-chain-node><b>3</b><span>Remote lock<small>常规路径按 task 串行</small></span></div>
+                <div class="gateway-step" data-chain-node><b>4</b><span>Attribution<small>[Multiplayer teammate: NAME]</small></span></div>
+                <div class="gateway-step" data-chain-node><b>5</b><span>TaskHub route<small>由 task 前缀选择 provider</small></span></div>
+              </div>
+            </section>
+
+            <div class="connector orange" data-chain-node>
+              <span>adapter</span>
+              <div class="connector-line orange"></div>
+              <span>resume 同一个<br>native session</span>
+            </div>
+
+            <section class="lane">
+              <div class="lane-label">03 · Independent Native Sessions</div>
+              <div class="sessions">
+                <article class="session" data-session="codex" data-chain="alex">
+                  <div class="session-head">
+                    <strong>Codex session</strong>
+                    <span class="provider-pill">codex:7b2e…</span>
+                  </div>
+                  <ol class="transcript">
+                    <li>旧 transcript / context</li>
+                    <li><code>Alex:</code> 帮我检查登录流程</li>
+                    <li>turnId → item events → assistant reply</li>
+                  </ol>
+                </article>
+                <article class="session dim" data-session="claude" data-chain="maya">
+                  <div class="session-head">
+                    <strong>Claude session</strong>
+                    <span class="provider-pill">claude:a913…</span>
+                  </div>
+                  <ol class="transcript">
+                    <li>另一条独立 transcript / context</li>
+                    <li><code>Maya:</code> 总结这次回归</li>
+                    <li>stream-json → assistant reply</li>
+                  </ol>
+                </article>
+              </div>
+              <div class="no-route">
+                <span class="strike" aria-hidden="true">↛</span>
+                <span>两条 session 之间没有转发边。切换 session ≠ Agent 互聊。</span>
+              </div>
+            </section>
+          </div>
+
+          <div class="inspector-grid">
+            <section class="inspector" aria-live="polite">
+              <h3 id="actor-title">选中：Alex 的远程输入</h3>
+              <dl class="kv">
+                <div><dt>taskId</dt><dd id="field-task">codex:7b2e…</dd></div>
+                <div><dt>actor</dt><dd id="field-actor">Alex</dd></div>
+                <div><dt>requestId</dt><dd id="field-request">req-a17f</dd></div>
+                <div><dt>provider</dt><dd id="field-provider">codex</dd></div>
+              </dl>
+            </section>
+            <aside class="note-card">
+              <h3>署名边界</h3>
+              <p>Alex 的名字来自普通文本前缀与 audit，不是密码学签名。后续 tool calls 没有逐项继承“Alex provenance”。</p>
+            </aside>
+          </div>
+
+          <div class="poll-row">
+            <article class="micro-card"><strong>流式返回</strong><p>这次请求的 NDJSON events 返回给发起 prompt 的客户端，并由同一 requestId 关联。</p></article>
+            <article class="micro-card"><strong>其他成员看到更新</strong><p>Guest UI 每 2 秒重读 transcript；不是服务器把每条消息 WebSocket 广播给所有人。</p></article>
+            <article class="micro-card"><strong>Presence 分离</strong><p>在线状态是 45 秒 TTL 的临时内存状态，不是 transcript 中的消息关系。</p></article>
+          </div>
+
+          <figcaption class="source-note">文字版：人类 prompt 带着 taskId、actor、requestId 和 text 进入 MPAI；Gateway 验证身份与范围、去重并路由，然后恢复一个确定的 Codex 或 Claude 原生 session。Provider 保存真实 transcript。不同 session 彼此独立。</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="panel-lifecycle" role="tabpanel" aria-labelledby="tab-lifecycle">
+      <div class="panel-shell">
+        <div class="panel-intro">
+          <div>
+            <p class="eyebrow">Lifecycle</p>
+            <h2>一条消息怎样被串成“一轮”</h2>
+            <p>关键不是为每条聊天消息建 replyTo，而是用不同层级的 ID 把远程提交、provider turn 和内部事件对齐。</p>
+          </div>
+        </div>
+
+        <div class="flow-layout">
+          <ol class="flow-list" aria-label="单条消息生命周期">
+            <li><button class="flow-step active" type="button" data-step="0"><span class="step-number">1</span><span><strong>Alex 输入一条 prompt</strong><small>客户端已选中共享 task</small></span><span class="step-type">Human</span></button></li>
+            <li><button class="flow-step" type="button" data-step="1"><span class="step-number">2</span><span><strong>POST 到指定 task</strong><small><code>/v1/tasks/:taskId/prompt</code></small></span><span class="step-type">HTTP</span></button></li>
+            <li><button class="flow-step" type="button" data-step="2"><span class="step-number">3</span><span><strong>Gateway 建立远程请求关系</strong><small>taskId + actor + requestId + target + text</small></span><span class="step-type">MPAI</span></button></li>
+            <li><button class="flow-step" type="button" data-step="3"><span class="step-number">4</span><span><strong>加署名并恢复原生 session</strong><small>Claude --resume 或 Codex thread/resume</small></span><span class="step-type">Adapter</span></button></li>
+            <li><button class="flow-step" type="button" data-step="4"><span class="step-number">5</span><span><strong>Provider 创建 turn 并执行</strong><small>Codex 还会产生 itemId、plan、diff 等事件</small></span><span class="step-type">Provider</span></button></li>
+            <li><button class="flow-step" type="button" data-step="5"><span class="step-number">6</span><span><strong>流式事件 + 完成状态</strong><small>agent.delta → agent.message → turn.completed</small></span><span class="step-type">NDJSON</span></button></li>
+            <li><button class="flow-step" type="button" data-step="6"><span class="step-number">7</span><span><strong>两种持久化</strong><small>native transcript 保存对话；audit 保存请求状态</small></span><span class="step-type">Storage</span></button></li>
+          </ol>
+
+          <aside class="detail-panel" aria-live="polite">
+            <span class="detail-number" id="detail-number">Step 1</span>
+            <h3 id="detail-title">人类输入不是 Agent 消息</h3>
+            <p id="detail-copy">Alex 选择一个已经被 Host 分享的 task 后输入文本。此时关系起点是“人类 → 某个 session”，不是“一个 Agent → 另一个 Agent”。</p>
+            <pre id="detail-code">actor = "Alex"
+taskId = "codex:7b2e…"
+text = "帮我检查登录流程"</pre>
+          </aside>
+        </div>
+
+        <div class="concurrency">
+          <label class="switch" aria-label="模拟同时发送">
+            <input id="race-toggle" type="checkbox">
+            <span aria-hidden="true"></span>
+          </label>
+          <div>
+            <h3 id="race-title">常规路径：一个 task 一次一个远程 turn</h3>
+            <p id="race-copy">打开开关，看看两条远程 prompt 同时到达时的设计行为与真实边界。</p>
+            <div class="race-result">
+              <div class="race-message"><b>Alex · req-a17f</b><span id="race-a">进入 provider 执行</span></div>
+              <div class="race-message" id="race-b-card"><b>Maya · req-m82c</b><span id="race-b">等待 Alex 完成后再发送</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-model" role="tabpanel" aria-labelledby="tab-model">
+      <div class="panel-shell">
+        <div class="panel-intro">
+          <div>
+            <p class="eyebrow">Data Model</p>
+            <h2>关系不是一张 chat graph，而是一串嵌套 ID</h2>
+            <p>最实用的理解方式：task 决定“在哪条会话”，request 决定“哪次远程提交”，turn 决定“provider 的哪轮执行”，item 决定“Codex 轮内的哪个动作”。</p>
+          </div>
+        </div>
+
+        <div class="formula" aria-label="消息关系公式">
+          <span class="blue">taskId</span> → <span class="orange">requestId</span> → <span class="green">turnId</span> → itemId / event stream
+        </div>
+        <div class="join-gap">requestId / turnId &nbsp;↛&nbsp; transcript message.id（MPAI 没有保存可精确 join 的外键）</div>
+
+        <div class="relation-strip">
+          <div class="relation-key"><code>taskId</code><small>归属哪一个 native session</small></div>
+          <div class="relation-key"><code>requestId</code><small>远程提交、幂等与 audit 关联</small></div>
+          <div class="relation-key"><code>turnId</code><small>provider 本轮执行</small></div>
+          <div class="relation-key"><code>itemId</code><small>Codex 轮内 command / diff 等动作</small></div>
+          <div class="relation-key"><code>message.id</code><small>transcript 刷新去重，不表达 reply 关系</small></div>
+        </div>
+
+        <div class="model-grid">
+          <article class="entity human">
+            <h3>Actor</h3>
+            <p><code>name</code> 进入 prompt 文本前缀和 audit。它告诉人“谁发起”，但不是每个 tool call 的强 provenance。</p>
+          </article>
+          <article class="entity gateway-entity">
+            <h3>Remote Request</h3>
+            <p><code>requestId</code> 是 MPAI 层的幂等键，把 received / completed / failed 与这次提交对应起来。</p>
+          </article>
+          <article class="entity provider">
+            <h3>Provider Turn</h3>
+            <p><code>turnId</code> 来自 Codex；Claude 的规范化结果以 sessionId/nativeId 充当完成关联锚点。</p>
+          </article>
+          <article class="entity provider">
+            <h3>Native Transcript</h3>
+            <p>可见消息最终被压平成 <code>{id, role, author, text, at}</code> 数组，由原生 session 持久化；没有 parent / reply，也没有 requestId 外键。</p>
+          </article>
+          <article class="entity audit">
+            <h3>MPAI audit.jsonl</h3>
+            <p>保存 prompt.received / completed / failed；received 事件包含 prompt 原文。它是审计，不是第二份完整 transcript。</p>
+          </article>
+          <article class="entity ephemeral">
+            <h3>Ephemeral State</h3>
+            <p>presence 和 active remote prompt lock 在内存中；服务重启后不构成消息历史。</p>
+          </article>
+          <article class="entity absent" style="grid-column: 1 / -1">
+            <h3>源码中没有的关系</h3>
+            <p>没有 <code>replyToId</code>、<code>parentMessageId</code>、跨 Agent route、共享 message bus、全局 causal graph、CRDT 或公共长期 memory。UI 展示的是每个 task 的线性可见 transcript。</p>
+          </article>
+        </div>
+
+        <div class="facts">
+          <article class="fact"><span class="tag">Persistence</span><h3>哪一份是事实源？</h3><p>对话内容以 provider native transcript 为主；MPAI 每 2 秒读取并投影可见消息。</p></article>
+          <article class="fact"><span class="tag">Attribution</span><h3>作者怎么显示？</h3><p>匹配 <code>[Multiplayer teammate: NAME]</code> 就显示 NAME；没有前缀的人类输入回退为 Host。</p></article>
+          <article class="fact"><span class="tag">Concurrency</span><h3>会不会交错？</h3><p>远程锁不覆盖 Host 原生 UI，且设置锁前存在 await 窗口；所以它不是严格的全局串行系统。</p></article>
+        </div>
+
+        <p class="bottom-line">一句话防误解：一个 task 对应一个 Codex 或 Claude session；不同 session 彼此独立，MPAI 当前没有实现 Agent A 与 Agent B 的消息路由。</p>
+      </div>
+    </section>
+
+    <footer class="source-note">
+      证据边界：基于 MPAI 官方仓库 v0.4.19 / commit 7c84e2311adf9934ad594bd037f06c52308f75fd 的 server、hub、Codex / Claude adapter、transcript reader 与 tests；2026-08-04。图中 ID 为示意值。
+    </footer>
+  </main>
+
+  <script>
+    const tabs = [...document.querySelectorAll('[role="tab"]')];
+    const panels = [...document.querySelectorAll('[role="tabpanel"]')];
+
+    function activateTab(tab) {
+      tabs.forEach((item) => {
+        const selected = item === tab;
+        item.setAttribute('aria-selected', String(selected));
+        item.tabIndex = selected ? 0 : -1;
+      });
+      panels.forEach((panel) => panel.classList.toggle('active', panel.id === tab.getAttribute('aria-controls')));
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => activateTab(tab));
+      tab.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        let next = index;
+        if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = tabs.length - 1;
+        activateTab(tabs[next]);
+        tabs[next].focus();
+      });
+    });
+
+    const examples = {
+      alex: { title: 'Alex 的远程输入', task: 'codex:7b2e…', actor: 'Alex', request: 'req-a17f', provider: 'codex' },
+      maya: { title: 'Maya 的远程输入', task: 'claude:a913…', actor: 'Maya', request: 'req-m82c', provider: 'claude' },
+      host: { title: 'Host 的本机输入', task: 'codex:7b2e…', actor: 'Host（fallback）', request: '不经过 MPAI', provider: 'codex native UI' }
+    };
+
+    const people = [...document.querySelectorAll('.person')];
+    const sessions = [...document.querySelectorAll('.session')];
+    const commonChain = [...document.querySelectorAll('[data-chain-node]')];
+
+    function selectActor(actor) {
+      const data = examples[actor];
+      people.forEach((button) => {
+        const active = button.dataset.actor === actor;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+      commonChain.forEach((node) => node.classList.toggle('dim', actor === 'host'));
+      sessions.forEach((session) => {
+        const active = actor === 'host' ? session.dataset.session === 'codex' : session.dataset.chain === actor;
+        session.classList.toggle('dim', !active);
+        session.classList.toggle('chain-highlight', active);
+      });
+      document.querySelector('#actor-title').textContent = `选中：${data.title}`;
+      document.querySelector('#field-task').textContent = data.task;
+      document.querySelector('#field-actor').textContent = data.actor;
+      document.querySelector('#field-request').textContent = data.request;
+      document.querySelector('#field-provider').textContent = data.provider;
+    }
+
+    people.forEach((button) => button.addEventListener('click', () => selectActor(button.dataset.actor)));
+
+    const details = [
+      {
+        number: 'Step 1', title: '人类输入不是 Agent 消息',
+        copy: 'Alex 选择一个已经被 Host 分享的 task 后输入文本。此时关系起点是“人类 → 某个 session”，不是“一个 Agent → 另一个 Agent”。',
+        code: 'actor = "Alex"\ntaskId = "codex:7b2e…"\ntext = "帮我检查登录流程"'
+      },
+      {
+        number: 'Step 2', title: 'URL 里的 taskId 先决定会话归属',
+        copy: 'Bearer invite 与 Tailscale identity 通过后，Server 再检查 participant role 和该 task 是否在 invite scope 中。',
+        code: 'POST /v1/tasks/codex%3A7b2e…/prompt\nIdempotency-Key: req-a17f'
+      },
+      {
+        number: 'Step 3', title: 'requestId 是 MPAI 这一轮的主关联键',
+        copy: '同一个 requestId 既用于幂等去重，也贯穿 prompt.received、provider 调用以及 prompt.completed / failed。',
+        code: '{\n  taskId, requestId, actor,\n  target: "codex", text\n}'
+      },
+      {
+        number: 'Step 4', title: '署名被写进普通 user text',
+        copy: 'Adapter 不会创建 provider-native 的多人身份；它把名字作为文本前缀，再调用原生 resume surface。',
+        code: '[Multiplayer teammate: Alex]\n帮我检查登录流程\n\nCodex: thread/resume → turn/start'
+      },
+      {
+        number: 'Step 5', title: 'turnId / itemId 属于 provider 执行层',
+        copy: 'Codex 为本轮返回 turnId，并可产生带 itemId 的 command、file change、plan 或 diff 事件；这些不是独立的人类聊天消息。',
+        code: 'turnId = "turn-42"\nitemId = "item-7"\ntype = "item.completed"'
+      },
+      {
+        number: 'Step 6', title: '事件流只描述这次请求的执行进度',
+        copy: '发起客户端收到 NDJSON；其他成员主要靠轮询 native transcript 看见最终更新。MPAI 不是全员实时 message broadcast server。',
+        code: '{type:"agent.delta", requestId:"req-a17f"}\n{type:"turn.completed", turnId:"turn-42"}'
+      },
+      {
+        number: 'Step 7', title: '对话与审计分开保存',
+        copy: 'Provider native transcript 保存线性可见对话；MPAI audit 记录 received / completed / failed。presence 与 active lock 则只在内存中。',
+        code: 'native transcript: user → assistant\naudit.jsonl: received → completed\nmemory: presence + activePrompts'
+      }
+    ];
+
+    const flowSteps = [...document.querySelectorAll('.flow-step')];
+    function selectStep(index) {
+      flowSteps.forEach((step, i) => step.classList.toggle('active', i === index));
+      const detail = details[index];
+      document.querySelector('#detail-number').textContent = detail.number;
+      document.querySelector('#detail-title').textContent = detail.title;
+      document.querySelector('#detail-copy').textContent = detail.copy;
+      document.querySelector('#detail-code').textContent = detail.code;
+    }
+    flowSteps.forEach((step) => step.addEventListener('click', () => selectStep(Number(step.dataset.step))));
+
+    const raceToggle = document.querySelector('#race-toggle');
+    raceToggle.addEventListener('change', () => {
+      const racing = raceToggle.checked;
+      document.querySelector('#race-title').textContent = racing ? '同时发送：常规检查会拒绝第二条 remote turn' : '常规路径：一个 task 一次一个远程 turn';
+      document.querySelector('#race-copy').textContent = racing
+        ? '若锁已建立，第二条收到 HTTP 409 PROMPT_CONFLICT。但这个锁不覆盖 Host 原生 UI，且“检查 → await audit → 设置锁”存在 TOCTOU 窗口，因此不是严格原子保证。'
+        : '打开开关，看看两条远程 prompt 同时到达时的设计行为与真实边界。';
+      document.querySelector('#race-a').textContent = racing ? '先拿到 active prompt lock，继续执行' : '进入 provider 执行';
+      document.querySelector('#race-b').textContent = racing ? 'HTTP 409 · This task already has a remote turn in progress' : '等待 Alex 完成后再发送';
+      document.querySelector('#race-b-card').classList.toggle('blocked', racing);
+    });
+  </script>
+</body>
+</html>

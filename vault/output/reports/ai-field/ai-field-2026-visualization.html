@@ -1,0 +1,2544 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="《AI 现场：变化为什么发生》的因果研究可视化：从互联网的诞生到 AI 的历史条件、主体利益与制度结果。">
+  <title>AI 现场 · 变化为什么发生</title>
+  <style>
+    :root {
+      --paper: #f2eee5;
+      --paper-deep: #e7e0d3;
+      --paper-light: #faf7f0;
+      --ink: #1e211f;
+      --muted: #6e6b63;
+      --rule: #bbb3a5;
+      --accent: #a63d2f;
+      --accent-soft: #ead2cb;
+      --evidence: #2f5b58;
+      --evidence-soft: #d7e3df;
+      --inference: #916a28;
+      --inference-soft: #e9ddc4;
+      --unknown: #77736b;
+      --shadow: rgba(43, 39, 32, 0.12);
+      --max-width: 1180px;
+      --serif: "Songti SC", "STSong", "Noto Serif CJK SC", Georgia, serif;
+      --sans: Inter, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--paper);
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(30, 33, 31, 0.025) 1px, transparent 1px),
+        var(--paper);
+      background-size: 100% 32px;
+      font-family: var(--sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    ::selection {
+      background: var(--accent-soft);
+      color: var(--ink);
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 8px;
+      left: 8px;
+      z-index: 100;
+      transform: translateY(-180%);
+      padding: 8px 12px;
+      background: var(--ink);
+      color: var(--paper-light);
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(98, 91, 80, 0.34);
+      background: rgba(242, 238, 229, 0.92);
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min(calc(100% - 40px), var(--max-width));
+      min-height: 58px;
+      margin: 0 auto;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .brand strong {
+      font-family: var(--serif);
+      font-size: 18px;
+      letter-spacing: 0.08em;
+    }
+
+    .brand small {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    nav a {
+      position: relative;
+      color: var(--muted);
+      font-size: 13px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    nav a::after {
+      position: absolute;
+      right: 0;
+      bottom: -8px;
+      left: 0;
+      height: 2px;
+      content: "";
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 180ms ease;
+    }
+
+    nav a:hover,
+    nav a:focus-visible,
+    nav a[aria-current="true"] {
+      color: var(--ink);
+    }
+
+    nav a[aria-current="true"]::after {
+      transform: scaleX(1);
+    }
+
+    main {
+      overflow: clip;
+    }
+
+    .hero {
+      position: relative;
+      width: min(calc(100% - 40px), var(--max-width));
+      min-height: 720px;
+      margin: 0 auto;
+      padding: 104px 0 80px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .hero::before {
+      position: absolute;
+      top: 72px;
+      right: 0;
+      width: min(42vw, 460px);
+      height: min(42vw, 460px);
+      content: "";
+      border: 1px solid rgba(166, 61, 47, 0.28);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      position: absolute;
+      top: 95px;
+      right: 24px;
+      display: grid;
+      width: min(37vw, 400px);
+      height: min(37vw, 400px);
+      content: "EVIDENCE\A AUDITED";
+      place-items: center;
+      border: 2px solid rgba(166, 61, 47, 0.22);
+      border-radius: 50%;
+      color: rgba(166, 61, 47, 0.22);
+      font-family: var(--mono);
+      font-size: clamp(14px, 2vw, 26px);
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      line-height: 1.35;
+      text-align: center;
+      white-space: pre;
+      transform: rotate(-8deg);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      margin: 0 0 28px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 820px;
+      margin-bottom: 24px;
+      font-family: var(--serif);
+      font-size: clamp(70px, 13vw, 170px);
+      font-weight: 600;
+      letter-spacing: -0.075em;
+      line-height: 0.82;
+    }
+
+    .hero-subtitle {
+      position: relative;
+      z-index: 1;
+      max-width: 760px;
+      margin-bottom: 38px;
+      font-family: var(--serif);
+      font-size: clamp(26px, 4vw, 48px);
+      line-height: 1.24;
+    }
+
+    .hero-thesis {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin-bottom: 52px;
+      padding: 18px 0 18px 24px;
+      border-left: 3px solid var(--accent);
+      font-size: clamp(18px, 2vw, 24px);
+      line-height: 1.6;
+    }
+
+    .hero-thesis strong {
+      color: var(--accent);
+      font-weight: 650;
+    }
+
+    .archive-meta {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(120px, 1fr));
+      max-width: 780px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .archive-meta div {
+      padding: 14px 14px 14px 0;
+    }
+
+    .archive-meta div + div {
+      padding-left: 18px;
+      border-left: 1px solid var(--rule);
+    }
+
+    .archive-meta dt {
+      margin-bottom: 3px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .archive-meta dd {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .section {
+      width: min(calc(100% - 40px), var(--max-width));
+      margin: 0 auto;
+      padding: 110px 0;
+      border-bottom: 1px solid var(--rule);
+      scroll-margin-top: 58px;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 800px) minmax(220px, 280px);
+      gap: 72px;
+    }
+
+    .section-head {
+      max-width: 820px;
+      margin-bottom: 64px;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .section-kicker::before {
+      width: 30px;
+      height: 1px;
+      content: "";
+      background: currentColor;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-family: var(--serif);
+      font-size: clamp(42px, 6vw, 76px);
+      font-weight: 600;
+      letter-spacing: -0.045em;
+      line-height: 1.08;
+    }
+
+    .section-lead {
+      max-width: 760px;
+      color: #393a36;
+      font-size: clamp(17px, 2vw, 21px);
+    }
+
+    .margin-note {
+      position: sticky;
+      top: 92px;
+      align-self: start;
+      padding-top: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .margin-note strong {
+      display: block;
+      margin-bottom: 9px;
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .margin-note p {
+      margin-bottom: 18px;
+    }
+
+    .annotation {
+      padding-left: 14px;
+      border-left: 2px solid var(--accent);
+    }
+
+    .type {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .type::before {
+      width: 7px;
+      height: 7px;
+      content: "";
+      border: 1px solid currentColor;
+      border-radius: 50%;
+    }
+
+    .type.fact {
+      color: var(--evidence);
+    }
+
+    .type.fact::before {
+      background: var(--evidence);
+    }
+
+    .type.inference {
+      color: var(--inference);
+    }
+
+    .type.inference::before {
+      background: repeating-linear-gradient(135deg, var(--inference) 0 2px, transparent 2px 4px);
+    }
+
+    .type.unknown {
+      color: var(--unknown);
+    }
+
+    .causal-spine {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      overflow-x: auto;
+      margin: 6px 0 34px;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      scrollbar-color: var(--accent) var(--paper-deep);
+    }
+
+    .cause-step {
+      position: relative;
+      min-width: 120px;
+      min-height: 190px;
+      padding: 22px 18px;
+    }
+
+    .cause-step + .cause-step {
+      border-left: 1px solid var(--rule);
+    }
+
+    .cause-step::after {
+      position: absolute;
+      top: 27px;
+      right: -7px;
+      z-index: 2;
+      width: 12px;
+      height: 12px;
+      content: "";
+      border-top: 1px solid var(--rule);
+      border-right: 1px solid var(--rule);
+      background: var(--paper);
+      transform: rotate(45deg);
+    }
+
+    .cause-step:last-child::after {
+      display: none;
+    }
+
+    .cause-step .num {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .cause-step h3 {
+      margin: 28px 0 9px;
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.22;
+    }
+
+    .cause-step p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .causal-caveat {
+      max-width: 900px;
+      margin: 0 0 34px;
+      padding: 18px 22px;
+      border-left: 3px solid var(--inference);
+      background: rgba(233, 221, 196, 0.46);
+      color: #49453d;
+      font-size: 14px;
+    }
+
+    .revolution-band {
+      display: grid;
+      grid-template-columns: minmax(170px, 0.65fr) minmax(0, 2fr);
+      gap: 34px;
+      margin-bottom: 64px;
+      padding: 26px 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .revolution-band h3 {
+      margin-bottom: 5px;
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .revolution-band small {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .revolution-chain {
+      margin-bottom: 10px;
+      font-family: var(--serif);
+      font-size: clamp(18px, 2.2vw, 27px);
+      line-height: 1.62;
+    }
+
+    .revolution-note {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 68px;
+    }
+
+    .case-card {
+      display: flex;
+      min-height: 480px;
+      flex-direction: column;
+      padding: 26px 24px 22px;
+      border: 1px solid var(--rule);
+      background: rgba(250, 247, 240, 0.54);
+      box-shadow: 0 10px 28px rgba(43, 39, 32, 0.04);
+    }
+
+    .case-card.ai {
+      border-top: 4px solid var(--accent);
+      padding-top: 23px;
+    }
+
+    .case-label {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .case-card h3 {
+      min-height: 70px;
+      margin: 12px 0 20px;
+      font-family: var(--serif);
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1.18;
+    }
+
+    .mechanism {
+      margin: 0;
+    }
+
+    .mechanism div {
+      padding: 11px 0;
+      border-top: 1px solid rgba(187, 179, 165, 0.7);
+    }
+
+    .mechanism dt {
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .mechanism dd {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .case-card .evidence-button {
+      margin-top: auto;
+      padding-top: 20px;
+    }
+
+    .actor-map {
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .actor-map-head,
+    .actor-row {
+      display: grid;
+      grid-template-columns: 1.1fr 1.4fr 1.25fr;
+      gap: 24px;
+      padding: 17px 0;
+    }
+
+    .actor-map-head {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .actor-row {
+      border-top: 1px solid var(--rule);
+      font-size: 13px;
+    }
+
+    .actor-row strong {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .actor-row span {
+      color: #3e3d39;
+    }
+
+    .view-switch {
+      display: inline-flex;
+      margin-bottom: 34px;
+      padding: 3px;
+      border: 1px solid var(--rule);
+      background: rgba(250, 247, 240, 0.45);
+    }
+
+    .view-switch button {
+      min-height: 36px;
+      padding: 6px 14px;
+      border: 0;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .view-switch button[aria-pressed="true"] {
+      color: var(--paper-light);
+      background: var(--ink);
+    }
+
+    .timeline {
+      position: relative;
+    }
+
+    .timeline::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 41px;
+      width: 1px;
+      content: "";
+      background: var(--rule);
+    }
+
+    .layer {
+      position: relative;
+      display: grid;
+      grid-template-columns: 84px minmax(0, 1fr);
+      min-height: 210px;
+      padding: 0 0 44px;
+    }
+
+    .layer:last-child {
+      padding-bottom: 0;
+    }
+
+    .layer-index {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      width: 48px;
+      height: 48px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--rule);
+      border-radius: 50%;
+      color: var(--muted);
+      background: var(--paper);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .layer:last-child .layer-index {
+      border-color: var(--accent);
+      color: var(--paper-light);
+      background: var(--accent);
+    }
+
+    .layer-card {
+      padding: 2px 0 28px;
+      border-bottom: 1px solid rgba(187, 179, 165, 0.7);
+    }
+
+    .layer:last-child .layer-card {
+      border-bottom: 0;
+    }
+
+    .layer-topline {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .layer h3 {
+      margin-bottom: 0;
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.6vw, 40px);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+    }
+
+    .era {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+
+    .action-chain {
+      margin-bottom: 18px;
+      color: var(--accent);
+      font-family: var(--serif);
+      font-size: 18px;
+    }
+
+    .layer-fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .field {
+      transition: opacity 160ms ease;
+    }
+
+    .field span {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .field p {
+      margin-bottom: 0;
+      font-size: 14px;
+    }
+
+    .history[data-view="action"] .field.power {
+      display: none;
+    }
+
+    .history[data-view="power"] .field.user {
+      display: none;
+    }
+
+    .history[data-view="action"] .layer-fields,
+    .history[data-view="power"] .layer-fields {
+      grid-template-columns: 1fr;
+    }
+
+    .evidence-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 17px;
+      padding: 0;
+      border: 0;
+      color: var(--evidence);
+      background: transparent;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 4px;
+    }
+
+    .evidence-button::before {
+      content: "[E]";
+    }
+
+    .signal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 1px solid var(--ink);
+    }
+
+    .signal {
+      min-height: 260px;
+      padding: 30px 28px 28px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .signal:nth-child(odd) {
+      padding-right: 36px;
+      border-right: 1px solid var(--rule);
+    }
+
+    .signal:nth-child(even) {
+      padding-left: 36px;
+    }
+
+    .signal-number {
+      margin: 14px 0 12px;
+      font-family: var(--serif);
+      font-size: clamp(44px, 7vw, 80px);
+      letter-spacing: -0.055em;
+      line-height: 1;
+    }
+
+    .signal h3 {
+      margin-bottom: 8px;
+      font-size: 17px;
+    }
+
+    .signal p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .relationship {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 72px;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .relationship-step {
+      position: relative;
+      min-height: 220px;
+      padding: 24px 20px;
+    }
+
+    .relationship-step + .relationship-step {
+      border-left: 1px solid var(--rule);
+    }
+
+    .relationship-step::after {
+      position: absolute;
+      top: 31px;
+      right: -7px;
+      z-index: 2;
+      width: 12px;
+      height: 12px;
+      content: "";
+      border-top: 1px solid var(--rule);
+      border-right: 1px solid var(--rule);
+      background: var(--paper);
+      transform: rotate(45deg);
+    }
+
+    .relationship-step:last-child::after {
+      display: none;
+    }
+
+    .relationship-step .num {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .relationship-step h3 {
+      margin: 22px 0 10px;
+      font-family: var(--serif);
+      font-size: 34px;
+      font-weight: 600;
+    }
+
+    .relationship-step p {
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .state {
+      display: inline-block;
+      padding: 3px 7px;
+      border: 1px solid currentColor;
+      color: var(--unknown);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .state.strong {
+      color: var(--evidence);
+      background: var(--evidence-soft);
+    }
+
+    .state.partial {
+      color: var(--inference);
+      background: repeating-linear-gradient(135deg, var(--inference-soft) 0 6px, transparent 6px 12px);
+    }
+
+    .ladder-wrap {
+      position: relative;
+      margin-top: 56px;
+    }
+
+    .ladder {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(118px, 1fr));
+      overflow-x: auto;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      scrollbar-color: var(--accent) var(--paper-deep);
+    }
+
+    .ladder button {
+      position: relative;
+      min-width: 118px;
+      min-height: 176px;
+      padding: 20px 14px;
+      border: 0;
+      border-right: 1px solid var(--rule);
+      color: var(--ink);
+      background: transparent;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .ladder button:last-child {
+      border-right: 0;
+    }
+
+    .ladder button::before {
+      display: block;
+      width: 18px;
+      height: 18px;
+      margin-bottom: 36px;
+      content: "";
+      border: 1px solid var(--unknown);
+      border-radius: 50%;
+      background: var(--paper);
+    }
+
+    .ladder button[data-state="strong"]::before {
+      border-color: var(--evidence);
+      background: var(--evidence);
+    }
+
+    .ladder button[data-state="partial"]::before {
+      border-color: var(--inference);
+      background: repeating-linear-gradient(135deg, var(--inference) 0 2px, transparent 2px 4px);
+    }
+
+    .ladder button[aria-selected="true"] {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+      background: rgba(250, 247, 240, 0.75);
+    }
+
+    .ladder .ladder-index {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+    }
+
+    .ladder .ladder-name {
+      display: block;
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
+    .ladder-detail {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(220px, 0.7fr);
+      gap: 48px;
+      min-height: 190px;
+      padding: 28px 0 0;
+    }
+
+    .ladder-detail h3 {
+      margin-bottom: 10px;
+      font-family: var(--serif);
+      font-size: 30px;
+    }
+
+    .ladder-detail p {
+      margin-bottom: 0;
+    }
+
+    .ladder-gap {
+      padding-left: 16px;
+      border-left: 2px solid var(--accent);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .control-stack {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 48px;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .control-card {
+      position: relative;
+      min-height: 310px;
+      padding: 28px 26px;
+    }
+
+    .control-card + .control-card {
+      border-left: 1px solid var(--rule);
+    }
+
+    .control-card .control-label {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .control-card h3 {
+      margin: 18px 0 12px;
+      font-family: var(--serif);
+      font-size: 31px;
+      line-height: 1.2;
+    }
+
+    .control-card p {
+      margin-bottom: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .control-card ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-size: 13px;
+    }
+
+    .control-card li {
+      padding: 7px 0;
+      border-top: 1px solid rgba(187, 179, 165, 0.62);
+    }
+
+    .control-thesis {
+      margin: 46px 0 0;
+      padding: 25px 28px;
+      border: 1px solid var(--accent);
+      background: rgba(234, 210, 203, 0.38);
+      font-family: var(--serif);
+      font-size: clamp(22px, 3vw, 32px);
+    }
+
+    .contract {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(8, minmax(100px, 1fr));
+      overflow-x: auto;
+      margin: 54px 0 44px;
+      padding-bottom: 14px;
+    }
+
+    .contract::before {
+      position: absolute;
+      top: 37px;
+      right: 6%;
+      left: 6%;
+      height: 1px;
+      content: "";
+      background: var(--rule);
+    }
+
+    .contract-step {
+      position: relative;
+      z-index: 1;
+      min-width: 100px;
+      text-align: center;
+    }
+
+    .contract-step span {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      margin: 16px auto 13px;
+      place-items: center;
+      border: 1px solid var(--rule);
+      border-radius: 50%;
+      color: var(--muted);
+      background: var(--paper);
+      font-family: var(--mono);
+      font-size: 10px;
+    }
+
+    .contract-step strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .contract-step small {
+      display: block;
+      margin-top: 5px;
+      padding: 0 7px;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .loop {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 46px;
+      border: 1px solid var(--ink);
+    }
+
+    .loop-item {
+      position: relative;
+      min-height: 190px;
+      padding: 26px;
+    }
+
+    .loop-item + .loop-item {
+      border-left: 1px solid var(--rule);
+    }
+
+    .loop-item + .loop-item::before {
+      position: absolute;
+      top: 50%;
+      left: -8px;
+      z-index: 2;
+      width: 14px;
+      height: 14px;
+      content: "";
+      border-top: 1px solid var(--ink);
+      border-right: 1px solid var(--ink);
+      background: var(--paper);
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .loop-item h3 {
+      margin-bottom: 12px;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 16px;
+      letter-spacing: 0.06em;
+    }
+
+    .loop-item p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .questions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 42px;
+    }
+
+    .question {
+      padding: 22px 0;
+      border-top: 2px solid var(--accent);
+      font-family: var(--serif);
+      font-size: 21px;
+      line-height: 1.45;
+    }
+
+    .known-unknown {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 54px;
+      margin-top: 54px;
+    }
+
+    .known-unknown article {
+      padding-top: 22px;
+      border-top: 1px solid var(--ink);
+    }
+
+    .known-unknown h3 {
+      margin-bottom: 18px;
+      font-family: var(--serif);
+      font-size: 30px;
+    }
+
+    .known-unknown ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .known-unknown li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(187, 179, 165, 0.62);
+      font-size: 14px;
+    }
+
+    .footer {
+      width: min(calc(100% - 40px), var(--max-width));
+      margin: 0 auto;
+      padding: 56px 0 72px;
+    }
+
+    .footer-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .footer h2 {
+      max-width: 680px;
+      margin-bottom: 16px;
+      font-size: clamp(34px, 5vw, 60px);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+    }
+
+    .footer-stamp {
+      flex: 0 0 auto;
+      padding: 13px 16px;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-align: center;
+      transform: rotate(-3deg);
+    }
+
+    dialog {
+      width: min(calc(100% - 32px), 640px);
+      max-height: min(82vh, 720px);
+      padding: 0;
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      color: var(--ink);
+      background: var(--paper-light);
+      box-shadow: 0 24px 80px var(--shadow);
+    }
+
+    dialog::backdrop {
+      background: rgba(30, 33, 31, 0.58);
+      backdrop-filter: blur(3px);
+    }
+
+    .dialog-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .dialog-head span {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+
+    .dialog-close {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--rule);
+      color: var(--ink);
+      background: transparent;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .dialog-body {
+      padding: 28px 22px 30px;
+    }
+
+    .dialog-body h3 {
+      margin-bottom: 14px;
+      font-family: var(--serif);
+      font-size: 30px;
+      line-height: 1.3;
+    }
+
+    .dialog-body p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .dialog-body a {
+      display: inline-flex;
+      margin-top: 8px;
+      color: var(--evidence);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: opacity 380ms ease, transform 380ms ease;
+    }
+
+    .has-reveal-observer .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    .has-reveal-observer .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        min-height: 680px;
+      }
+
+      .hero::before,
+      .hero::after {
+        opacity: 0.58;
+      }
+
+      .section-grid {
+        grid-template-columns: 1fr;
+        gap: 38px;
+      }
+
+      .case-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .revolution-band {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .case-card {
+        min-height: 0;
+      }
+
+      .margin-note {
+        position: static;
+        max-width: 720px;
+        padding: 18px 0 0;
+        border-top: 1px solid var(--rule);
+      }
+
+      .relationship,
+      .control-stack {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .relationship-step:nth-child(3),
+      .control-card:nth-child(3) {
+        border-left: 0;
+        border-top: 1px solid var(--rule);
+      }
+
+      .relationship-step:nth-child(2)::after {
+        display: none;
+      }
+
+      .control-card:nth-child(3) {
+        grid-column: 1 / -1;
+      }
+
+      .questions {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .topbar-inner {
+        width: min(calc(100% - 28px), var(--max-width));
+      }
+
+      .brand small {
+        display: none;
+      }
+
+      nav {
+        gap: 8px;
+      }
+
+      nav a {
+        font-size: 12px;
+      }
+
+      .hero,
+      .section,
+      .footer {
+        width: min(calc(100% - 28px), var(--max-width));
+      }
+
+      .hero {
+        min-height: 0;
+        padding: 72px 0 58px;
+      }
+
+      .hero::before {
+        top: 36px;
+        right: -90px;
+        width: 280px;
+        height: 280px;
+      }
+
+      .hero::after {
+        top: 53px;
+        right: -66px;
+        width: 230px;
+        height: 230px;
+        font-size: 14px;
+      }
+
+      h1 {
+        font-size: clamp(72px, 27vw, 118px);
+      }
+
+      .hero-subtitle {
+        max-width: 92%;
+        font-size: 28px;
+      }
+
+      .hero-thesis {
+        padding-left: 16px;
+        font-size: 17px;
+      }
+
+      .archive-meta {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .archive-meta div:nth-child(3) {
+        padding-left: 0;
+        border-top: 1px solid var(--rule);
+        border-left: 0;
+      }
+
+      .archive-meta div:nth-child(4) {
+        border-top: 1px solid var(--rule);
+      }
+
+      .section {
+        padding: 82px 0;
+      }
+
+      .section-head {
+        margin-bottom: 44px;
+      }
+
+      h2 {
+        font-size: 44px;
+      }
+
+      .layer {
+        grid-template-columns: 58px minmax(0, 1fr);
+        min-height: 0;
+      }
+
+      .timeline::before {
+        left: 22px;
+      }
+
+      .layer-index {
+        width: 44px;
+        height: 44px;
+      }
+
+      .layer-topline {
+        display: block;
+      }
+
+      .era {
+        display: block;
+        margin-top: 5px;
+      }
+
+      .layer-fields,
+      .history[data-view="all"] .layer-fields {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .actor-map-head {
+        display: none;
+      }
+
+      .actor-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+        padding: 20px 0;
+      }
+
+      .actor-row span::before {
+        display: block;
+        margin-bottom: 2px;
+        color: var(--muted);
+        font-family: var(--mono);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .actor-row span:nth-child(2)::before {
+        content: "推动理由";
+      }
+
+      .actor-row span:nth-child(3)::before {
+        content: "约束 / 反作用";
+      }
+
+      .signal-grid,
+      .relationship,
+      .control-stack,
+      .loop,
+      .known-unknown {
+        grid-template-columns: 1fr;
+      }
+
+      .signal,
+      .signal:nth-child(odd),
+      .signal:nth-child(even) {
+        min-height: 0;
+        padding: 26px 0;
+        border-right: 0;
+      }
+
+      .relationship-step + .relationship-step,
+      .relationship-step:nth-child(3),
+      .control-card + .control-card,
+      .control-card:nth-child(3),
+      .loop-item + .loop-item {
+        border-top: 1px solid var(--rule);
+        border-left: 0;
+      }
+
+      .relationship-step::after,
+      .loop-item + .loop-item::before {
+        display: none;
+      }
+
+      .control-card:nth-child(3) {
+        grid-column: auto;
+      }
+
+      .ladder-detail {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .contract {
+        grid-template-columns: repeat(8, 112px);
+      }
+
+      .footer-row {
+        display: block;
+      }
+
+      .footer-stamp {
+        display: inline-block;
+        margin-top: 36px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top" aria-label="返回顶部">
+        <strong>AI 现场</strong>
+        <small>FIELD REPORT / 2026</small>
+      </a>
+      <nav aria-label="页面章节">
+        <a href="#causality">变化原因</a>
+        <a href="#history">历史关系</a>
+        <a href="#field">2026 现场</a>
+        <a href="#evidence">证据阶梯</a>
+        <a href="#control">控制权</a>
+        <a href="#product">产品空间</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <p class="eyebrow">Causal field report · China-first · 2000—2026</p>
+      <h1>AI<br>现场</h1>
+      <p class="hero-subtitle">变化为什么发生，而不只是发生了什么</p>
+      <p class="hero-thesis">
+        上一轮数字化的成功会制造下一轮稀缺。AI 让<strong>认知生产变便宜</strong>，但<strong>可信完成仍昂贵</strong>。
+      </p>
+      <dl class="archive-meta">
+        <div>
+          <dt>Report date</dt>
+          <dd>2026-07-30</dd>
+        </div>
+        <div>
+          <dt>Evidence cutoff</dt>
+          <dd>2026-07-30</dd>
+        </div>
+        <div>
+          <dt>Causal sources</dt>
+          <dd>47 URLs</dd>
+        </div>
+        <div>
+          <dt>Status</dt>
+          <dd>Causal core revised</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="section" id="causality">
+      <header class="section-head reveal">
+        <span class="section-kicker">01 / Why change happens</span>
+        <h2>历史不是事件接力，<br>而是关系被迫重组</h2>
+        <p class="section-lead">
+          一项新能力不会自动变成一个时代。必须追问：旧关系为什么开始失灵，谁有利益推动改变，谁能把资源组织起来，以及新安排是否真的接管了日常事务。
+        </p>
+      </header>
+
+      <div class="causal-spine reveal" aria-label="从物质条件到制度结果的因果审计链">
+        <article class="cause-step">
+          <span class="num">01</span>
+          <h3>物质条件</h3>
+          <p>什么能力第一次可用，或成本第一次降到可扩散。</p>
+        </article>
+        <article class="cause-step">
+          <span class="num">02</span>
+          <h3>制度失配</h3>
+          <p>旧流程在哪项真实任务上越来越昂贵或失灵。</p>
+        </article>
+        <article class="cause-step">
+          <span class="num">03</span>
+          <h3>主体利益</h3>
+          <p>谁受益、谁受损、谁有动力吸收或阻止改变。</p>
+        </article>
+        <article class="cause-step">
+          <span class="num">04</span>
+          <h3>组织能力</h3>
+          <p>资金、标准、共同体、渠道和执行如何汇合。</p>
+        </article>
+        <article class="cause-step">
+          <span class="num">05</span>
+          <h3>扩散阈值</h3>
+          <p>哪些互补条件让局部试验成为重复的日常动作。</p>
+        </article>
+        <article class="cause-step">
+          <span class="num">06</span>
+          <h3>制度结果</h3>
+          <p>劳动、决定权、收益与失败责任最终怎样重排。</p>
+        </article>
+      </div>
+
+      <p class="causal-caveat reveal">
+        <strong>这不是六步历史定律。</strong> 它是一份因果审计单：每一个箭头都必须找到主体、资源、组织和反例。同样的技术可以被旧秩序吸收，也可以形成新制度；苦难或能力本身都不会自动制造革命。
+      </p>
+
+      <div class="revolution-band reveal">
+        <div>
+          <span class="case-label">Why revolution</span>
+          <h3>苦难不等于革命</h3>
+          <small>压力解释不满，组织与权力解释变化</small>
+        </div>
+        <div>
+          <p class="revolution-chain">长期物质变化 → 制度失配 → 旧秩序吸收能力下降 → 主体分化与组织化 → 触发事件同步预期 → 替代权威取得资源和服从 → 新规则制度化</p>
+          <p class="revolution-note">这是本文从多种比较研究中综合出的常见机制，不是各理论共同检验过的必要条件。触发事件主要解释“为什么是现在”；新组织能否处理财政、治安、裁决和日常事务，才接近说明权力是否真的转移。旧政府倒下也不等于新秩序成立。</p>
+          <button class="evidence-button" type="button" data-cite="revolution-mechanism">查看比较证据</button>
+        </div>
+      </div>
+
+      <div class="case-grid">
+        <article class="case-card reveal">
+          <span class="case-label">Case 01 · Internet</span>
+          <h3>互联网不是源于一个抽象的“连接需求”</h3>
+          <dl class="mechanism">
+            <div>
+              <dt>物质条件</dt>
+              <dd>昂贵计算机、分时系统、电话基础设施与跨地域科研组织已经形成。</dd>
+            </div>
+            <div>
+              <dt>真实矛盾</dt>
+              <dd>机器、软件和各自建设的网络仍是孤岛；电话电路的组织方式也不适合突发数据流。</dd>
+            </div>
+            <div>
+              <dt>组织者</dt>
+              <dd>DARPA、大学、RFC 共同体、NSF 与后来的商业接入者承担长期协调。</dd>
+            </div>
+            <div>
+              <dt>制度结果</dt>
+              <dd>分组交换、TCP/IP 和开放文档把单一试验变成任何兼容网络都能加入的“网络之网”。</dd>
+            </div>
+          </dl>
+          <button class="evidence-button" type="button" data-cite="internet-origin">查看因果证据</button>
+        </article>
+
+        <article class="case-card reveal">
+          <span class="case-label">Case 02 · Platform China</span>
+          <h3>连接越成功，信任、注意力和履约越稀缺</h3>
+          <dl class="mechanism">
+            <div>
+              <dt>物质条件</dt>
+              <dd>大众接入、移动账户、数字支付、地图与智能手机逐步普及。</dd>
+            </div>
+            <div>
+              <dt>真实矛盾</dt>
+              <dd>信息丰富不等于找得到，陌生人相遇不等于敢付款，找到服务不等于现实按时发生。</dd>
+            </div>
+            <div>
+              <dt>组织者</dt>
+              <dd>平台把商家、创作者、物流、骑手、广告主和消费者组织进同一规则系统。</dd>
+            </div>
+            <div>
+              <dt>制度结果</dt>
+              <dd>索引、担保、评价、推荐、派单和售后成为新基础设施，也形成新的入口权与劳动分配。</dd>
+            </div>
+          </dl>
+          <button class="evidence-button" type="button" data-cite="platform-contradiction">查看因果证据</button>
+        </article>
+
+        <article class="case-card ai reveal">
+          <span class="case-label">Case 03 · AI</span>
+          <h3>AI 回应的是数字世界留下的“最后协调劳动”</h3>
+          <dl class="mechanism">
+            <div>
+              <dt>物质条件</dt>
+              <dd>Web 数据、Transformer、scaling、算力资本、instruction tuning 与对话分发在 2022 年前后汇合。</dd>
+            </div>
+            <div>
+              <dt>真实矛盾</dt>
+              <dd>软件系统已经很多，人却仍要在系统之间读、写、搬运、解释、核验和追踪。</dd>
+            </div>
+            <div>
+              <dt>已发生</dt>
+              <dd>答案、草稿、代码、图像和方案等候选认知产物的边际生产成本显著下降。</dd>
+            </div>
+            <div>
+              <dt>尚未解决</dt>
+              <dd>上下文、权限、事实核验、连续执行、例外处理和失败责任仍然昂贵。</dd>
+            </div>
+          </dl>
+          <button class="evidence-button" type="button" data-cite="ai-convergence">查看因果证据</button>
+        </article>
+      </div>
+
+      <header class="section-head reveal">
+        <span class="section-kicker">Actor positions</span>
+        <h2>同一场 AI 浪潮里，<br>各方推动的不是同一件事</h2>
+        <p class="section-lead">
+          “厂商都在做 AI”掩盖了位置差异。每个主体都试图把新能力导向最符合自身资源和收益结构的形态。
+        </p>
+      </header>
+
+      <div class="actor-map reveal" aria-label="AI 时代主体位置与利益">
+        <div class="actor-map-head">
+          <span>主体位置</span>
+          <span>推动理由</span>
+          <span>约束 / 反作用</span>
+        </div>
+        <div class="actor-row">
+          <strong>芯片、云与模型公司</strong>
+          <span>扩大训练、推理和入口需求，把能力做成基础设施或默认路由。</span>
+          <span>前沿建设资本密集；推理降价也会压缩单位价值。</span>
+        </div>
+        <div class="actor-row">
+          <strong>既有互联网与软件平台</strong>
+          <span>用 AI 增强搜索、广告、办公、交易和服务，同时保住账号与真实状态。</span>
+          <span>可能把新关系吸收为旧产品功能，也受历史系统与组织激励约束。</span>
+        </div>
+        <div class="actor-row">
+          <strong>AI-native 垂直应用</strong>
+          <span>绕过旧界面，争夺任务过程、验收标准与结果责任。</span>
+          <span>易被模型或套件吸收；必须证明相对裸模型的增量与完整失败经济。</span>
+        </div>
+        <div class="actor-row">
+          <strong>管理者、劳动者与用户</strong>
+          <span>分别追求产出、时间、收入、便利或能力扩张。</span>
+          <span>提效收益未必归使用者；核验、例外和责任可能继续留给人。</span>
+        </div>
+        <div class="actor-row">
+          <strong>国家、监管者与社会机构</strong>
+          <span>争取产业能力、公共效率与安全边界。</span>
+          <span>必须处理数据、版权、劳动、竞争和事故责任，规则也会改变扩散路径。</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section history" id="history" data-view="all">
+      <div class="section-grid">
+        <div>
+          <header class="section-head reveal">
+            <span class="section-kicker">02 / Historical layers</span>
+            <h2>不是七个时代，<br>而是七层关系</h2>
+            <p class="section-lead">
+              互联网反复把用户可见的协调工作，重组为可计算、可确认、可履约的状态。后来的关系层没有取代前面的底座，它们彼此叠加。
+            </p>
+          </header>
+
+          <div class="view-switch" aria-label="切换时间轴观察角度">
+            <button type="button" data-view="all" aria-pressed="true">完整叙事</button>
+            <button type="button" data-view="action" aria-pressed="false">只看用户动作</button>
+            <button type="button" data-view="power" aria-pressed="false">只看控制点</button>
+          </div>
+
+          <div class="timeline">
+            <article class="layer reveal">
+              <div class="layer-index">01</div>
+              <div class="layer-card">
+                <div class="layer-topline">
+                  <h3>连接与索引</h3>
+                  <span class="era">2000s → 公共底座</span>
+                </div>
+                <p class="action-chain">上网 · 找 · 聊</p>
+                <div class="layer-fields">
+                  <div class="field user">
+                    <span>用户动作</span>
+                    <p>提出 query、保存联系人、跨时间继续一段关系。</p>
+                  </div>
+                  <div class="field power">
+                    <span>新的控制点</span>
+                    <p>入口、索引、在线身份与社交图谱。</p>
+                  </div>
+                </div>
+                <button class="evidence-button" type="button" data-cite="connection">查看代表证据</button>
+              </div>
+            </article>
+
+            <article class="layer reveal">
+              <div class="layer-index">02</div>
+              <div class="layer-card">
+                <div class="layer-topline">
+                  <h3>可信交易</h3>
+                  <span class="era">2003+ → 制度化</span>
+                </div>
+                <p class="action-chain">下单 · 托管付款 · 等包裹</p>
+                <div class="layer-fields">
+                  <div class="field user">
+                    <span>用户动作</span>
+                    <p>向陌生人付款，并相信订单、证据与申诉流程。</p>
+                  </div>
+                  <div class="field power">
+                    <span>新的控制点</span>
+                    <p>账户、担保、评价、商家规则与物流状态。</p>
+                  </div>
+                </div>
+                <button class="evidence-button" type="button" data-cite="commerce">查看代表证据</button>
+              </div>
+            </article>
+
+            <article class="layer reveal">
+              <div class="layer-index">03</div>
+              <div class="layer-card">
+                <div class="layer-topline">
+                  <h3>移动现场</h3>
+                  <span class="era">2011+ → 进入日常</span>
+                </div>
+                <p class="action-chain">随时在线 · 扫码 · 定位</p>
+                <div class="layer-fields">
+                  <div class="field user">
+                    <span>用户动作</span>
+                    <p>不再“访问网络”，而是持续携带身份与网络。</p>
+                  </div>
+                  <div class="field power">
+                    <span>新的控制点</span>
+                    <p>移动账户、支付凭证、二维码、位置与服务入口。</p>
+                  </div>
+                </div>
+                <button class="evidence-button" type="button" data-cite="mobile">查看代表证据</button>
+              </div>
+            </article>
+
+            <article class="layer reveal">
+              <div class="layer-index">04</div>
+              <div class="layer-card">
+                <div class="layer-topline">
+                  <h3>注意力分配</h3>
+                  <span class="era">2016+ → 人口级机制</span>
+                </div>
+                <p class="action-chain">刷 · 停留 · 种草</p>
+                <div class="layer-fields">
+                  <div class="field user">
+                    <span>用户动作</span>
+                    <p>不先提出问题，持续对“下一条”作出反馈。</p>
+                  </div>
+                  <div class="field power">
+                    <span>新的控制点</span>
+                    <p>推荐系统、创作者分发、广告竞价与可见性。</p>
+                  </div>
+                </div>
+                <button class="evidence-button" type="button" data-cite="attention">查看代表证据</button>
+              </div>
+            </article>
+
+            <article class="layer reveal">
+              <div class="layer-index">05</div>
+              <div class="layer-card">
+                <div class="layer-topline">
+                  <h3>现实履约</h3>
+                  <span class="era">2012+ → 城市运行</span>
+                </div>
+                <p class="action-chain">点 · 叫 · 到 · 送</p>
+                <div class="layer-fields">
+                  <div class="field user">
+                    <span>用户动作</span>
+                    <p>不只找到服务，而是等待现实按时发生。</p>
+                  </div>
+                  <div class="field power">
+                    <span>新的控制点</span>
+                    <p>供给密度、派单、路线、ETA、售后与异常处理。</p>
+                  </div>
+                </div>
+                <button class="evidence-button" type="button" data-cite="fulfillment">查看代表证据</button>
+              </div>
+            </article>
+
+            <article class="layer reveal">
+              <div class="layer-index">06</div>
+              <div class="layer-card">
+                <div class="layer-topline">
+                  <h3>物理系统软件化</h3>
+                  <span class="era">并行分支 → 持续服务</span>
+                </div>
+                <p class="action-chain">开 · 飞 · 打印 · 充电 · 更新</p>
+                <div class="layer-fields">
+                  <div class="field user">
+                    <span>用户动作</span>
+                    <p>购买不再结束关系，设备持续感知、更新与服务。</p>
+                  </div>
+                  <div class="field power">
+                    <span>新的控制点</span>
+                    <p>软硬件整合、数据闭环、供应链与质量责任。</p>
+                  </div>
+                </div>
+                <button class="evidence-button" type="button" data-cite="physical">查看代表证据</button>
+              </div>
+            </article>
+
+            <article class="layer reveal">
+              <div class="layer-index">07</div>
+              <div class="layer-card">
+                <div class="layer-topline">
+                  <h3>意图与代理行动</h3>
+                  <span class="era">2022+ → 正在形成</span>
+                </div>
+                <p class="action-chain">问 · 交代 · 授权 · 验收</p>
+                <div class="layer-fields">
+                  <div class="field user">
+                    <span>用户动作</span>
+                    <p>用自然语言交代开放目标，尝试让系统跨工具完成。</p>
+                  </div>
+                  <div class="field power">
+                    <span>新的控制点</span>
+                    <p>Context、权限、工具调用、完成证据与结果责任。</p>
+                  </div>
+                </div>
+                <button class="evidence-button" type="button" data-cite="agent">查看代表证据</button>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <aside class="margin-note">
+          <strong>阅读方法</strong>
+          <p class="annotation">关系层是分析单位，不是按年份切断的时代。</p>
+          <p>一项 AI 购物任务仍同时依赖索引、账号、支付、推荐、订单和物流。</p>
+          <span class="type inference">可检验视角</span>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="field">
+      <div class="section-grid">
+        <div>
+          <header class="section-head reveal">
+            <span class="section-kicker">03 / Field notes</span>
+            <h2>2026 年，<br>事情发生到哪一步？</h2>
+            <p class="section-lead">
+              大规模接触已经发生。真正的断层在于：接触、付费、委托和可靠外部执行不是同一件事。
+            </p>
+          </header>
+
+          <div class="signal-grid">
+            <article class="signal reveal">
+              <span class="type fact">事实</span>
+              <div class="signal-number">6.02 亿</div>
+              <h3>过去半年使用过生成式 AI</h3>
+              <p>普及率 42.8%。这是接触口径，不是 MAU、DAU 或深度。</p>
+              <button class="evidence-button" type="button" data-cite="cnn2025">查看来源</button>
+            </article>
+            <article class="signal reveal">
+              <span class="type fact">事实</span>
+              <div class="signal-number">76.0%</div>
+              <h3>用于回答问题</h3>
+              <p>图片/视频、文本加工、总结/纪要/PPT 紧随其后。</p>
+              <button class="evidence-button" type="button" data-cite="cnnuse">查看来源</button>
+            </article>
+            <article class="signal reveal">
+              <span class="type fact">事实</span>
+              <div class="signal-number">88% / 个位数</div>
+              <h3>企业接触广，Agent 深度浅</h3>
+              <p>88% 的受访组织在至少一个职能使用 AI；几乎所有职能的规模化 Agent 部署仍为个位数。</p>
+              <button class="evidence-button" type="button" data-cite="aiindex">查看来源</button>
+            </article>
+            <article class="signal reveal">
+              <span class="type fact">事实</span>
+              <div class="signal-number">1—5%</div>
+              <h3>总工作时间获得 AI 协助</h3>
+              <p>美国代表性调查中的工作时间渗透，远低于“使用过”的人口比例。</p>
+              <button class="evidence-button" type="button" data-cite="nberadoption">查看来源</button>
+            </article>
+          </div>
+
+          <div class="relationship reveal" aria-label="用户与 AI 的四级关系">
+            <article class="relationship-step">
+              <span class="num">01</span>
+              <h3>问</h3>
+              <p>解释、检索、比较、建议；通常可逆，由用户核验。</p>
+              <span class="state strong">大众使用</span>
+            </article>
+            <article class="relationship-step">
+              <span class="num">02</span>
+              <h3>交代</h3>
+              <p>写、改、算、画、编程；形成可继续加工的结果。</p>
+              <span class="state strong">部分重复与付费</span>
+            </article>
+            <article class="relationship-step">
+              <span class="num">03</span>
+              <h3>授权</h3>
+              <p>访问账户、提交、购买、发信；开始影响外部状态。</p>
+              <span class="state partial">供给密集 / 采用有限</span>
+            </article>
+            <article class="relationship-step">
+              <span class="num">04</span>
+              <h3>验收</h3>
+              <p>判断完成、处理例外、承担后果；依赖责任结构。</p>
+              <span class="state">主要仍在人</span>
+            </article>
+          </div>
+        </div>
+
+        <aside class="margin-note">
+          <strong>现场判断</strong>
+          <p class="annotation">当前主流关系是“问”与“交代”，不是完全授权。</p>
+          <p>“Doing”与“automation”也可能只是写作、翻译、规划或编程，不能直接翻译成外部任务已经完成。</p>
+          <span class="type inference">强归纳</span>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="evidence">
+      <header class="section-head reveal">
+        <span class="section-kicker">04 / Evidence ladder</span>
+        <h2>采用不是一个开关</h2>
+        <p class="section-lead">点击每一级，查看它真正能说明什么，以及最常见的证据跳步。</p>
+      </header>
+
+      <div class="ladder-wrap reveal">
+        <div class="ladder" role="tablist" aria-label="AI 采用证据阶梯">
+          <button type="button" role="tab" aria-selected="true" data-level="0" data-state="strong">
+            <span class="ladder-index">01 / 已充分</span>
+            <span class="ladder-name">发布 / 可用</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-level="1" data-state="strong">
+            <span class="ladder-index">02 / 已充分</span>
+            <span class="ladder-name">首次尝试</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-level="2" data-state="partial">
+            <span class="ladder-index">03 / 局部</span>
+            <span class="ladder-name">重复使用</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-level="3" data-state="partial">
+            <span class="ladder-index">04 / 局部</span>
+            <span class="ladder-name">付费留存</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-level="4" data-state="partial">
+            <span class="ladder-index">05 / 已出现</span>
+            <span class="ladder-name">委托意图</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-level="5" data-state="unknown">
+            <span class="ladder-index">06 / 证据稀薄</span>
+            <span class="ladder-name">经验证的外部执行</span>
+          </button>
+          <button type="button" role="tab" aria-selected="false" data-level="6" data-state="unknown">
+            <span class="ladder-index">07 / 尚未普遍</span>
+            <span class="ladder-name">工作流 / 制度变化</span>
+          </button>
+        </div>
+
+        <div class="ladder-detail" role="tabpanel" aria-live="polite">
+          <div>
+            <span class="type fact" id="ladder-type">已有证据</span>
+            <h3 id="ladder-title">发布 / 可用</h3>
+            <p id="ladder-description">功能、API 与工具调用已经进入生产环境，回答的是“供给是否存在”。</p>
+          </div>
+          <p class="ladder-gap" id="ladder-gap">不能推出：用户需要它、会持续回来，或愿意承担外部行动的后果。</p>
+        </div>
+      </div>
+
+      <p class="control-thesis reveal">最大的空白，不在生成；而在从<strong>模糊意图</strong>到<strong>可验收结果</strong>之间。</p>
+    </section>
+
+    <section class="section" id="control">
+      <div class="section-grid">
+        <div>
+          <header class="section-head reveal">
+            <span class="section-kicker">05 / Control points</span>
+            <h2>谁掌握用户的<br>下一步行动？</h2>
+            <p class="section-lead">“最先听见需求”很重要，但真正的行动还依赖权威状态、履约和失败恢复。</p>
+          </header>
+
+          <div class="control-stack reveal">
+            <article class="control-card">
+              <span class="control-label">Layer 01 / Intent</span>
+              <h3>模型公司<br>先听见</h3>
+              <p>通用助手更接近用户最初的开放需求，可以解释、计划与选择工具。</p>
+              <ul>
+                <li>优势：自然语言入口、跨领域重组</li>
+                <li>弱点：不天然拥有库存、付款与组织批准</li>
+              </ul>
+            </article>
+            <article class="control-card">
+              <span class="control-label">Layer 02 / State</span>
+              <h3>既有平台<br>保存现实</h3>
+              <p>办公、电商、社交和本地生活平台保存身份、权限、订单与业务事实。</p>
+              <ul>
+                <li>优势：system of record 与撤销入口</li>
+                <li>弱点：跨平台 Context 破碎、旧流程沉重</li>
+              </ul>
+            </article>
+            <article class="control-card">
+              <span class="control-label">Layer 03 / Outcome</span>
+              <h3>垂直应用<br>组织结果</h3>
+              <p>少数应用尝试拥有过程记录、验收、人工升级与失败处理。</p>
+              <ul>
+                <li>机会：形成新的工作表面与 canonical artifact</li>
+                <li>约束：人工接管、责任与单位经济未充分公开</li>
+              </ul>
+            </article>
+          </div>
+
+          <p class="control-thesis reveal">更耐久的控制点 = 执行资格 + 完成证据 + 失败恢复。</p>
+        </div>
+
+        <aside class="margin-note">
+          <strong>不要混淆</strong>
+          <p class="annotation">MAU 是分发，不是委托深度；“已接入”是供给，不是端到端完成。</p>
+          <p>一笔订单是否付款并送达、一份文件是否获批，仍要由真实状态系统确认。</p>
+          <span class="type inference">强归纳</span>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="product">
+      <header class="section-head reveal">
+        <span class="section-kicker">06 / Product hypothesis</span>
+        <h2>产品原子不只是 Prompt，<br>而是一份结果契约</h2>
+        <p class="section-lead">
+          历史牵引出的巧思，不是把聊天框放到每个页面；而是继续把结果、边界与责任做成用户可见的状态。
+        </p>
+      </header>
+
+      <div class="contract reveal" aria-label="结果契约的八个组成">
+        <div class="contract-step"><span>01</span><strong>目标</strong><small>最终改变什么</small></div>
+        <div class="contract-step"><span>02</span><strong>Context</strong><small>依据与真实输入</small></div>
+        <div class="contract-step"><span>03</span><strong>范围</strong><small>预算、时限、权限</small></div>
+        <div class="contract-step"><span>04</span><strong>计划</strong><small>AI、人、服务分工</small></div>
+        <div class="contract-step"><span>05</span><strong>确认</strong><small>不可逆动作前批准</small></div>
+        <div class="contract-step"><span>06</span><strong>过程记录</strong><small>做了什么、为何决定</small></div>
+        <div class="contract-step"><span>07</span><strong>验收</strong><small>完成证据与判断权</small></div>
+        <div class="contract-step"><span>08</span><strong>补救</strong><small>回滚、退款、追责</small></div>
+      </div>
+
+      <div class="loop reveal" aria-label="Context Run Verdict 学习环">
+        <article class="loop-item">
+          <h3>CONTEXT</h3>
+          <p>当时的真实输入、约束、历史与权限边界。</p>
+        </article>
+        <article class="loop-item">
+          <h3>RUN</h3>
+          <p>系统、人和工具实际做了什么，以及中间决定。</p>
+        </article>
+        <article class="loop-item">
+          <h3>VERDICT</h3>
+          <p>结果被采用、退回、修复、退款，还是形成复购。</p>
+        </article>
+      </div>
+
+      <div class="questions reveal">
+        <p class="question">谁愿意把什么结果，反复交出去？</p>
+        <p class="question">失败后谁接管，谁退款，谁负责？</p>
+        <p class="question">算上人工和损失，经济性还成立吗？</p>
+      </div>
+
+      <div class="known-unknown">
+        <article class="reveal">
+          <span class="type fact">我们已经知道</span>
+          <h3>底座能力已经变化</h3>
+          <ul>
+            <li>数亿人口已经接触生成式 AI。</li>
+            <li>问答与数字内容加工构成大众主体。</li>
+            <li>部分边界清楚的任务出现可识别提效。</li>
+            <li>企业预算与应用层收入已经进入市场。</li>
+          </ul>
+        </article>
+        <article class="reveal">
+          <span class="type unknown">我们仍不知道</span>
+          <h3>代理制度会不会成立</h3>
+          <ul>
+            <li>主流 AI App 的长期任务 cohort。</li>
+            <li>外部执行的端到端成功率与人工分钟。</li>
+            <li>失败、退款与责任之后的真实毛利。</li>
+            <li>工资、工时、职业阶梯与组织分工如何变化。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-row">
+      <div>
+        <h2>不是宣布时代完成，<br>而是留下可继续观察的坐标。</h2>
+        <div class="footer-links">
+          <a href="./ai-field-2026-why-change-happens.md">阅读因果研究</a>
+          <a href="./ai-field-2026-internet-user-action-and-relationship-change.md">打开证据图谱（含来源索引）</a>
+          <a href="#top">返回顶部</a>
+        </div>
+      </div>
+      <div class="footer-stamp">CAUSAL CORE<br>REVISED<br>2026-07-30</div>
+    </div>
+  </footer>
+
+  <dialog id="evidence-dialog" aria-labelledby="evidence-title">
+    <div class="dialog-head">
+      <span id="evidence-code">EVIDENCE NOTE</span>
+      <button class="dialog-close" type="button" aria-label="关闭证据说明">×</button>
+    </div>
+    <div class="dialog-body">
+      <h3 id="evidence-title"></h3>
+      <p id="evidence-note"></p>
+      <a id="evidence-source" href="#" target="_blank" rel="noreferrer">打开证据来源 ↗</a>
+    </div>
+  </dialog>
+
+  <script>
+    const citations = {
+      "internet-origin": {
+        code: "C-001 / INTERNET HISTORY",
+        title: "互联网经历了资源共享、网络互联与大众扩散",
+        note: "Internet Society 的历史材料把昂贵计算资源共享、分组交换、开放架构、TCP/IP 迁移和 NSFNET 扩散放在同一条发展链上。它支持多阶段因果解释，也说明互联网并非为今天的消费场景一次性设计。",
+        url: "https://www.internetsociety.org/internet/history-internet/brief-history-internet/"
+      },
+      "revolution-mechanism": {
+        code: "C-002 / COMPARATIVE HISTORY",
+        title: "苦难、危机与导火索都不是革命的充分原因",
+        note: "因果研究交叉比较了《中国社会各阶级的分析》《湖南农民运动考察报告》与 Skocpol、Tilly、Goldstone：共同问题不是不满有多强，而是旧秩序如何失去吸收能力，主体如何组织资源，替代权威是否开始获得服从并建立新规则。",
+        url: "./ai-field-2026-why-change-happens.md"
+      },
+      "platform-contradiction": {
+        code: "C-003 / CNNIC C2C",
+        title: "连接扩大之后，陌生人交易仍需要重新组织信任",
+        note: "CNNIC 2006 年 C2C 调查显示，买家高度关注卖家信用，旺旺和支付宝被广泛使用，同时仍有大量货不对板、赝品或残损报告。事实支持“担保与沟通回应信任瓶颈”，不能推出单一平台必然胜出。",
+        url: "https://www.cnnic.cn/NMediaFile/2022/0914/MAIN1663122008129BW8BAYBOLM.pdf"
+      },
+      "ai-convergence": {
+        code: "C-004 / CAUSAL SYNTHESIS",
+        title: "2022 是长期条件汇合的阈值，不是 AI 的起点",
+        note: "因果研究逐项核验了 Web 数据、Transformer、scaling、算力与资本、instruction following 以及对话分发。单项突破都不足以解释大众扩散；它们的互补关系才解释为什么供给在这一时期集中爆发。",
+        url: "./ai-field-2026-why-change-happens.md"
+      },
+      connection: {
+        code: "E-001 / CNNIC",
+        title: "连接、搜索与即时通信成为大众动作",
+        note: "CNNIC 记录：2000 年中国网民 1,690 万；到 2007 年已达 1.62 亿，搜索与即时通信同时成为高频基础应用。数据说明不同入口并行形成，不支持单线替代。",
+        url: "https://www.cnnic.cn/n4/2022/0401/c150-4645.html"
+      },
+      commerce: {
+        code: "E-002 / ALIBABA FILING",
+        title: "交易被拆成可追踪、可暂停的状态",
+        note: "阿里巴巴申报材料记载，淘宝、支付宝 escrow 与阿里旺旺分别承接发现、付款风险与实时商谈。它们没有消灭信任问题，而是把风险变成流程状态。",
+        url: "https://www.sec.gov/Archives/edgar/data/1577552/000119312514184994/d709111df1.htm"
+      },
+      mobile: {
+        code: "E-003 / CNNIC",
+        title: "移动互联网把网络带进现场",
+        note: "CNNIC 历史统计记录手机超过台式电脑成为第一大上网终端。报告据此把移动变化归纳为持续身份、支付、位置与服务入口的组合。",
+        url: "https://www.cnnic.cn/NMediaFile/old_attach/P020120723477451202474.pdf"
+      },
+      attention: {
+        code: "E-004 / PLATFORM + REGULATION",
+        title: "推荐持续介入“下一条”",
+        note: "TikTok 的产品说明显示 For You 依据观看与互动反馈排序；中国算法推荐规定则说明排序已成为治理对象。这不代表所有平台采用完全相同机制。",
+        url: "https://newsroom.tiktok.com/en-us/how-tiktok-recommends-videos-for-you"
+      },
+      fulfillment: {
+        code: "E-005 / MEITUAN FILING",
+        title: "平台开始记录现实是否按时发生",
+        note: "美团招股资料披露订单密度、智能派单、路线、交通、天气与出餐时间等履约变量，同时列出骑手、事故、食品安全与劳务风险。",
+        url: "https://www1.hkexnews.hk/listedco/listconews/sehk/2018/0920/ltn20180920058.pdf"
+      },
+      physical: {
+        code: "E-006 / XIAOMI + AUTO RULES",
+        title: "软件延长产品关系，也放大责任",
+        note: "小米与理想的申报材料、汽车 OTA 监管共同表明：数字连接让设备持续更新与服务，但制造、库存、质量、售后和召回责任并不会消失。",
+        url: "https://www.hkexnews.hk/listedco/listconews/sehk/2025/0424/2025042401119.pdf"
+      },
+      agent: {
+        code: "E-007 / CNNIC + SYSTEM CARD",
+        title: "AI 已形成接触，行动资格仍受监督",
+        note: "CNNIC 记录中国生成式 AI 的人口级接触；OpenAI Agent System Card 则在购买、发信等外部动作前保留确认，并对敏感环境启用持续监督。",
+        url: "https://deploymentsafety.openai.com/chatgpt-agent/user-confirmations"
+      },
+      cnn2025: {
+        code: "E-008 / CNNIC 57",
+        title: "6.02 亿是“过去半年使用过”",
+        note: "2025 年 12 月，中国过去半年使用过生成式 AI 产品或服务的用户为 6.02 亿，普及率 42.8%。该口径不是月活、日活或工作流渗透。",
+        url: "https://www.cnnic.net.cn/NMediaFile/2026/0304/MAIN1772588317069TUXN3827X8.pdf"
+      },
+      cnnuse: {
+        code: "E-009 / CNNIC 57",
+        title: "大众使用以问答和数字加工为主",
+        note: "2025 年 12 月问卷中，76.0% 用于回答问题，47.8% 用于图片/视频，37.6% 用于文本，32.5% 用于总结、会议纪要或 PPT。",
+        url: "https://www.cnnic.net.cn/NMediaFile/2026/0304/MAIN1772588317069TUXN3827X8.pdf"
+      },
+      aiindex: {
+        code: "E-010 / STANFORD AI INDEX",
+        title: "广泛企业接触不等于规模化 Agent",
+        note: "Stanford AI Index 汇总的企业调查显示：88% 的受访组织在至少一个职能使用 AI、70% 使用生成式 AI；Agent 在几乎所有职能的规模化部署仍为个位数。",
+        url: "https://hai.stanford.edu/assets/files/ai_index_report_2026_chapter_4_economy.pdf"
+      },
+      nberadoption: {
+        code: "E-011 / NBER",
+        title: "使用增长快，工作时间渗透仍浅",
+        note: "美国代表性调查中，生成式 AI 只协助约 1%—5% 的总工作时间，自报节省相当于全部工作时间的 1.4%。它区分了“使用过”和“真实任务占比”。",
+        url: "https://www.nber.org/papers/w32966"
+      }
+    };
+
+    const ladderData = [
+      {
+        type: "fact",
+        label: "已有证据",
+        title: "发布 / 可用",
+        description: "功能、API 与工具调用已经进入生产环境，回答的是“供给是否存在”。",
+        gap: "不能推出：用户需要它、会持续回来，或愿意承担外部行动的后果。"
+      },
+      {
+        type: "fact",
+        label: "已有证据",
+        title: "首次尝试",
+        description: "首次访问、注册或一次生成，回答的是“有人愿意碰一碰”。",
+        gap: "常见断点：新奇消退、输出不稳定、真实任务并不高频。"
+      },
+      {
+        type: "inference",
+        label: "局部证据",
+        title: "重复使用",
+        description: "连续数周在同一任务返回，开始接近真实习惯；代码、写作等场景已有局部证据。",
+        gap: "仍缺：跨产品、跨人群、30/90/365 日可比较 cohort。"
+      },
+      {
+        type: "inference",
+        label: "局部证据",
+        title: "付费留存",
+        description: "续订、复购与长期 cohort 才能区分“惊艳首购”和持续依赖。",
+        gap: "现有断层：AI 订阅应用早期付费较强，但 RevenueCat 样本的长期留存更弱。"
+      },
+      {
+        type: "inference",
+        label: "已经出现",
+        title: "委托意图",
+        description: "用户开始给出目标、Context 与可执行任务，要求系统独立完成更多工作。",
+        gap: "“Doing”或“automation”仍可能只是写作、翻译和规划，不等于外部状态改变。"
+      },
+      {
+        type: "unknown",
+        label: "证据稀薄",
+        title: "经验证的外部执行",
+        description: "工具调用之后，订单、文档、代码或数据库状态被正确改变，并留下完成证据。",
+        gap: "关键缺口：端到端成功率、人工接管、撤销、退款与单次失败损失。"
+      },
+      {
+        type: "unknown",
+        label: "尚未普遍",
+        title: "工作流 / 制度变化",
+        description: "分工、审批、预算、产能、责任与收益分配发生持续改变。",
+        gap: "单项提速不能推出岗位、工资、工时或组织已经同步改变。"
+      }
+    ];
+
+    const history = document.querySelector(".history");
+    const viewButtons = document.querySelectorAll(".view-switch button");
+    viewButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        history.dataset.view = button.dataset.view;
+        viewButtons.forEach((item) => {
+          item.setAttribute("aria-pressed", String(item === button));
+        });
+      });
+    });
+
+    const ladderButtons = document.querySelectorAll(".ladder button");
+    const ladderType = document.getElementById("ladder-type");
+    const ladderTitle = document.getElementById("ladder-title");
+    const ladderDescription = document.getElementById("ladder-description");
+    const ladderGap = document.getElementById("ladder-gap");
+
+    ladderButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const item = ladderData[Number(button.dataset.level)];
+        ladderButtons.forEach((node) => node.setAttribute("aria-selected", String(node === button)));
+        ladderType.className = `type ${item.type}`;
+        ladderType.textContent = item.label;
+        ladderTitle.textContent = item.title;
+        ladderDescription.textContent = item.description;
+        ladderGap.textContent = item.gap;
+      });
+    });
+
+    const dialog = document.getElementById("evidence-dialog");
+    const dialogClose = dialog.querySelector(".dialog-close");
+    const evidenceCode = document.getElementById("evidence-code");
+    const evidenceTitle = document.getElementById("evidence-title");
+    const evidenceNote = document.getElementById("evidence-note");
+    const evidenceSource = document.getElementById("evidence-source");
+
+    document.querySelectorAll("[data-cite]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const item = citations[button.dataset.cite];
+        if (!item) return;
+        evidenceCode.textContent = item.code;
+        evidenceTitle.textContent = item.title;
+        evidenceNote.textContent = item.note;
+        evidenceSource.href = item.url;
+        dialog.showModal();
+      });
+    });
+
+    dialogClose.addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => {
+      const rect = dialog.getBoundingClientRect();
+      const outside =
+        event.clientX < rect.left ||
+        event.clientX > rect.right ||
+        event.clientY < rect.top ||
+        event.clientY > rect.bottom;
+      if (outside) dialog.close();
+    });
+
+    const revealItems = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08 });
+      document.documentElement.classList.add("has-reveal-observer");
+      revealItems.forEach((item) => revealObserver.observe(item));
+    }
+
+    const sections = [...document.querySelectorAll("main section[id]")];
+    const navLinks = [...document.querySelectorAll("nav a")];
+    const sectionObserver = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      navLinks.forEach((link) => {
+        link.setAttribute("aria-current", String(link.getAttribute("href") === `#${visible.target.id}`));
+      });
+    }, { rootMargin: "-30% 0px -60% 0px", threshold: [0, 0.1, 0.5] });
+    sections.forEach((section) => sectionObserver.observe(section));
+  </script>
+</body>
+</html>

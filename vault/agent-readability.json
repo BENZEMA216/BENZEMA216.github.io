@@ -1,0 +1,19 @@
+{
+  "artifacts": {
+    "markdown": {
+      "pattern": "https://benzema216.github.io/vault/vault/{route}.md"
+    },
+    "llmsFullTxt": "https://benzema216.github.io/vault/vault/llms-full.txt",
+    "llmsTxt": "https://benzema216.github.io/vault/vault/llms.txt",
+    "sitemap": "https://benzema216.github.io/vault/vault/sitemap.xml"
+  },
+  "description": "LLM Wiki：三层架构（raw / wiki / output）的个人知识库，由 Obsidian 维护、Blume 发布。",
+  "generator": "blume@1.5.1",
+  "name": "Dongzhe 知识库",
+  "site": "https://benzema216.github.io/vault",
+  "contentUsage": {
+    "search": true,
+    "ai-input": true,
+    "ai-train": true
+  }
+}
