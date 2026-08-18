@@ -80,5 +80,26 @@ README 开头就声明：**Inferock 卖托管产品，而这个 benchmark 按 In
 - 与 [agentic-trajectory-data](/wiki/concepts/agentic-trajectory-data/) 同源：per-call receipt（观测 + 解释分层）本质上是「可审计的执行账本」，与 Combo 的 `RunReceipt` / `Acceptance` 真值思路（见 [beardrive-agent-workspace-product-analysis-2026-08-14](/output/reports/beardrive-agent-workspace-product-analysis-2026-08-14/)）同一模式——独立第三方或本地持有的证据，而不是服务方自报。
 - 方法论启发：**审计工具的最大风险是审计者与被审计者利益重合**；inferock-bench 用「公开 spec + 公开 run cards + 利益冲突披露 + 邀请对抗性审查」对冲，值得任何自建评测/审计体系照抄。
 
+## 实际用途：能退钱吗？（同日追加）
+
+**结论：它是「讨债的证据链工具」，不是自动退款工具。** 能不能退钱，最终由 provider 退款政策决定；它负责把「被计费但没交付」的调用变成可举证、可争议的记录。
+
+**它和 provider 退款政策的关系（spec 原文立场）**：
+- The Inferock Standard 明确「独立于 provider 退款政策」——provider 政策决定一笔钱现在认不认退（recognize as refundable），Standard 只衡量「客户是否遭受可测量的损失、证据有多强、该进钱账还是时间账」。
+- `estimated recoverable` 是 Inferock 算术按 signal 经济学和可得政策证据**推算**的金额，字段名本身不承诺 provider 会认账；provider 不认的损失进 `recognition gap`（一等公民指标，不许隐藏）。
+- 但证据等级（evidence grade）直接决定一行是 **ready to dispute（可争议）** 还是 watch-only；spec 明确引导 disputant「先把 receipt 变成 provider claim 再去找 provider」——**receipt 就是为争议/索赔设计的可分享工件**（shareable artifact）。
+
+**现实退钱路径**：拿到 receipt 里的 request ID + 失败证据 → 去 OpenAI / Anthropic / Gemini 支持渠道开 ticket 主张 credits。inferock 引用的外部审计锚（[Business Wire 2026-06-30 报道 Vaudit 启动 TokenAudit](https://www.businesswire.com/news/home/20260630108235/en/Vaudit-Launches-TokenAudit-to-Recover-Millions-in-Enterprise-Token-Spend-Billing-Errors-From-Anthropic-OpenAI-and-AI-Providers)）称：约 $3,400 万被审计 AI 花费中发现约 $170 万计费错误（5.0%），客户争议后约 **80% 获得 credit**——注意这是 inferock 引用的外部校准数据，不是它自己的实测。
+
+**三类真实用途**：
+1. **追钱 / 核发票**：money loss 的可追回部分 + `invoice-check exposure`（如 cache 折扣风险）提醒你去核发票、主张合同级权益。
+2. **成本治理**：对重 AI 花费的团队，per-call 证据支撑内部核算、发现重复计费 request ID、token 数对不上、异常花费。
+3. **质量证据**：同名模型悄悄变差、延迟退化、refusal 率——不是钱的问题，是换供应商 / 谈判的依据。
+
+**清醒预期**：
+- 公开实测账本极小（$8.43 观测花费 / $0.03 money loss / 0.3%），说明**真实流量里目前没测出多大问题**——工具价值在于给大额账单提供审计手段，不是普遍能捞钱。对个人用户意义有限（0.3% 在小账单上无感）；对月账单数十万美元的企业，0.3% + cache 折扣类合同权益才谈得上「追回真钱」。
+- 不自动提交索赔；退款靠你拿着证据去 provider 主张。
+- 它的英雄图（$124K/月账单 → $5,708 损失）是合成场景走真实管线，**明确标注不是实测、不是保证、不是账单审计**。
+
 ---
 *由 LLM 从 raw/ 与 output/ 数据编译，请勿手动编辑*

@@ -5,36 +5,93 @@ description: LLM Wiki —— raw / wiki / output 三层架构的个人知识库
 
 # Dongzhe 知识库
 
-> LLM Wiki 模式的知识库：Obsidian 是 IDE，LLM 是 programmer，wiki 是 codebase。
+> LLM Wiki 模式：Obsidian 是 IDE，LLM 是 programmer，wiki 是 codebase。
+> 由 [Blume](https://useblume.dev) 从 Obsidian Vault 自动构建。
 
-本站由 [Blume](https://useblume.dev) 从 Obsidian Vault 自动构建。内容按三层架构组织：
+<Badge variant="accent">raw / wiki / output 三层</Badge> <Badge variant="default">LLM Wiki</Badge> <Badge variant="success">AI-ready（llms.txt + MCP）</Badge>
 
 ## 三层架构
 
-| 层 | 内容 | 入口 |
-|---|---|---|
-| **raw/** | 外部素材：论文、文章、访谈原文（immutable） | [raw/ 门户](/raw/) |
-| **wiki/** | LLM 编译的结构化知识：概念、主题地图、关联 | [wiki/ 索引](/wiki/_index/) |
-| **output/** | 查询产出：深度报告、对比分析、幻灯片 | [output/ 门户](/output/) |
+知识库按「原始素材 → 编译知识 → 查询产出」三层组织，各层职责严格分离：
+
+<CardGroup cols={3}>
+  <Card title="raw/ 原始素材" href="/raw/" icon="file-text">
+    外部素材层：论文 PDF、文章、访谈原文。immutable，只增不改。
+  </Card>
+  <Card title="wiki/ 编译知识" href="/wiki/_index/" icon="book-open">
+    LLM 编译的结构化知识：概念文章、主题地图、跨主题关联。可持续引用。
+  </Card>
+  <Card title="output/ 查询产出" href="/output/" icon="layers">
+    对话/查询产物：深度研究报告、对比分析、讨论归档。可回流 wiki/。
+  </Card>
+</CardGroup>
 
 ## 快速入口
 
 ### wiki/ — 编译知识
 
-- [索引](/wiki/_index/) · [摘要速查](/wiki/_summaries/) · [时间线](/wiki/log/)
-- 概念：`/wiki/concepts/`（如 [agent-communication](/wiki/concepts/agent-communication/)）
-- 地图：`/wiki/maps/` · 关联：`/wiki/connections/`
+<CardGroup cols={2}>
+  <Card title="内容索引" href="/wiki/_index/" icon="list">
+    按领域分类的索引页，LLM 查询入口
+  </Card>
+  <Card title="摘要速查" href="/wiki/_summaries/" icon="file-text">
+    全部 raw/ 与 output/ 文件的一行摘要
+  </Card>
+  <Card title="时间线" href="/wiki/log/" icon="history">
+    Append-only 操作日志，可 grep 解析
+  </Card>
+  <Card title="概念示例" href="/wiki/concepts/agent-communication/" icon="book-open">
+    Agent Communication —— 概念文章样例
+  </Card>
+</CardGroup>
 
 ### output/ — 查询产出
 
-- [深度报告](/output/reports/) · [创业想法](/output/ideas/_index/)
+<CardGroup cols={2}>
+  <Card title="深度报告" href="/output/reports/" icon="folder">
+    agora、combo、world-model 等主题研究系列
+  </Card>
+  <Card title="创业想法" href="/output/ideas/_index/" icon="lightbulb">
+    想法索引：从 Agent 经济到具身数据
+  </Card>
+</CardGroup>
 
 ### raw/ — 原始素材
 
-- [文章](/raw/articles/) · [论文](/raw/papers/) · [项目](/raw/projects/) · [Inbox](/raw/Inbox/)
+<CardGroup cols={2}>
+  <Card title="论文" href="/raw/papers/" icon="graduation-cap">
+    按方向分类的论文 PDF + 笔记
+  </Card>
+  <Card title="文章" href="/raw/articles/" icon="newspaper">
+    研究文章、学习笔记、深度研究
+  </Card>
+  <Card title="项目" href="/raw/projects/" icon="briefcase">
+    creative-cowork、jimeng-video-agent 等项目文档
+  </Card>
+  <Card title="Inbox" href="/raw/Inbox/" icon="inbox">
+    待整理素材收件箱
+  </Card>
+</CardGroup>
+
+## 怎么读这个站
+
+<Steps>
+  <Step title="从 wiki/ 开始">
+    它是编译后的知识主干。想看某个领域，从 [内容索引](/wiki/_index/) 进入。
+  </Step>
+  <Step title="需要出处时回溯 raw/">
+    每个 wiki 概念都标注了来源。点击链接即可回到原始素材（论文、访谈原文）。
+  </Step>
+  <Step title="最新研究在 output/">
+    深度报告按项目/主题组织，是最近的思考与产出。
+  </Step>
+  <Step title="让 AI 直接读">
+    站点自动生成 <code>llms.txt</code>，任意页追加 <code>.md</code> 可获取原始 Markdown —— 任何编码 agent 都能直接消费这个知识库。
+  </Step>
+</Steps>
 
 ## 说明
 
-- 本站在 **副本** 上构建，原始 Vault 内容零改动
-- 每页右上角可 **Copy as Markdown**；任意页 URL 追加 `.md` 直接获取原始 Markdown（AI 友好）
-- 站点自动生成 `llms.txt` 供 LLM 消费
+<Callout type="info">
+  本站构建于副本之上，原始 Vault 内容零改动。内容公开可见；每页右上角支持 Copy as Markdown / 导出 PDF / EPUB。
+</Callout>

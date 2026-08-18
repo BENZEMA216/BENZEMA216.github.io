@@ -3,6 +3,21 @@
 > Append-only chronological record of wiki operations.
 > Prefixed for parseability: `grep "^## \[" log.md | tail -10`
 
+## [2026-08-17] query | 郑庆生明星项目核实（同日追加）
+- Source: web research（格隆汇/网易 MiniMax 站台文、东方财富 MiniMax 上市复盘、澎湃云启天使轮、创业邦）
+- New/updated pages: `output/reports/zheng-qingsheng-profile-2026-08-17.md`（历史项目表加入 MiniMax 行）、`wiki/log.md`
+- Finding: 最亮的明星项目是 MiniMax（大模型/AGI）——红杉中国是主要投资方之一（「红高腾阿爱」= 红杉/高瓴/腾讯/阿里/米哈游），郑庆生是红杉侧公开站台者（《红杉中国郑庆生：MiniMax具有对AGI的坚定信仰》），MiniMax 2026-01 港股上市（MINIMAX-WP）首日市值超 900 亿港元；注意 MiniMax 天使轮是云启资本，红杉参与在后续轮次，归属为机构级。其余可查证：蘑菇街（2018 纽交所上市）、ENJOY（陈萌沧精选美食电商）、皇包车旅行（红杉领投 C 轮，2018）。种子基金大量早期项目未逐一署名，需数据库核实
+
+## [2026-08-17] query | 红杉中国合伙人郑庆生档案
+- Source: web research（投资界、创业邦、虎嗅、sohu 人物专访、张小珺播客 126 期、36氪/网易、澎湃、东方财富、TechWeb、猎云网 等，截至 2026-08-17）
+- New/updated pages: `output/reports/zheng-qingsheng-profile-2026-08-17.md`、`wiki/_index.md`、`wiki/_summaries.md`、`wiki/log.md`
+- Finding: 郑庆生是红杉中国合伙人、红杉中国种子基金合伙人（入选 2026 投资界 TOP100），覆盖消费/内容/B2B/出海。风格四要素：「半路出家」从生活观察构建投资框架（蘑菇街、ENJOY 为其代表项目）、反概念化（主动剔除生造的概念）、经济史/流量史视角且看重创始人性格、阶段判断先行（2015 共享经济→2016 基建浪潮已过→2017 内容非凛冬→2018 看好 B2B→2021 产业投资→2023 科技大爆炸开端）。红杉种子 2020 年成立、2023-02 募资 4.8 亿美元、管理近 150 亿元，团队称「半公益」理念。数据缺口：加入红杉年份、早年任职机构、教育背景、种子基金代表性早期 deal 名单
+
+## [2026-08-17] query | inferock-bench 实际用途与退钱路径（同日追加）
+- Source: spec/standard.md（Evidence Postures、Separate Money And Time Ledgers）、docs/projection-basis.md、Business Wire 2026-06-30 Vaudit/TokenAudit 报道
+- New/updated pages: `output/reports/inferock-bench-project-analysis-2026-08-17.md`（追加「实际用途：能退钱吗」节）、`wiki/_summaries.md`、`wiki/log.md`
+- Finding: 它是「讨债的证据链工具」而非自动退款工具。Standard 明确独立于 provider 退款政策；`estimated recoverable` 只是推算、字段名不承诺 provider 认账；但 evidence grade 决定 ready to dispute vs watch-only，spec 引导把 receipt 变成 provider claim，receipt 是争议/索赔设计的 shareable artifact。外部审计锚：$34M 审计花费发现 $1.7M 计费错误（5%），争议后约 80% 获 credit（非 inferock 实测）。三类用途：追钱/核发票（含 cache 折扣合同权益）、成本治理（重复计费/token 对不上）、质量证据（同名模型变差/延迟/refusal）。清醒预期：公开实测账本极小（$8.43 花费 / $0.03 loss / 0.3%），对个人意义有限，对百万级月账单企业才谈得上追回真钱；不自动索赔；英雄图是合成场景非实测
+
 ## [2026-08-17] query | inferock-bench 项目分析
 - Source: https://github.com/inferock/inferock-bench（README、spec/standard.md、docs/threat-model.md、docs/hard-questions.md、docs/what-leaves-your-machine.md、public run cards；pushed 2026-08-06）
 - New/updated pages: `output/reports/inferock-bench-project-analysis-2026-08-17.md`、`wiki/_index.md`、`wiki/_summaries.md`、`wiki/log.md`
@@ -2687,3 +2702,15 @@
 - New page: `output/reports/ssi-ttt-fact-check-and-learning-guide-2026-08-14.md`
 - Updated: `wiki/_index.md`, `wiki/_summaries.md`, `wiki/log.md`
 - Wiki state: 35 concepts, 9 maps, 9 connections, 211 Markdown files under `output/reports/`, 225 Markdown files under `output/`
+
+## [2026-08-18] query | Vendo（runvendo/vendo）产品分析与创新点
+- Query: 用户问 runvendo/vendo 是什么应用、自称"让用户自行修改应用形态和功能"有何创新点
+- Source: GitHub README（main 分支全文）、packages/*（apps/guard/mcp/automations/knowledge）、docs/superpowers、corpus/manifest、genbench、examples/demo-bank（本地 shallow clone `@1 commit` 核验）；HN Show HN 48926618（https://news.ycombinator.com/item?id=48926618）；vendo.run / docs.vendo.run
+- Positioning: YC S26 开源 "customization layer"——embedded agent 以 signed-in user 身份通过宿主 API 行动，用户自然语言生成视图 / 原地改造 UI / 配置常驻自动化，宿主源码零改动；Apache-2.0，npm `@vendoai/vendo`，PGlite 零配置存储 / Postgres 同 schema
+- Mechanism: Extract（宿主 API→tools）→ Generate（format-tagged UI document→TSX screen 在宿主 renderer mount，iframe jail `connect-src 'none'`，必要时升级 sandboxed server，app machine provision/wake/sleep/destroy）→ Guard（policy/approvals/grants/breakers/audit 单一执行 choke point）
+- Innovation: ①feature request 队列→self-service 定制层（inversion of control：moat 是数据与流程 expertise 不是 UI）；②身份复用宿主 auth（Auth.js session=principal，away execution 用宿主 AUTH_SECRET mint 真 token），安全边界=宿主既有权限模型；③Guard 单点关口+captured authority+run ledger；④沙箱化 brand-native UI；⑤MCP door 让 Claude/ChatGPT/Cursor 以 signed-in user 身份操作产品，同一 guard/audit；⑥agent-first 安装（paste prompt→`vendo init`→`vendo doctor --json` 门禁）+ corpus 对 umami/skateshop/linkwarden 等真实 OSS 应用跑 init 兼容矩阵（layer1 无模型凭据 clean room）+ genbench 与 DIY/Claude Code/Codex/Thesys C1 对照并 byte-for-byte 断言 prompt 等价；⑦零配置存储 dev/prod 同构
+- Evidence boundary: 0.27.x 无第三方安全审计；"源码零改动"限于宿主 API 可表达范围；MCP 标准化稀释 moat；Show HN 仅 2 points/4 comments（YC 背书、论点先行）；直接竞品 Thesys C1 已在 genbench 中作为 bought product 对标
+- Relevance: 与 [genui](/wiki/concepts/genui/)、[generative-ui-landscape-2026-05](/output/reports/generative-ui-landscape-2026-05/)、[genui-product-shortlist-2026-07](/output/reports/genui-product-shortlist-2026-07/)、[genui-implementation-gotchas-2026-05](/output/reports/genui-implementation-gotchas-2026-05/)、[safe-autonomy](/wiki/concepts/safe-autonomy/)、[mcp-server-trust](/wiki/concepts/mcp-server-trust/) 关联；guard choke point / captured authority / run ledger 与 Combo Verified Run Ledger 同构，"用户 Context 驱动的动态结果"与 user-owned app 是同一趋势的功能侧与服务侧两面
+- New page: `output/reports/vendo-product-analysis-2026-08-18.md`
+- Updated: `wiki/_index.md`, `wiki/_summaries.md`, `wiki/log.md`
+- Wiki state: 35 concepts, 9 maps, 9 connections, 212 Markdown files under `output/reports/`, 226 Markdown files under `output/`

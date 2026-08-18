@@ -1,15 +1,24 @@
 # 知识库来源与产出摘要速查
 
 > 由 LLM 自动维护，请勿手动编辑
-> 最后更新：2026-08-17
+> 最后更新：2026-08-18
 
 ---
 
 ## Query outputs (latest)
 
+### `output/reports/vendo-product-analysis-2026-08-18.md`
+> Vendo（runvendo/vendo）产品分析（2026-08-18 web + local clone 核验）。结论：Vendo 是 YC S26 的开源 "customization layer"——嵌入 B2B SaaS 的 embedded agent，以 signed-in user 身份通过宿主自己的 API 行动，让终端用户自然语言生成视图（Build views）、原地改造 UI（Remix）、配置常驻自动化（Automate），厂商源码零改动。原理三步：Extract（API→tools）→ Generate（format-tagged UI document → `connect-src 'none'` iframe jail，必要时升级 sandboxed server）→ Guard（policy/approvals/grants/breakers/audit 单一执行 choke point）。创新点：①"feature request 队列"变 self-service 层（inversion of control 论点）；②身份复用宿主 auth、安全边界=宿主既有权限模型（away execution 用宿主 AUTH_SECRET mint 真 session token）；③Guard 单点关口 + captured authority + run ledger；④沙箱化 brand-native UI；⑤MCP door 让产品变成外部 agent 的工具（同一 guard/approval/audit）；⑥agent-first 安装（paste prompt → `vendo init` → `vendo doctor --json` 门禁）+ corpus（对 umami/skateshop/linkwarden 等真实 OSS 应用跑 init 兼容矩阵）+ genbench（自家 pipeline vs DIY/Claude Code/Codex/Thesys C1，byte-for-byte 断言 prompt 等价）；⑦PGlite/Postgres 同 schema 零配置存储。风险：安全无第三方审计、定制深度天花板（API 可表达范围内）、MCP 标准化稀释 moat、Show HN 反响小（2 points）。
+- 关键概念：[genui](/wiki/concepts/genui/)、[safe-autonomy](/wiki/concepts/safe-autonomy/)、[human-in-the-loop](/wiki/concepts/human-in-the-loop/)、[mcp-server-trust](/wiki/concepts/mcp-server-trust/)、[generative-ui-landscape-2026-05](/output/reports/generative-ui-landscape-2026-05/)、[genui-product-shortlist-2026-07](/output/reports/genui-product-shortlist-2026-07/)、[genui-implementation-gotchas-2026-05](/output/reports/genui-implementation-gotchas-2026-05/)
+
+### `output/reports/zheng-qingsheng-profile-2026-08-17.md`
+> 红杉中国（HongShan）合伙人郑庆生档案（2026-08-17 web research，公开报道+演讲/访谈）。身份：红杉中国合伙人、红杉中国种子基金合伙人，入选 2026 投资界 TOP100；覆盖消费、内容/文娱、B2B 企业服务、出海。风格：①「半路出家」从生活观察构建投资框架（创业邦：剖析台北与上海，投出蘑菇街和 ENJOY）；②反概念化——「用力去了解世界的真实运作，主动剔除生造的概念」；③经济史/流量史视角，看重人类行为模式的不可预期性与创始人性格（张小珺播客 126 期）；④阶段判断先行：2015 共享经济后发先至、2016 互联网基建投资浪潮已过、2017 内容凛冬是误判、2018 看好 B2B 企业应用、2021 拥抱产业投资、2023 处在科技大爆炸开端；⑤种子基金「半公益」理念（2020 成立，2023-02 募资 4.8 亿美元、管理近 150 亿元，国内最大早期基金之一）。可查证项目：MiniMax（红杉主要投资方之一，郑庆生公开站台，2026-01 港股上市市值超 900 亿港元）、蘑菇街、ENJOY、皇包车旅行（红杉领投 C 轮）；种子基金早期 portfolio 名单未逐一核实。数据缺口：加入红杉年份、早年任职、教育背景。
+- 关键概念：[zheng-qingsheng-profile-2026-08-17](/output/reports/zheng-qingsheng-profile-2026-08-17/)
+
 ### `output/reports/inferock-bench-project-analysis-2026-08-17.md`
 > inferock-bench 项目分析（2026-08-17 web query，GitHub README + spec/standard.md + docs/）。结论：它是本地运行的 LLM 成本追踪代理（`npx inferock-bench`，监听 127.0.0.1:4318），把 OpenAI / Anthropic / Gemini / 固定 OpenRouter 端点的 API 流量指向本地，逐调用记录 token 用量、计费证据与失败证据，按公开的 The Inferock Standard 用 `@inferock/measure` 打分渲染 receipt。核心立场是「收费方不该给自己打分」：provider 同时决定什么算失败、什么该退款，用户需要独立逐调用账本。Receipt 四类数字互不混加：spent（观测花费）/ money loss（账单受限美元损失）/ time loss（实测时间，不计入美元）/ invoice-check exposure（如 cache discount 风险，标注「核对你自己的发票」）。检测 billed-empty output、refusal、截断、token-recount mismatch、重复 request ID、cache-discount-at-risk、provider-fault retries；每个检测面有 watched-clean / signal / not-openable 覆盖状态。隐私边界：provider key 不发往 Inferock，仅本地 `~/.inferock-bench/` owner-only 保存；公开账本截至 2026-08-05 为 1,303 次实测调用 / 598 findings / $8.43 观测花费 / $0.03 money loss。项目自曝利益冲突（Inferock 卖托管产品且标准是 Inferock 自己写的），以公开 spec + run cards + hard-questions + threat model + 对抗性审查邀请对冲。方法论启发：审计工具最大风险是审计者与被审计者利益重合；per-call receipt 与 Combo 的 RunReceipt / Acceptance 真值思路同源。
 - 关键概念：[model-supply-entitlements](/wiki/concepts/model-supply-entitlements/)、[agentic-trajectory-data](/wiki/concepts/agentic-trajectory-data/)、[beardrive-agent-workspace-product-analysis-2026-08-14](/output/reports/beardrive-agent-workspace-product-analysis-2026-08-14/)
+- 同日追加（实际用途与退钱路径）：它不是自动退款工具，而是「讨债的证据链工具」——evidence grade 决定 ready to dispute vs watch-only，spec 引导把 receipt 变成 provider claim（receipt 是争议/索赔设计的 shareable artifact），但认不认退由 provider 政策决定，`estimated recoverable` 只是推算。外部审计锚：$34M 审计花费发现 $1.7M 计费错误（5%），争议后约 80% 获 credit（非 inferock 实测）。三类用途：追钱/核发票（含 cache 折扣合同权益）、成本治理（重复计费/token 对不上）、质量证据（同名模型变差/延迟/refusal）。清醒预期：公开实测账本极小（$8.43 花费 / $0.03 loss / 0.3%），对个人意义有限，对百万级月账单企业才谈得上追回真钱；不自动索赔
 
 ### `output/reports/linktree-product-history-and-business-status-2026-08-17.md`
 > Linktree 产品发展脉络与当前经营状况（2026-08-17 web research）。结论：2016 年墨尔本三人（Alex/Anthony Zaccaria、Nick Humphreys）从 agency 痛点用约 6 小时做出 MVP，定义「link-in-bio」品类并免费增长；融资轨迹为 2020-10 US$10.7M Series A（Insight Partners + AirTree）→ 2021-03 US$45M Series B（Index）→ 2022-03 US$110M Series C 估值 $1.3B 独角兽，累计约 US$1.66 亿。2023-06 创作者经济「审判日」裁员 27% 后，战略从链接工具转向创作者变现 / 数字店面 / storefront：2024-08 收购 Plann、2025-04 发布变现套件（数字产品/订阅/打赏）、2025 年 AI 功能 + 加深 Canva 集成 + 赞助链接/效果广告（「本质是数据公司」论），2025-11 收购竞品 Fingertip 后关停。当前经营：用户 7,000 万+（一说 7,500 万+）、ARR 估算 US$6,400 万–1 亿+（无官方数字）、仍亏损但 2026-01 据 AFR 收窄至 A$1,900 万；主要威胁是 IG/TikTok 原生功能、Stan Store/Beacons 等变现竞品与品类商品化。对 Combo 的类比：入口流量 ≠ 交易能力，聚合供给 ≠ 拥有分发。同日追加（第 5 节）：「衰败」是相对地位而非绝对数字（用户 2022 年 3,100 万→2025 年 7,000 万+、ARR $3,300 万→估算 $1 亿+，但品类被平台吸收、store-in-bio 竞品进攻、$1.3B 后无新一轮）；AI 对内重度使用有硬数据（Cursor/Devin、AI 解决 50% 客服工单、Gemini 2.0 Flash 审核成本降 25 倍、Scale Without Size 战略），对外 AI 产品（AI 设计/Insights Chat/Creator Index）无公开采用数据，评测共识为锦上添花。

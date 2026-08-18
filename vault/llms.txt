@@ -129,6 +129,7 @@
 - [SITIN.ai 产品研究：不是普通 Instagram 获客工具，而是社交流量驱动的 AI Agentic Marketplace](https://benzema216.github.io/vault/vault/output/reports/sitin-ai-product-analysis-2026-07-30)
 - [SSI × TTT 归属核验与学习指南](https://benzema216.github.io/vault/vault/output/reports/ssi-ttt-fact-check-and-learning-guide-2026-08-14)
 - [UI 已完成时如何让 Agent 只补互动逻辑](https://benzema216.github.io/vault/vault/output/reports/frontend-agent-ui-freeze-logic-workflow-2026-05)
+- [Vendo（runvendo/vendo）产品分析：让用户自己给 SaaS 加功能的 embedded agent](https://benzema216.github.io/vault/vault/output/reports/vendo-product-analysis-2026-08-18)
 - [Wado 产品分析：为 WebAssembly Component Model 设计的 Agent-legible 语言](https://benzema216.github.io/vault/vault/output/reports/wado-language-product-analysis-2026-07-19)
 - [WAIC 2026 Combo 重点参展方产品链接核验表](https://benzema216.github.io/vault/vault/output/reports/waic-2026-priority-product-links-2026-07-19)
 - [WAIC 2026 上海参展企业全量资料与产业图谱](https://benzema216.github.io/vault/vault/output/reports/waic-2026-exhibitor-landscape-2026-07-18)
@@ -148,6 +149,7 @@
 - [游戏化 Agent 空间：从竞技场到持久世界](https://benzema216.github.io/vault/vault/output/reports/gamified-agent-spaces-persistent-worlds-landscape-2026-08-07)
 - [知识库整理 + Lint 报告（2026-06-13）](https://benzema216.github.io/vault/vault/output/reports/kb-organize-lint-2026-06-13)
 - [知识库整理、最近 Session 补档与 Lint 报告](https://benzema216.github.io/vault/vault/output/reports/kb-organize-lint-2026-08-04)
+- [红杉中国合伙人郑庆生：偏好、风格与项目档案](https://benzema216.github.io/vault/vault/output/reports/zheng-qingsheng-profile-2026-08-17)
 - [近期 Clippings 归档整理（2026-04-27）](https://benzema216.github.io/vault/vault/output/reports/recent-clippings-2026-04-27)
 - [近期 Clippings 归档整理（2026-07-23）](https://benzema216.github.io/vault/vault/output/reports/recent-clippings-2026-07-23)
 

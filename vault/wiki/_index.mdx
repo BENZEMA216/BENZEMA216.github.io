@@ -1,7 +1,7 @@
 # 知识库索引
 
 > 由 LLM 自动维护，请勿手动编辑
-> 最后更新：2026-08-17
+> 最后更新：2026-08-18
 > 操作记录：[log](/wiki/log/)
 
 ---
@@ -163,6 +163,9 @@
 - `output/reports/richard-chien/code-review.md` — 7 个项目 ~19,000 LOC 源码级评审
 - `output/reports/richard-chien/slock-ai-research.md` — slock.ai agent-native IM 深度研究
 
+**投资人档案（1 篇）**
+- `output/reports/zheng-qingsheng-profile-2026-08-17.md` — 红杉中国合伙人郑庆生：风格（半路出家+生活观察框架、反概念化、经济史/流量史视角、阶段判断先行、种子基金半公益理念）与可查证项目（蘑菇街、ENJOY、皇包车）
+
 **其他深度研究**
 - [prime-agent-core-mechanism-analysis-2026-08-11](/output/reports/prime-agent-core-mechanism-analysis-2026-08-11/) — **Prime Agent 核心机制、实现与证据边界**：不是新模型，而是把 Agent Harness 做成可编程、可持久、可在线修正的 runtime。RLM 将长上下文外置为 Python 变量，以持久 IPython、程序化搜索/切片和异步完整子会话替代“整段塞进 prompt”；Continual Harness 将 `H=(prompt/notes, subagents, skills, memory)` 视为可 CRUD 的策略层，由 `/refine` 从轨迹提出最小修改，保留 immutable base prompt、冲突检测和 rollback；daemon、JSONL、kernel snapshot 与 A2A 再提供跨前后台连续性。真正的自我改进发生在 Harness 而非模型权重。ARC-AGI-3 的 95.5% 是最佳单次 run、99.97% 是三次 Best@3；long-context 对比仅 9 个任务且官方采用对手 harness 公布结果，当前仓库没有随附 benchmark configs / prompts / trajectories。Factorio reward hacking 说明最大风险不是“学不会”，而是把错误 verifier 更稳定地固化成 Skill；官方也明确尚无模型围绕 Prime Agent 训练
 - [oqoqo-eval-platform-implementation-analysis-2026-08-11](/output/reports/oqoqo-eval-platform-implementation-analysis-2026-08-11/) — **Oqoqo eval 平台实现原理与证据边界**：不是开源 eval library 或单纯 rubric generator，而是面向 coding agents 的托管实验控制平面；把 versioned Task × Treatment × Agent × Trials 编译为 fresh isolated Runs，记录 trajectory / changed files / transcript / tokens / cost / isolation evidence，再以 `judge` 做逐 requirement all-pass verdict、以 `sweep / consolidation` 聚合 Frictions，输出 pass rate、95% CI 与 treatment lift。真正加速点是 sandbox、Agent adapters、并发调度、快照、证据账本和 Dashboard / CLI / MCP；算法层仍是 LLM judge。官方公开 `agent-plugin@40872ae` 只是远程 MCP 发行壳，release validator 明确认领私有核心仓 `Oqoqo-Inc/oqo-bench`；CLI `2026.08.10.2` 可验证客户端 contract，但 runner / queue / storage / judge prompt / 隔离安全不可审计。适合 interface / model A/B 和 regression，不宜单独承担高风险 release gate
@@ -248,6 +251,7 @@
 - `raw/articles/genui/personal-website-design-inspiration-2026-08-04.md` — 12 个高辨识度个人网站：从 OS、terminal、房间、游戏与笔记等世界隐喻，观察内容架构、交互语法、motion / sound 与个人身份如何形成一致体验
 
 ### 对话产出
+- [vendo-product-analysis-2026-08-18](/output/reports/vendo-product-analysis-2026-08-18/) — **Vendo（runvendo/vendo）产品分析**：YC S26 的开源 "customization layer"——嵌入 B2B SaaS 的 embedded agent，以 signed-in user 身份通过宿主自己的 API 行动，让终端用户自然语言生成视图（Build views）、原地改造 UI（Remix）、配置常驻自动化（Automate），厂商源码零改动。三步原理 Extract（API→tools）→ Generate（format-tagged UI document → `connect-src 'none'` iframe jail，必要时升级 sandboxed server）→ Guard（policy/approvals/grants/breakers/audit 单一执行 choke point）。创新点：①feature request 队列变 self-service 层（inversion of control）；②身份复用宿主 auth、安全边界=宿主既有权限模型（away execution 用宿主 AUTH_SECRET mint 真 session token）；③Guard 单点关口 + captured authority + run ledger；④沙箱化 brand-native UI；⑤MCP door 让产品变成外部 agent 的工具（同一 guard/approval/audit）；⑥agent-first 安装（paste prompt → `vendo init` → `vendo doctor --json` 门禁）+ corpus 真实 OSS 应用兼容矩阵 + genbench 与 DIY/Claude Code/Codex/Thesys C1 对照且 byte-for-byte 断言 prompt 等价；⑦PGlite/Postgres 同 schema 零配置存储。风险：安全无第三方审计、定制深度天花板、MCP 标准化稀释 moat、Show HN 反响小
 - [einsia-ai-bp-product-mechanism-analysis-2026-08-06](/output/reports/einsia-ai-bp-product-mechanism-analysis-2026-08-06/) — **Einsia.ai BP 产品机制初读**：不是已经成型的科研 Copilot 或数据基础设施，而是以 Overleaf / Vida 产品采集专家纠错、反馈和决策轨迹，再生成 benchmark、训练集和垂直模型的飞轮假设。方向价值在长程专家轨迹；当前缺产品输出、留存、数据授权、benchmark / 模型增益和明确付费方，且面临“越高价值的科研数据越难训练与出售”、benchmark 中立性和四种业务并行的反命题
 - [einsia-ai-current-development-founders-ai-views-2026-08-06](/output/reports/einsia-ai-current-development-founders-ai-views-2026-08-06/) — **Einsia.ai 现状、创始人社交与 AI 观**：live 核验 Overleaf 8k 商店 users、Vida 289 条构建、OpenChronicle 约 2.8k stars，以及 BrowserBC / Frontier-Eng，确认产品—memory—trace-to-skill—executable eval 已部分成形，但 PMF、专有训练数据、模型增益与回灌仍未证明；区分 Calvin/Hanxi 的产品管理、Xinqi/Eren 未闭环身份与 Huan-ang Gao 的一手长程 RL / judgment-and-taste 议程，并指出 Huan 未公开确认 CTO、隐私口径与数据飞轮之间的硬张力
 - [pronto-stream-signal-to-action-product-analysis-2026-08-03](/output/reports/pronto-stream-signal-to-action-product-analysis-2026-08-03/) — **Pronto Stream 产品价值判断**：API / RSS 聚合、schema 统一、去重分类和跨源关联可降低 Agent 数据接入成本；但生产 SLA、预测能力、客户采用和量化 alpha 未证明，独立价值要用 `signal → decision → action → outcome` 与 30 天直连对照验证
