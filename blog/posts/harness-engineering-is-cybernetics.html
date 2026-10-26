@@ -29,7 +29,7 @@
       <div class="content">
 <h1>Harness Engineering 就是控制论</h1>
 <blockquote>
-<p>来源：<a href="https://x.com/dotey/status/2031231856071372830">@dotey 推文</a> 翻译/解读 @odysseus0z 文章<br>
+<p>来源：<a href="https://x.com/dotey/status/2031231856071372830">@dotey 推文</a> 翻译/解读 @odysseus0z 文章
 日期：2026-03-10</p>
 </blockquote>
 <h2>核心论点</h2>
@@ -72,10 +72,10 @@
 <h2>参考文献逐条总结</h2>
 <h3>[1] OpenAI — Harness Engineering: Leveraging Codex in an Agent-First World</h3>
 <p>OpenAI 2026 年 2 月发布。一个小团队用 5 个月时间，<strong>完全不手写代码</strong>，用 Codex agent 生成了约 100 万行生产级代码并交付 beta 产品。</p>
-<p><strong>四大支柱</strong>：<br>
-- <strong>Context Architecture</strong>：分层渐进式文档，结构化目录充当 single source of truth<br>
-- <strong>Agent Specialization</strong>：每个 agent 有限定 prompt 和受限工具集<br>
-- <strong>Persistent Memory</strong>：基于文件系统而非对话历史<br>
+<p><strong>四大支柱</strong>：
+- <strong>Context Architecture</strong>：分层渐进式文档，结构化目录充当 single source of truth
+- <strong>Agent Specialization</strong>：每个 agent 有限定 prompt 和受限工具集
+- <strong>Persistent Memory</strong>：基于文件系统而非对话历史
 - <strong>Structured Execution</strong>：研究 → 计划 → 执行 → 验证</p>
 <p>架构约束通过 linter 和结构测试强制依赖层级 Types → Config → Repo → Service → Runtime → UI。还有"垃圾回收 agent"定期巡检文档不一致和架构违规。</p>
 <blockquote>
@@ -108,10 +108,10 @@
 </blockquote>
 <h3>[5] Anthropic — Building a C Compiler with Parallel Claude Agents</h3>
 <p>Nicholas Carlini 用 <strong>16 个并行 Claude Opus 实例</strong>，~2000 次 session、$2 万 API 成本，从零构建了 10 万行 Rust C 编译器，能编译 Linux 6.9。</p>
-<p><strong>关键经验</strong>：<br>
-- <strong>测试质量是根基</strong> — agent 会朝你设的 metric 优化，测试必须近乎完美<br>
-- <strong>为 AI 约束做设计</strong> — 减少 context 污染、提供清晰文档<br>
-- <strong>并行 + 角色分工</strong> — 编译核心、去重、性能优化、设计审查由不同 agent 负责<br>
+<p><strong>关键经验</strong>：
+- <strong>测试质量是根基</strong> — agent 会朝你设的 metric 优化，测试必须近乎完美
+- <strong>为 AI 约束做设计</strong> — 减少 context 污染、提供清晰文档
+- <strong>并行 + 角色分工</strong> — 编译核心、去重、性能优化、设计审查由不同 agent 负责
 - <strong>锁机制协调</strong> — <code>current_tasks/</code> 目录防止重复工作</p>
 <p>成果：GCC torture test 99% 通过率，能编译 QEMU/FFmpeg/SQLite/PostgreSQL，能跑 Doom。局限：新 feature 频繁 break 已有代码，说明当前模型缺乏系统级整体一致性。</p>
 <blockquote>
