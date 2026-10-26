@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenAI Codex 开源 Agent Harness：协议、审批与可审计 runtime — 朱东哲</title>
+  <meta name="description" content="Codex 开源 harness：协议、审批与可审计 runtime 的产品启示。" />
+  <link rel="stylesheet" href="../assets/blog.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-mark" href="../index.html">朱东哲 <span>·</span> 写作</a>
+    <nav class="site-nav">
+      <a href="../index.html" class="active">文章</a>
+      <a href="../products.html" class="">产品雷达</a>
+      <a href="../../index.html">主页</a>
+    </nav>
+  </header>
+  <main class="wrap">
+    <article class="post">
+      <header>
+        <span class="accent" aria-hidden="true"></span>
+        <div class="post-meta">
+          <time datetime="2026-08-21">2026-08-21</time>
+          <span class="type">产品拆解</span>
+        </div>
+        <h1>OpenAI Codex 开源 Agent Harness：协议、审批与可审计 runtime</h1>
+      </header>
+      <div class="content">
+<blockquote>
+<p><strong>一句话结论</strong>：OpenAI 这次真正做的，不是新开一个 <code>codex-harness</code> 仓库，而是把早已开源的 <code>openai/codex</code> 正式定义为一套可嵌入产品的 <strong>agent runtime / harness</strong>：模型之外的 Thread、Turn、上下文、工具、事件流、审批、沙箱、持久化和多 Agent 控制面，都可以通过 CLI、SDK 或 App Server 被宿主应用复用。</p>
+</blockquote>
+<h2>0. 先校正时间线：“刚开源”不等于代码第一次公开</h2>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>发生了什么</th>
+<th>准确含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2025-04-16</td>
+<td>OpenAI 在 o3 / o4-mini 发布文中宣布 Codex CLI fully open-source</td>
+<td><code>openai/codex</code> 的开源起点，不是 2026-08-19</td>
+</tr>
+<tr>
+<td>2026-02-04</td>
+<td>OpenAI 发布 <em>Unlocking the Codex harness</em></td>
+<td>开始把 App Server 和底层 loop 作为可复用能力解释</td>
+</tr>
+<tr>
+<td><strong>2026-08-19</strong></td>
+<td>发布 <em>Codex as a platform: build on the open agent harness</em></td>
+<td><strong>本次触发点：正式的平台化定位、开放组件清单与嵌入路径</strong></td>
+</tr>
+<tr>
+<td>2026-08-20</td>
+<td>GitHub 发布稳定版 <code>rust-v0.149.0</code></td>
+<td>本报告查询时的最新稳定版本</td>
+</tr>
+<tr>
+<td>2026-08-21</td>
+<td>本地只读 checkout <code>main@9ab176f</code></td>
+<td>本报告的源码证据快照；不是稳定 tag</td>
+</tr>
+</tbody>
+</table>
+<p>因此，更准确的表述是：</p>
+<blockquote>
+<p><strong>Codex 代码不是今天才开源；OpenAI 今天把已有开源实现正式产品化为 “open agent harness platform”。</strong></p>
+</blockquote>
+<p>这也解释了为什么 vault 在 2026-04 收录的二手访谈中已经出现“Rust 核心 Codex Harness 开源”的说法。那条材料可证明这个叙事早已存在，但本次范围以 OpenAI 官方公告、官方组件清单和固定 SHA 源码为准。</p>
+<h2>1. 到底开放了什么，没开放什么</h2>
+<p>OpenAI 官方组件清单给出的边界很清楚：</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th style="text-align: right;">是否开源</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Codex CLI</td>
+<td style="text-align: right;">是</td>
+<td>终端产品，也是 harness 的主要开源宿主</td>
+</tr>
+<tr>
+<td>Codex SDK（TypeScript / Python）</td>
+<td style="text-align: right;">是</td>
+<td>在程序中 start / resume / stream 本地 Codex Thread</td>
+</tr>
+<tr>
+<td>Codex App Server</td>
+<td style="text-align: right;">是</td>
+<td>把 Thread / Turn / Item / Event / Approval 暴露为双向 JSON-RPC 协议</td>
+</tr>
+<tr>
+<td>Skills / Plugins</td>
+<td style="text-align: right;">是</td>
+<td>可复用的模型指令、工具与扩展包</td>
+</tr>
+<tr>
+<td>Universal cloud environment</td>
+<td style="text-align: right;">部分基础环境开源</td>
+<td>Codex cloud 使用的基础环境，不等于 cloud 服务本身</td>
+</tr>
+<tr>
+<td>IDE extension</td>
+<td style="text-align: right;"><strong>否</strong></td>
+<td>VS Code / IDE 产品表面不在开源清单中</td>
+</tr>
+<tr>
+<td>Codex cloud</td>
+<td style="text-align: right;"><strong>否</strong></td>
+<td>托管执行、调度、身份与服务端能力不在仓库中</td>
+</tr>
+<tr>
+<td>模型权重 / 模型服务</td>
+<td style="text-align: right;"><strong>否</strong></td>
+<td>Harness 通过 Responses API 等模型入口工作；模型访问仍是独立服务</td>
+</tr>
+</tbody>
+</table>
+<p>许可证是 <strong>Apache-2.0</strong>，允许使用、修改和分发。但治理上有一个很重要的反直觉边界：官方 <code>CONTRIBUTING.md</code> 明确写着 <strong>不接受外部代码贡献或 Pull Request</strong>，社区参与入口是 issue、复现、root-cause analysis 和设计讨论。</p>
+<p>所以它是：</p>
+<ul>
+<li>真正可读、可改、可 fork 的开源代码；</li>
+<li>但不是共同维护、外部 PR 可合入的开放治理项目；</li>
+<li>更不是“整个 Codex 产品栈”和“OpenAI 模型”一起开源。</li>
+</ul>
+<h2>2. 这个项目真正是什么产品</h2>
+<p>最容易误读的方式，是把 Codex 看成一个 CLI，或者把 App Server 看成“给 Codex 套 API”。更准确的三层模型是：</p>
+<pre><code class="language-text">Agent Product = Host Application + Codex Harness + Model / Managed Services
+</code></pre>
+<ul>
+<li><strong>Host Application</strong> 拥有用户界面、业务对象、system of record、身份、业务规则、产品级 consent，以及 application-owned MCP actions。</li>
+<li><strong>Codex Harness</strong> 拥有 Thread / Turn 生命周期、上下文装配、agent loop、工具路由、事件流、审批协商、shell 沙箱、持久化、steering 和 subagent 控制。</li>
+<li><strong>Model / Managed Services</strong> 提供推理与托管能力；不属于开源 harness。</li>
+</ul>
+<pre><code class="language-mermaid">flowchart TB
+    H[&quot;Host Application&lt;br/&gt;UI · workflow · business context · consent&quot;]
+    S[&quot;SDK / App Server&lt;br/&gt;Thread · Turn · Item · Event · Approval&quot;]
+    C[&quot;Codex Harness&lt;br/&gt;context assembly · agent loop · tool routing&quot;]
+    G[&quot;Runtime Guardrails&lt;br/&gt;hooks · approval · sandbox · permissions&quot;]
+    P[&quot;Persistence / Control&lt;br/&gt;JSONL · SQLite metadata · subagents&quot;]
+    M[&quot;Model Provider&lt;br/&gt;Responses API / configured provider&quot;]
+    T[&quot;Execution &amp; Tools&lt;br/&gt;shell · apply_patch · MCP · plugins&quot;]
+
+    H &lt;--&gt; S
+    S &lt;--&gt; C
+    C --&gt; G
+    C &lt;--&gt; P
+    C &lt;--&gt; M
+    G &lt;--&gt; T
+    T --&gt; H
+</code></pre>
+<p>最后一条 <code>Tools → Host</code> 很关键：业务工具修改记录后，<strong>宿主应用必须刷新自己的业务视图</strong>。Harness 负责 agent loop，不自动成为业务数据库的事实源。</p>
+<h2>3. 源码地图：134 个 Rust workspace member，但先只抓六条主干</h2>
+<p>本报告固定在 <a href="https://github.com/openai/codex/commit/9ab176f488f5da100984a005688f041d49e06bdb"><code>main@9ab176f</code></a>。该快照有 6,443 个 tracked files、3,257 个 Rust 文件、134 个 Cargo workspace members。规模很大，但核心认知可以压成六层：</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>源码入口</th>
+<th>回答的问题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Thread façade</td>
+<td><a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/core/src/codex_thread.rs#L145-L192"><code>core/src/codex_thread.rs</code></a></td>
+<td>外部怎样向 Thread 提交 <code>Op</code>、怎样消费 <code>Event</code>？</td>
+</tr>
+<tr>
+<td>Agent loop</td>
+<td><a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/core/src/session/turn.rs#L140-L270"><code>core/src/session/turn.rs</code></a></td>
+<td>一个 Turn 如何反复 model → tool → model，何时结束？</td>
+</tr>
+<tr>
+<td>Tool plane</td>
+<td><a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/core/src/tools/parallel.rs#L95-L180"><code>tools/parallel.rs</code></a>、<a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/core/src/tools/registry.rs#L540-L735"><code>tools/registry.rs</code></a></td>
+<td>工具怎样路由、并发、hook、记录和取消？</td>
+</tr>
+<tr>
+<td>Trust plane</td>
+<td><a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/core/src/tools/approvals.rs#L64-L137"><code>tools/approvals.rs</code></a>、<a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/sandboxing/src/manager.rs#L36-L75"><code>sandboxing/src/manager.rs</code></a></td>
+<td>approval、permission 与 OS sandbox 分别在哪里强制？</td>
+</tr>
+<tr>
+<td>Durable state</td>
+<td><a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/thread-store/README.md#L1-L35"><code>thread-store/README.md</code></a>、<a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/state/src/lib.rs#L1-L10"><code>state/src/lib.rs</code></a></td>
+<td>Thread 如何保存、恢复、查询？</td>
+</tr>
+<tr>
+<td>Product protocol</td>
+<td><a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/app-server/README.md"><code>app-server/README.md</code></a>、<a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/protocol/README.md"><code>protocol/README.md</code></a></td>
+<td>CLI / App / IDE 等 surface 怎样与 core 解耦？</td>
+</tr>
+</tbody>
+</table>
+<p>两个横切面：</p>
+<ul>
+<li>Context / instructions：<a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/core/src/agents_md.rs#L1-L85"><code>core/src/agents_md.rs</code></a> 与 <a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/ext/skills/src/catalog_prompt.rs#L1-L40"><code>ext/skills/src/catalog_prompt.rs</code></a>。</li>
+<li>Multi-agent：<a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/core/src/agent/control.rs#L99-L170"><code>agent/control.rs</code></a> 与 <a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/codex-rs/core/src/agent/registry.rs#L20-L115"><code>agent/registry.rs</code></a>。</li>
+</ul>
+<h2>4. 一次 Turn 到底怎样运行</h2>
+<h3>4.1 Thread 是双向消息通道，不只是聊天记录</h3>
+<p><code>CodexThread</code> 的注释直接把它定义为组成一个 Thread 的双向消息流 conduit：</p>
+<ul>
+<li>client 向 Thread <code>submit(Op)</code>；</li>
+<li>core 向 client 暴露 <code>next_event()</code>；</li>
+<li>Thread 还持有 session、rollout path、状态订阅、设置快照等运行时信息。</li>
+</ul>
+<p>这是一条很强的架构分界：UI 不直接调用 loop 内部函数，而是提交操作、订阅事件。CLI、App Server、IDE / App surface 因此可以共享核心但拥有不同 UX。</p>
+<p>更底层的 Session 是一个持续运行的 actor：它持有 submission / event channels，处理 user input、interrupt、approval response、MCP refresh、compact、rollback、review，直到显式 shutdown。也就是说，<code>thread.run()</code> 只是 SDK 给出的方便表面，内核不是一个同步函数调用。</p>
+<h3>4.2 <code>run_turn</code> 是最小 agent loop</h3>
+<p>源码注释给出的终止规则非常干净：</p>
+<ol>
+<li>模型返回 function call → Harness 执行工具；</li>
+<li>把 tool output 放回下一次 sampling request；</li>
+<li>模型只返回 assistant message → 记录消息，Turn 完成。</li>
+</ol>
+<p>真实实现比这个三步多出的部分，恰好就是 Harness 的价值：</p>
+<ol>
+<li>Turn 开始前检查并执行 compaction；</li>
+<li>从用户输入解析 required MCP servers / mentioned plugins；</li>
+<li>捕获本 Turn 的 step context 与 world state；</li>
+<li>构建 Skills / Plugins 注入项；</li>
+<li>运行 session-start / pre-turn hooks 并持久化输入；</li>
+<li>组装完整 prompt 和 model-visible tool specs；</li>
+<li>流式消费模型事件，同时调度 tool futures；</li>
+<li>把结果写回历史，必要时中途 compaction，再继续 sampling；</li>
+<li>接受 steering / cancellation，直到 assistant message 或错误终止。</li>
+</ol>
+<p><code>build_prompt()</code> 不是“拼一个字符串”：它把 history items、base instructions、该 step 可见的 tool schema、并行调用开关和最终输出 schema 组装成结构化 <code>Prompt</code>。因此 <strong>context engineering 在这里是一套运行时装配过程，而不是一段 system prompt 文案</strong>。</p>
+<p>模型层也有边界：provider 可以换 base URL、认证和 transport，仓库内有 OpenAI、Amazon Bedrock、Ollama、LM Studio 等入口；但当前通用 seam 是 <strong>Responses-compatible API</strong>，不是“接任意 chat completion API 就能跑”。<code>ModelClientSession</code> 还是 turn-scoped，用来复用该 Turn 内的 WebSocket / routing 状态，不能把它当跨 Turn 的业务 Session。</p>
+<h3>4.3 Tool 并发不是简单 <code>join_all</code></h3>
+<p>Codex 为每个工具判断 <code>supports_parallel</code>：</p>
+<ul>
+<li>可并行工具取得共享 read lock；</li>
+<li>不可并行工具取得独占 write lock；</li>
+<li>因而多个 read-safe tool 可以并发，write / unsafe tool 形成屏障；</li>
+<li>cancellation 会终止仍在执行的 dispatch task。</li>
+</ul>
+<p>随后 registry 负责完整生命周期：payload kind 校验 → PreToolUse hook → handler → telemetry → PostToolUse hook → model-visible result。</p>
+<p>一个非常值得记住的细节：<strong>PostToolUse block 只能拒绝已经产生的结果，不能撤销已经发生的副作用</strong>。源码对此有明确注释。因此有副作用的业务动作必须把 auth、idempotency、transaction / compensation 和 approval 放在执行前或业务服务本身，不能把 post-hook 当 rollback。</p>
+<h2>5. 安全控制面：Approval、Sandbox、MCP Trust 是三件不同的事</h2>
+<p>Codex 把 <code>ExecCommand</code>、<code>ApplyPatch</code>、<code>McpToolCall</code>、<code>NetworkAccess</code>、<code>RequestPermissions</code> 都纳入统一 <code>ApprovalAction</code>，但这不意味着它们共享同一种隔离：</p>
+<table>
+<thead>
+<tr>
+<th>控制</th>
+<th>解决什么</th>
+<th>不解决什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Approval</td>
+<td>这次动作是否经过用户 / policy 授权</td>
+<td>不能物理阻止已获准进程越界</td>
+</tr>
+<tr>
+<td>Permission profile</td>
+<td>本 Turn / Environment 应拥有哪些声明式能力</td>
+<td>仍需 executor / tool 真正 enforcement</td>
+</tr>
+<tr>
+<td>OS sandbox</td>
+<td>限制本地 shell / process 的文件和网络能力</td>
+<td>不自动包住远端 MCP 服务的内部执行</td>
+</tr>
+<tr>
+<td>PreToolUse hook</td>
+<td>执行前 block 或改写输入</td>
+<td>不是 OS 隔离层</td>
+</tr>
+<tr>
+<td>PostToolUse hook</td>
+<td>过滤、替换模型能看到的结果</td>
+<td>不能撤销已发生的 side effect</td>
+</tr>
+<tr>
+<td>MCP / application auth</td>
+<td>限定业务 principal、scope、record-level permission</td>
+<td>由 MCP 服务和宿主应用自己实现</td>
+</tr>
+</tbody>
+</table>
+<p>本地 executor 按平台选择 macOS Seatbelt、Linux seccomp 路径或 Windows Restricted Token，并可叠加 managed network proxy。与此同时，OpenAI 对 agent loop 的官方解释也明确提醒：Codex shell 的 sandbox 不等于 MCP tool 被同一个 sandbox 包裹。</p>
+<p>Codex 对 MCP 还做了一层很实在的 TOCTOU 防护：每个 step 冻结模型看到的 tool catalog / client / config binding，真正调用前校验 catalog revision；若“模型看到的工具 A”在执行时已经换成 B，则拒绝调用。但这只能保证 binding 一致，不能替 MCP server 实现业务鉴权和 side-effect 安全。</p>
+<p>这对产品集成的直接结论是：</p>
+<blockquote>
+<p><strong>“用户点了批准”不是完整安全模型；必须同时回答谁批准、批准什么 capability、在哪个执行环境强制、业务 API 如何鉴权、失败后怎样恢复。</strong></p>
+</blockquote>
+<h2>6. 状态模型：Thread / Turn / Item + JSONL canonical history</h2>
+<p>App Server 以三层对象组织生命周期：</p>
+<ul>
+<li><strong>Thread</strong>：一个持续会话，可 start / resume / fork / archive；</li>
+<li><strong>Turn</strong>：一次用户输入到 agent 完成 / 中断的运行；</li>
+<li><strong>Item</strong>：user message、assistant message、reasoning、command、file change、MCP call 等流式活动单元。</li>
+</ul>
+<p>本地存储也不是一个模糊的“memory”：</p>
+<ul>
+<li><code>ThreadStore::append_items</code> 是 canonical history append API；</li>
+<li><code>LocalThreadStore</code> 用 rollout JSONL 保存 history；</li>
+<li>SQLite 保存可查询 metadata，并从 JSONL rollout 抽取 / mirror 状态；</li>
+<li>core 通过 storage-neutral <code>ThreadStore</code> 边界工作，也允许仓库外实现其他 store。</li>
+</ul>
+<p>这比“内存里放一个 messages 数组”强得多，因为 resume、列表、metadata 查询、迁移和未来远端 store 都有明确边界。但它也不同于 DSH 更强的 <code>model-visible ⟺ logged</code> 运行时不变量；不能因为 Codex 有 JSONL 就自动推导每一份模型输入都能字节级重建。</p>
+<h2>7. Context 是 Harness 的程序，而不是 Prompt 的附件</h2>
+<p>Codex 的 context stack 至少包括：</p>
+<ul>
+<li>model/base instructions；</li>
+<li>sandbox / permission 的 developer context；</li>
+<li>host-provided user instructions；</li>
+<li>从 project root 到 cwd 的 <code>AGENTS.md</code> 层级；</li>
+<li>selected Skills 的 metadata 与按需读取的 <code>SKILL.md</code>；</li>
+<li>MCP / plugin / connector 的 tool schemas；</li>
+<li>Thread history、tool outputs、world-state changes；</li>
+<li>compaction 后的摘要或 opaque compacted items。</li>
+</ul>
+<p>源码中的几个确定性约束很值得学习：</p>
+<ul>
+<li><code>AGENTS.md</code> 从 project root 向 cwd 收集，绝不越过 project root；</li>
+<li><code>AGENTS.override.md</code> 是优先本地覆盖名；</li>
+<li>project docs 有总字节预算；</li>
+<li>untrusted project 不加载项目指令，只保留 host-provided user instructions；</li>
+<li>Skills 采用 progressive disclosure：先给 metadata catalog，选择后主 Agent 必须完整读取 <code>SKILL.md</code>。</li>
+</ul>
+<p>官方公开的 ARC-AGI-3 数字称：retained reasoning + context compaction 让 GPT-5.6 Sol 从 13.3% 提升到 38.3%，同时 output token 降低六倍。它说明 Harness 设计可能显著影响同一模型的结果；但这是 OpenAI 自己在特定模型 / benchmark / harness 配置上的证据，不应外推成“任何任务都提升三倍”。</p>
+<h2>8. Multi-agent 的本体：一棵共享控制面的 Thread 树</h2>
+<p>Codex 的 subagent 不是简单开几个匿名异步函数：</p>
+<ul>
+<li>每个 subagent 是独立 Thread；</li>
+<li>root 和 descendants 共享一个 session-scoped <code>AgentControl</code>；</li>
+<li>registry 保存 agent tree、Thread ID、path、nickname、role；</li>
+<li>spawn 有最大 Thread 数和深度限制；</li>
+<li>control plane 提供 spawn、message、follow-up、interrupt、list、wait；</li>
+<li>child thread 可继承或裁剪父历史，父子关系可以持久化。</li>
+</ul>
+<p>这个设计使 delegation、独立 context、并发预算和生命周期管理落到同一个 Thread 抽象上。它比“Tool 里递归再调一次 LLM”更重，但也更适合 UI 可视化、resume、治理和长任务。</p>
+<h2>9. App Server 为什么是这次平台化的关键</h2>
+<p>如果 core 是 engine，App Server 就是可被其他产品消费的 ABI：</p>
+<ul>
+<li>双向 JSON-RPC 2.0（wire 上省略 <code>jsonrpc: "2.0"</code>）；</li>
+<li>默认 stdio transport 是 newline-delimited JSON / JSONL；</li>
+<li>client 发送 <code>initialize</code>、<code>thread/start</code>、<code>turn/start</code>；</li>
+<li>server 流式发送 <code>turn/started</code>、<code>item/*</code>、<code>turn/completed</code>；</li>
+<li>server 可以反向请求 command / file change approval；</li>
+<li>schema 可由当前 Codex binary 生成 TypeScript 或 JSON Schema，而且 schema 与该版本精确绑定。</li>
+</ul>
+<p>WebSocket transport 截至本报告仍标为 experimental / unsupported for production。官方文档还提醒非 loopback listener 在 rollout 期间可能默认无认证；远端暴露前必须配置 WebSocket auth。产品化时应优先从本地 stdio + pinned runtime 开始，而不是直接把 experimental WebSocket 当公网 Agent server。</p>
+<h2>10. 四种接入方式怎么选</h2>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>适合</th>
+<th>你获得什么</th>
+<th>主要代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>codex exec</code></td>
+<td>CI、脚本、一次性后台任务</td>
+<td>最小集成、结构化输出</td>
+<td>对中途事件和 UX 控制少</td>
+</tr>
+<tr>
+<td>TypeScript / Python SDK</td>
+<td>服务端 start / resume / stream Agent task</td>
+<td>稳定的程序接口；Python SDK pin 对应 CLI runtime</td>
+<td>仍要管理进程、权限、事件与业务状态</td>
+</tr>
+<tr>
+<td>App Server</td>
+<td>Agent 是产品本身的一部分</td>
+<td>直接控制 Thread 生命周期、流式 Item、interrupt、approval 和 UI</td>
+<td>协议面大、版本耦合、实验功能多</td>
+</tr>
+<tr>
+<td>Fork Rust core</td>
+<td>必须改变 loop / executor / persistence 的底层语义</td>
+<td>最大控制权</td>
+<td>维护 134-crate 快速演进代码库；上游又不收外部 PR</td>
+</tr>
+</tbody>
+</table>
+<p>默认学习和产品 PoC 路线应是：</p>
+<pre><code class="language-text">codex exec → SDK → app-server → 最后才考虑 fork core
+</code></pre>
+<h2>11. 真正厉害的地方，以及哪些并不新</h2>
+<h3>真正厉害</h3>
+<ol>
+<li><strong>把成熟 coding agent 的运行时拆成可复用平台</strong>：不是另写一个 demo SDK，而是 App / CLI / IDE 共用的生产核心。</li>
+<li><strong>Thread / Turn / Item / Event 形成产品协议</strong>：UI、后台任务和 core 不必共享控制流，只共享 typed lifecycle。</li>
+<li><strong>安全成为运行时 control plane</strong>：approval、permission、OS sandbox、hooks、network policy 分层，而不是一个 <code>--dangerously-skip</code> 布尔值。</li>
+<li><strong>Context assembly 被工程化</strong>：AGENTS、Skills、MCP、world state、compaction、history 都有确定的发现、预算和注入路径。</li>
+<li><strong>持久化和多 Agent 复用同一个 Thread 原语</strong>：resume / fork / subagent / queue / steering 可以落在统一对象模型上。</li>
+<li><strong>宿主应用边界说得很清楚</strong>：产品拥有业务 context、规则、工具、consent 与 system of record；Harness 不抢业务真相。</li>
+</ol>
+<h3>并不新，但组合价值很高</h3>
+<ul>
+<li>model → tool → model 的 loop 本身是标准 agent pattern；</li>
+<li>JSON-RPC、event streaming、JSONL、SQLite、read/write lock 都是成熟工程原语；</li>
+<li>Skills progressive disclosure、AGENTS.md、MCP、hooks 也不是 Codex 独有。</li>
+</ul>
+<p>Codex 的护城河不在发明某一个原语，而在把这些机制与模型 prompt、产品 surfaces、平台安全和长期兼容一起磨成了同一个可运行系统。</p>
+<h2>12. Anti-thesis：不要被“Open Agent Harness”叙事带走</h2>
+<ol>
+<li><strong>不是刚刚第一次开源</strong>：2026-08-19 是定位升级，不是源码诞生。</li>
+<li><strong>不是完整 Codex</strong>：IDE extension、Codex cloud、模型和 managed services 不开源。</li>
+<li><strong>开源不等于开放治理</strong>：Apache-2.0 可以 fork，但官方不接 external code PR。</li>
+<li><strong>App Server 仍有 maturity 风险</strong>：协议面很大，许多方法标 experimental；generated schema 与 binary 版本绑定。</li>
+<li><strong>本地沙箱不覆盖所有工具</strong>：MCP / business service 是另一条 trust boundary。</li>
+<li><strong>Approval 不等于事务</strong>：尤其 PostToolUse 无法撤销副作用。</li>
+<li><strong>平台文章里的 benchmark 是 vendor evidence</strong>：ARC-AGI-3 数字很强，但不是独立、跨任务的通用因果证明。</li>
+<li><strong>复杂度非常真实</strong>：固定快照已有 134 个 Rust workspace members；若产品只需要一次性 task，fork core 很可能是过度工程。</li>
+</ol>
+<h2>13. 与 DSH 的对照：产品化 runtime vs 可组合 microkernel</h2>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Codex Harness</th>
+<th>DeepSeek Harness（DSH）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第一目标</td>
+<td>给 Codex App / CLI / IDE 和第三方产品提供统一 runtime</td>
+<td>让 harness 每一层都能被插件组合、替换和发行</td>
+</tr>
+<tr>
+<td>Agent loop</td>
+<td>强 opinionated 的 Rust core loop</td>
+<td>loop 本身也可作为 Cordis plugin 替换</td>
+</tr>
+<tr>
+<td>扩展模型</td>
+<td>tools、hooks、skills、plugins、MCP、extension APIs</td>
+<td>typed events + capability seam + profile / bundle / patch</td>
+</tr>
+<tr>
+<td>状态</td>
+<td>ThreadStore canonical append；本地 JSONL history + SQLite metadata</td>
+<td>append-only session log 是唯一事实源，并强制 <code>model-visible ⟺ logged</code></td>
+</tr>
+<tr>
+<td>协议</td>
+<td>App Server 的 Thread / Turn / Item JSON-RPC</td>
+<td>Headless / Web / SDK / ACP，多 profile 组合</td>
+</tr>
+<tr>
+<td>安全强项</td>
+<td>跨 macOS / Linux / Windows 的真实 OS sandbox + approvals</td>
+<td>provider 可替换、fail-closed capability / sandbox / credential 设计</td>
+</tr>
+<tr>
+<td>产品成熟度</td>
+<td>已驱动真实 Codex 多 surface，规模和集成深</td>
+<td>developer preview，但开放组合权更彻底</td>
+</tr>
+<tr>
+<td>社区治理</td>
+<td>Apache-2.0，但不接外部代码 PR</td>
+<td>更像开放框架生态路线</td>
+</tr>
+</tbody>
+</table>
+<p>两者不是谁“更先进”，而是在优化不同变量：</p>
+<ul>
+<li>Codex 优先解决 <strong>同一套强 runtime 如何驱动多个真实产品</strong>；</li>
+<li>DSH 优先解决 <strong>不同 runtime / capability / product shape 如何被第三方重新组合</strong>。</li>
+</ul>
+<h2>14. 对 Agent 产品的直接启示</h2>
+<p>最值得迁移的不是复制 Codex UI，而是以下边界：</p>
+<ol>
+<li>用 <code>Thread → Turn → Item → Event</code> 做稳定协议，不让 UI 直接耦合 loop 内部控制流。</li>
+<li>宿主产品拥有业务 record、auth、规则、consent 和最终 read-back；Harness 拥有推理 loop、工具交互和运行态。</li>
+<li>把 approval、permission、sandbox、credential、business authorization 分成五个可独立审计的层。</li>
+<li>所有 consequential writes 都要执行前授权、幂等键、结果 read-back；不能把 post-hook 当 rollback。</li>
+<li>SDK / App Server 必须 pin runtime 与 schema，版本协商应成为产品契约。</li>
+<li>为 Domain UI 提供 agent，而不是把所有工作强迫进一个通用聊天框。</li>
+<li>如果目标是生态化，再向 DSH 学习开放组合权；如果目标是可靠产品，先向 Codex 学习意见明确的 runtime 和 lifecycle。</li>
+</ol>
+<h2>15. 建议的学习顺序与第一个动手实验</h2>
+<h3>第一遍：只建立运行链路</h3>
+<ol>
+<li><code>codex_thread.rs</code>：看 <code>submit(Op)</code> / <code>next_event()</code>。</li>
+<li><code>session/turn.rs</code>：从 <code>run_turn()</code> 追到 <code>build_prompt()</code>、<code>run_sampling_request()</code>、<code>try_run_sampling_request()</code>。</li>
+<li><code>tools/parallel.rs</code> + <code>tools/registry.rs</code>：看并发屏障、hook 和 tool result 回流。</li>
+<li><code>approvals.rs</code> + <code>sandboxing/manager.rs</code>：分开理解 consent 与 enforcement。</li>
+<li><code>thread-store/README.md</code>：理解 canonical history 与 SQLite metadata。</li>
+<li><code>app-server/README.md</code>：把 core 心智模型映射到 Thread / Turn / Item / Event。</li>
+</ol>
+<h3>第二遍：做一个最小 Event Tracer</h3>
+<p>目标不是造聊天 UI，而是写一个约 50–100 行的本地 client：</p>
+<ol>
+<li>启动 <code>codex app-server</code>（stdio）；</li>
+<li>发送 <code>initialize</code> / <code>initialized</code>；</li>
+<li>用 read-only sandbox 创建 Thread；</li>
+<li>启动一个只读 Turn；</li>
+<li>把每个 <code>item/*</code> event 按时间写入本地 trace；</li>
+<li>遇到 approval request 一律 decline；</li>
+<li>对照 JSONL rollout，画出一次 Turn 的状态机。</li>
+</ol>
+<p>本机查询时 <code>codex-cli</code> 是 <code>0.142.5</code>，低于上游最新稳定版 <code>0.149.0</code>。正式动手前应先决定是按本机版本学习，还是隔离安装并 pin <code>0.149.0</code>；不要直接拿最新文档 schema 假设旧 binary 完全兼容。</p>
+<p>第三步再做一个 workflow-native PoC，例如 Issue triage board 或研究资料台：业务对象在左，Codex 事件在右，写操作必须 approval + read-back。这样才能真正验证“Harness 进入现有工作流”，而不是只做另一个聊天壳。</p>
+<h2>参考来源与证据等级</h2>
+<h3>A. OpenAI 官方一手资料</h3>
+<ul>
+<li><a href="https://developers.openai.com/blog/codex-as-a-platform">Codex as a platform: build on the open agent harness（2026-08-19）</a></li>
+<li><a href="https://learn.chatgpt.com/docs/open-source">Codex Open Source components</a></li>
+<li><a href="https://learn.chatgpt.com/docs/app-server">Codex App Server documentation</a></li>
+<li><a href="https://learn.chatgpt.com/docs/codex-sdk">Codex SDK documentation</a></li>
+<li><a href="https://openai.com/index/unrolling-the-codex-agent-loop/">Unrolling the Codex agent loop</a></li>
+<li><a href="https://openai.com/index/introducing-o3-and-o4-mini/">Introducing o3 and o4-mini（Codex CLI 初次 fully open-source）</a></li>
+<li><a href="https://github.com/openai/codex">openai/codex</a>、<a href="https://github.com/openai/codex/blob/main/LICENSE">Apache-2.0 License</a>、<a href="https://github.com/openai/codex/releases/tag/rust-v0.149.0">rust-v0.149.0</a></li>
+<li><a href="https://github.com/openai/codex/blob/9ab176f488f5da100984a005688f041d49e06bdb/docs/contributing.md#L1-L13">Contribution policy：不接收 external code PR</a></li>
+</ul>
+<h3>B. 固定 SHA 源码核验</h3>
+<ul>
+<li><a href="https://github.com/openai/codex/tree/9ab176f488f5da100984a005688f041d49e06bdb"><code>openai/codex@9ab176f</code></a></li>
+<li>核验范围：core thread / turn loop、tool router / registry / parallel runtime、approvals、sandbox manager、AGENTS / Skills、ThreadStore / state、App Server protocol、multi-agent control / registry。</li>
+</ul>
+<hr>
+<p><em>由 LLM 从知识库与 OpenAI 官方一手资料查询生成</em></p>
+      </div>
+      <div class="post-footer">
+        来自个人知识库精选，已脱敏。
+        <a href="../index.html">← 返回文章列表</a>
+      </div>
+    </article>
+
+  </main>
+  <footer class="site-footer">
+    来自个人知识库精选，已脱敏 · <a href="../../index.html">benzema216.github.io</a>
+  </footer>
+</body>
+</html>
