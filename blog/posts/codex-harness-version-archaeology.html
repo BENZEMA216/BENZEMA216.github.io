@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Codex Harness 0.95 → 0.149：半年真正新增了什么 — 朱东哲</title>
+  <meta name="description" content="Codex 0.95→0.149：半年真正新增的是控制面，不是 agent loop。" />
+  <link rel="stylesheet" href="../assets/blog.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="site-mark" href="../index.html">朱东哲 <span>·</span> 写作</a>
+    <nav class="site-nav">
+      <a href="../index.html" class="active">文章</a>
+      <a href="../products.html" class="">产品雷达</a>
+      <a href="../../index.html">主页</a>
+    </nav>
+  </header>
+  <main class="wrap">
+    <article class="post">
+      <header>
+        <span class="accent" aria-hidden="true"></span>
+        <div class="post-meta">
+          <time datetime="2026-08-21">2026-08-21</time>
+          <span class="type">产品拆解</span>
+        </div>
+        <h1>Codex Harness 0.95 → 0.149：半年真正新增了什么</h1>
+      </header>
+      <div class="content">
+<blockquote>
+<p><strong>一句话结论</strong>：不是“没有新东西”，而是<strong>没有新的 agent loop，也没有 8 月 19 日突然开源的新仓库</strong>。真正的半年增量，是把 2 月已经可嵌入的 loop，长成一套更接近产品级的 Agent control plane：Permission Profiles、typed World State、SQLite 分页历史、Multi-Agent V2、Plugin / Extension 平台、Python App Server SDK，以及 remote environment / executor 路由。</p>
+</blockquote>
+<h2>0. 先给判断</h2>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th style="text-align: right;">判断</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8 月 19 日是否新开源了 Harness？</td>
+<td style="text-align: right;"><strong>否</strong></td>
+<td>仍是既有 <code>openai/codex</code>；这次是平台化定位与集成叙事</td>
+</tr>
+<tr>
+<td>2 月后是否重写了 agent loop？</td>
+<td style="text-align: right;"><strong>基本没有</strong></td>
+<td>sampling → tool → tool output 回填 → 继续 sampling 的主循环早已有之</td>
+</tr>
+<tr>
+<td>半年是否有实质工程增量？</td>
+<td style="text-align: right;"><strong>有，而且很大</strong></td>
+<td>新增主要发生在状态、安全、多 Agent、扩展、协议与远程执行控制面</td>
+</tr>
+<tr>
+<td>是否已经是冻结的 production public API？</td>
+<td style="text-align: right;"><strong>还不是</strong></td>
+<td><code>0.149</code> 的 145 个显式 v2 client RPC 中，52 个整方法仍标为 experimental</td>
+</tr>
+<tr>
+<td>最值得学习什么？</td>
+<td style="text-align: right;"><strong>控制面，不是聊天循环</strong></td>
+<td>Permission、World State、ThreadStore、Multi-Agent tree、协议序列化最有含金量</td>
+</tr>
+</tbody>
+</table>
+<p>如果只挑三个最硬的新东西：</p>
+<ol>
+<li><strong>Permission control plane</strong>：从 command / file approval，升级为 filesystem + network + additional grants + profile intersection + runtime <code>request_permissions</code> + Guardian / auto-review。</li>
+<li><strong>Durable Thread platform</strong>：从 JSONL 记录与 SQLite metadata，升级为 ThreadStore、分页 Turn / Item、SQLite materialization、single-writer、搜索、revert、queue / goal 等可驱动产品 UI 的状态服务。</li>
+<li><strong>Multi-Agent V2 + Extension platform</strong>：从已有的 spawn/send/interrupt，升级为 Agent tree/path、mailbox、follow-up、wait、residency、budget，并把 Skills、MCP、Apps、Hooks 组合成 Plugin / Extension 能力包。</li>
+</ol>
+<h2>1. 比较口径：为什么基线是 0.95，不是 0.94 或 0.96</h2>
+<p>OpenAI 的 <a href="https://openai.com/index/unlocking-the-codex-harness/"><em>Unlocking the Codex harness</em></a> 发布于 <strong>2026-02-04 13:00 UTC</strong>。同日稳定版的时间顺序是：</p>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th style="text-align: right;">时间（UTC）</th>
+<th style="text-align: right;">是否进入基线</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/openai/codex/releases/tag/rust-v0.95.0"><code>rust-v0.95.0</code></a></td>
+<td style="text-align: right;">2026-02-04 04:54</td>
+<td style="text-align: right;"><strong>是</strong></td>
+</tr>
+<tr>
+<td>OpenAI App Server 文章</td>
+<td style="text-align: right;">2026-02-04 13:00</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td><code>rust-v0.96.0</code></td>
+<td style="text-align: right;">2026-02-04 18:23</td>
+<td style="text-align: right;">否，属于发布后的 look-ahead</td>
+</tr>
+<tr>
+<td><a href="https://github.com/openai/codex/releases/tag/rust-v0.149.0"><code>rust-v0.149.0</code></a></td>
+<td style="text-align: right;">2026-08-20 21:04</td>
+<td style="text-align: right;"><strong>终点</strong></td>
+</tr>
+</tbody>
+</table>
+<p>文章示例中的 <code>codex_vscode/0.94.0-alpha.7</code> 只是 client user-agent，不足以把整篇文章绑定到 <code>0.94</code>。因此最公平的 stable-to-stable 对比是：</p>
+<pre><code class="language-text">rust-v0.95.0@12dbb76  →  rust-v0.149.0@758ef40
+</code></pre>
+<p>两端 release commit 从共同父节点各自切出，GitHub Compare 显示 target side <code>ahead_by=6,248</code>、baseline side <code>behind_by=1</code>。所以准确说法是“<strong>目标侧新增 6,248 commits</strong>”，不是假设两 tag 线性相承。完整对比见 <a href="https://github.com/openai/codex/compare/12dbb76c812afaff8daf1f3a5acf1d5ef4a75cb1...758ef40f50c1a458425c7cfbf1eb12cbc07af0b0">GitHub Compare</a>。</p>
+<h3>1.1 工程规模变化</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th style="text-align: right;">0.95.0</th>
+<th style="text-align: right;">0.149.0</th>
+<th style="text-align: right;">变化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cargo workspace members</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">133</td>
+<td style="text-align: right;">+82，2.61×</td>
+</tr>
+<tr>
+<td>tracked files</td>
+<td style="text-align: right;">2,507</td>
+<td style="text-align: right;">6,416</td>
+<td style="text-align: right;">+3,909，2.56×</td>
+</tr>
+<tr>
+<td>Rust files</td>
+<td style="text-align: right;">835</td>
+<td style="text-align: right;">3,238</td>
+<td style="text-align: right;">+2,403，3.88×</td>
+</tr>
+<tr>
+<td>non-binary text LOC</td>
+<td style="text-align: right;">456,715</td>
+<td style="text-align: right;">1,754,677</td>
+<td style="text-align: right;">+1,297,962，3.84×</td>
+</tr>
+<tr>
+<td>Rust LOC</td>
+<td style="text-align: right;">297,258</td>
+<td style="text-align: right;">1,440,206</td>
+<td style="text-align: right;">+1,142,948，4.85×</td>
+</tr>
+</tbody>
+</table>
+<p>这些数字只能证明工程规模与变化速度，<strong>不能当作创新量</strong>：统计包含 docs、tests、generated schema、fixtures、snapshots 和 vendor；workspace 增长也大量来自原模块拆 crate。</p>
+<h2>2. 2 月 4 日已经有什么：这些不能再算 8 月新增</h2>
+<h3>2.1 最小可嵌入 Harness 已经完整</h3>
+<p><a href="https://github.com/openai/codex/blob/12dbb76c812afaff8daf1f3a5acf1d5ef4a75cb1/codex-rs/app-server/README.md"><code>0.95 App Server README</code></a> 已明确提供：</p>
+<ul>
+<li>stdio 上的双向 JSONL / JSON-RPC-lite；</li>
+<li>initialize handshake 与版本化 schema；</li>
+<li>Thread / Turn / Item 三层对象；</li>
+<li><code>thread/start|resume|fork|list|read|archive|unarchive|name/set|rollback</code>；</li>
+<li><code>turn/start|interrupt</code>、Item delta、plan、reasoning、command、file-change 等事件流；</li>
+<li><code>review/start</code> 与 sandboxed <code>command/exec</code>；</li>
+<li>model、Skills、Apps、MCP OAuth / status、account auth、config read/write；</li>
+<li>command / file 的 server-initiated approval request；</li>
+<li>stable / experimental capability gate。</li>
+</ul>
+<p>也就是说，<strong>Thread / Turn / Item、持久会话、事件流、审批、Skills / MCP、App Server 本身都不是这半年的新发明</strong>。<code>0.95</code> 已有 35 个显式 v2 client RPC。</p>
+<h3>2.2 Agent loop、工具并发与 subagent 也已经存在</h3>
+<p>基线 <a href="https://github.com/openai/codex/blob/12dbb76c812afaff8daf1f3a5acf1d5ef4a75cb1/codex-rs/core/src/codex.rs#L3485-L3565"><code>core/src/codex.rs</code></a> 已实现：history → Responses sampling → function call → tool output 回填 → 再次 sampling → assistant message 结束，并包含 auto-compaction。</p>
+<p>基线 <a href="https://github.com/openai/codex/blob/12dbb76c812afaff8daf1f3a5acf1d5ef4a75cb1/codex-rs/core/src/tools/parallel.rs#L23-L89"><code>tools/parallel.rs</code></a> 已按工具 capability 使用 RwLock：可并行工具共享 read lock，有写入 / 副作用风险的工具形成独占屏障。</p>
+<p>基线 <a href="https://github.com/openai/codex/blob/12dbb76c812afaff8daf1f3a5acf1d5ef4a75cb1/codex-rs/core/src/agent/control.rs#L13-L129"><code>agent/control.rs</code></a> 已有 multi-agent v1 的 spawn、send、interrupt、status；基线也已有 Skills loader、MCP、AGENTS / project instructions、JSONL rollout 和 SQLite metadata。</p>
+<h3>2.3 TypeScript SDK 早已有，但不是完整 App Server SDK</h3>
+<p>TypeScript SDK 在 <code>0.95</code> 已存在，且到 <code>0.149</code> 的基本架构仍是启动 <code>codex exec --json</code> 子进程的 wrapper。它适合一次性或流式程序调用，但不能把它误算成半年后新增的 typed App Server client。</p>
+<h2>3. 真正新增一：Permission / Safety 变成独立控制面</h2>
+<p>这是半年里最重要的架构增量之一。</p>
+<h3>3.1 Before → After</h3>
+<pre><code class="language-text">0.95
+command / file 是否需要 approval
+        ↓
+允许或拒绝本次动作
+
+0.149
+Permission Profile
+  ├─ filesystem read / write / deny precedence
+  ├─ network policy
+  ├─ additional requested permissions
+  ├─ session / turn / environment grant scope
+  └─ user review 或 Guardian auto-review
+        ↓
+统一 ApprovalAction
+  Shell · ExecCommand · ApplyPatch · MCP · Network · RequestPermissions
+        ↓
+executor / sandbox enforcement
+</code></pre>
+<p>当前 <a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/core/src/tools/approvals.rs#L54-L150"><code>approvals.rs</code></a> 已把 shell、exec、patch、MCP、network、request-permissions 归入统一审批链；<a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/protocol/src/permissions.rs#L92-L130"><code>permissions.rs</code></a> 明确 filesystem read / write / deny 的优先级；<a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/core/src/tools/handlers/request_permissions.rs#L20-L119"><code>request_permissions</code> handler</a> 允许 Agent 在运行中申请额外能力。</p>
+<p>Hooks 也从早期 AfterToolUse 扩展为 11 类生命周期事件，包括 Pre/PostToolUse、Permission、Compact、Session、Subagent 与 Stop，见 <a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/hooks/src/lib.rs#L22-L35"><code>hooks/src/lib.rs</code></a>。</p>
+<p>这不是多几个 approval 弹窗，而是把“允许谁、在什么范围、持续多久、由谁复核、在哪层强制”建模成 control plane。</p>
+<p>边界：Permission Profiles 和 granular approval 的部分 App Server surface 仍需 experimental opt-in；Guardian 依赖 managed reviewer，不等于开源本地代码独立完成全部安全判断；PostToolUse 仍不能撤销已发生的副作用。</p>
+<h2>4. 真正新增二：Context / Thread 从日志升级为可恢复状态平台</h2>
+<p>这部分由两个互补机制组成。</p>
+<h3>4.1 Typed World State：每个 model step 有一致的运行时视图</h3>
+<p>基础 agent loop 没变，但当前 <a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/core/src/session/turn.rs#L140-L393"><code>run_turn</code></a> 会在 step 边界捕获 StepContext，并把 environment、permissions、model、plugins、tools、multi-agent、realtime 等状态投影为 typed World State。</p>
+<p><a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/core/src/context/world_state/mod.rs#L1-L50"><code>context/world_state</code></a> 提供 section / diff / extension contract，使状态可以持久化、比较、replay，并在 compaction / resume 后重建一致上下文。后来新增的 remote compaction、context-window lineage 与整棵 Agent tree 的 rollout token budget，都建立在这类显式状态边界上。</p>
+<p>这是真正的 Harness 增量：<strong>不是给 prompt 多塞一段文字，而是让“模型这一步看到的世界”成为可记录、可比较、可恢复的对象。</strong></p>
+<h3>4.2 ThreadStore：从 recorder 变成 product state service</h3>
+<p><code>0.95</code> 已有 JSONL canonical rollout 与 SQLite metadata recorder；当前 <a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/thread-store/src/store.rs#L55-L188"><code>ThreadStore</code> trait</a> 则统一 create / resume / append / flush / history / model-context / fork / revert / list。</p>
+<p>半年新增包括：</p>
+<ul>
+<li>分页 Thread / Turn / Item history；</li>
+<li>SQLite materialization 与 legacy rollout migration；</li>
+<li>single-writer 与 durable revert；</li>
+<li>thread search、status、section、project、goal、queue；</li>
+<li>bounded model-context suffix，不必为 UI 或模型每次重放整段历史；</li>
+<li>跨进程可查询的 Thread 生命周期。</li>
+</ul>
+<p><a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/thread-store/README.md#L1-L30"><code>ThreadStore README</code></a> 仍明确：本地 canonical history 是 JSONL，SQLite 负责 queryable metadata / projection。</p>
+<p>关键边界：仓库曾加入 remote ThreadStore，后来又移除；<code>0.149</code> 开源实现主要是 local / in-memory seam。它证明 storage-neutral abstraction，不等于附送一个可自托管的远程 Codex cloud store。</p>
+<h2>5. 真正新增三：Multi-Agent V2，而不是“首次支持 subagent”</h2>
+<p><code>0.95</code> 已能 spawn / send / interrupt / status；后续的实质增量是把 subagent 从几个子任务句柄变成一棵可治理的 Thread tree：</p>
+<ul>
+<li>canonical agent path，例如 <code>/root/researcher</code>；</li>
+<li>nickname、role 与 structured message；</li>
+<li>mailbox、follow-up、list、wait、automatic final-result delivery；</li>
+<li>full-history fork 与 fork sanitation；</li>
+<li>active-execution concurrency limit；</li>
+<li>LRU residency / reload；</li>
+<li>parent-child rollout budget；</li>
+<li>per-turn multi-agent mode 与 App Server / TUI control surface。</li>
+</ul>
+<p>当前 <a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/core/src/agent/control.rs#L99-L170"><code>AgentControl</code></a> 是 root-tree scoped 的 registry + residency + execution limiter + budget 控制面；<a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/core/src/agent/registry.rs#L18-L58"><code>AgentRegistry</code></a> 维护 tree / path / nickname / limits。</p>
+<p>这让 multi-agent 从“Agent 能开子 Agent”，升级为“宿主能观察、寻址、约束和恢复一棵 Agent execution graph”。</p>
+<p>边界：源码与配置仍长期称为 V2，半年内经历 assign-task → follow-up、close → interrupt、fork / residency 语义变化；它已很实用，但不是冻结协议。</p>
+<h2>6. 真正新增四：Skills + MCP + Apps + Hooks 组合成 Plugin / Extension 平台</h2>
+<p><code>0.95</code> 已有 local Skills、MCP 和 Apps。新东西不是“支持工具”，而是把扩展能力做成可发现、安装、组合与投影的包：</p>
+<ul>
+<li>structured plugin manifest；</li>
+<li>curated marketplace、install / uninstall、<code>@plugin</code> mention；</li>
+<li>一个 plugin 聚合 Skills、MCP、Apps 与 Hooks；</li>
+<li>typed Extension API；</li>
+<li>host / executor / orchestrator 等不同 Skills 来源；</li>
+<li>token-budgeted catalog 与 progressive disclosure；</li>
+<li><code>tool_search</code> / deferred MCP tools，避免全量 schema 常驻上下文。</li>
+</ul>
+<p>当前 <a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/plugin/src/lib.rs#L49-L68"><code>plugin/src/lib.rs</code></a> 的 capability summary 已把 Skills、MCP、Apps、Hooks 放进同一个模型；<a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/ext/extension-api/src/lib.rs#L38-L84"><code>ext/extension-api</code></a> 提供 typed contributor surface。</p>
+<p>这意味着 Codex 从“带几个 extension 点的 agent”走向“可装配 capability package 的 runtime”。但 curated catalog、认证和 remote executor 仍依赖 managed services；Extension API 半年内变化很快，不能视为长期稳定 ABI。</p>
+<h2>7. 真正新增五：App Server 从 loop API 变成产品 control plane</h2>
+<h3>7.1 协议面积变化</h3>
+<p>对 <code>app-server-protocol</code> 的显式 v2 macro 计数：</p>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th style="text-align: right;">0.95</th>
+<th style="text-align: right;">0.149</th>
+<th style="text-align: right;">变化</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>client → server RPC（排除 initialize）</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">145</td>
+<td style="text-align: right;">112 新增、2 删除</td>
+</tr>
+<tr>
+<td>server → client requests</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">+4</td>
+</tr>
+<tr>
+<td>notifications</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">+49</td>
+</tr>
+</tbody>
+</table>
+<p>删除的两个 RPC 是早期 <code>skills/remote/read|write</code>；相应能力后来被 marketplace / plugin surface 取代。当前 145 个方法中，<strong>52 个整方法仍标 <code>#[experimental]</code></strong>，所以“RPC 多了四倍”说明 control plane 变大，不等于全部 production-ready。</p>
+<p>新增的高价值 surface 包括：</p>
+<ul>
+<li><code>turn/steer</code>、connection-aware resume、unsubscribe 与 thread status；</li>
+<li>分页 turns / items、search、metadata、sections、projects；</li>
+<li>goals、durable queue、memory mode；</li>
+<li>filesystem RPC、watch、PTY / TTY streaming process lifecycle；</li>
+<li>permission profile、network request、MCP elicitation；</li>
+<li>subagent descendant / fork / status 投影；</li>
+<li>realtime / audio 与 remote-control；</li>
+<li>plugin / marketplace / environment APIs。</li>
+</ul>
+<p>当前 <a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/app-server/README.md"><code>0.149 App Server README</code></a> 已更像“Agent product backend contract”，而不只是启动一个 Turn 的 API。</p>
+<h3>7.2 Keyed request serialization 是低调但关键的成熟化</h3>
+<p>新增的 <a href="https://github.com/openai/codex/blob/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/app-server/src/request_serialization.rs"><code>request_serialization.rs</code></a> 会按 thread / global resource 对 RPC 排队，部分全局读取可共享执行。这样同一 Thread 的 lifecycle / state mutation 不再由多个裸 handler 任意并发，避免 resume、archive、turn-start、metadata 更新之间的 race。</p>
+<p>这类并发正确性没有新 UI 那么显眼，却是“能否当产品控制面”的核心差别。</p>
+<h3>7.3 Transport 扩展了，但不能过度宣传</h3>
+<p><code>0.95</code> 只有 stdio。后续加入 WebSocket、Unix socket、health probe 与独立 <a href="https://github.com/openai/codex/tree/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/codex-rs/app-server-transport"><code>app-server-transport</code></a>。WebSocket 曾加入、回退、再恢复；<code>0.149</code> README 仍把它标为 <strong>experimental / unsupported</strong>。</p>
+<p>所以它证明 transport abstraction 在成熟，不代表开源仓库已经提供可直接暴露公网的 production Agent server。</p>
+<h2>8. 真正新增六：Python typed App Server SDK</h2>
+<p>这是最容易被明确称为“新组件”的增量。</p>
+<p><a href="https://github.com/openai/codex/tree/758ef40f50c1a458425c7cfbf1eb12cbc07af0b0/sdk/python"><code>sdk/python</code></a> 从 generated protocol foundation 演进为 <code>openai-codex</code>：</p>
+<ul>
+<li>启动匹配的 Codex binary；</li>
+<li>typed stdio JSON-RPC；</li>
+<li>sync / async client；</li>
+<li>Thread lifecycle、stream / steer / interrupt；</li>
+<li>auth、approval 与 sandbox preset；</li>
+<li>runtime-generated protocol types。</li>
+</ul>
+<p>它和旧 TypeScript SDK 的关键差别是：Python 版直接面向 App Server typed protocol，而不是仅包装 <code>codex exec --json</code>。</p>
+<p>边界：高层 wrapper 只覆盖精选 RPC，不等于暴露全部 145 个方法；<code>0.149</code> 源码快照仍绑定 <code>0.147</code> runtime，说明 SDK 与 CLI binary 版本耦合且可能短暂滞后。</p>
+<h2>9. 真正新增七：Environment / Remote execution plane</h2>
+<p>半年后，Harness 不再假定所有 shell / file / patch 都必须发生在本机 CLI 进程旁：</p>
+<ul>
+<li>multi-environment per turn 与 sticky environment selection；</li>
+<li>exec-server protocol 与 executor registry；</li>
+<li>remote executor auth / registration；</li>
+<li>remote filesystem、AGENTS、sandbox intent 与 network policy callback；</li>
+<li>remote-control、daemon、Noise-encrypted relay；</li>
+<li>remote Code Mode host 与 executor-provided Skills。</li>
+</ul>
+<p>这使同一个 Turn 可以把动作路由到选定 executor / environment，而 UI 与 Harness control plane 留在另一侧。</p>
+<p>边界同样重要：开源仓库提供 client、protocol、local pieces 和 seams；managed registration、relay、身份与 OpenAI remote runtime 并没有因此全部变成可离线自托管服务。</p>
+<h2>10. 半年演化可以压成这条时间线</h2>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>主要变化</th>
+<th>代表 release</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 月上旬</td>
+<td>steering、hooks、memory plumbing、structured network approval、多 Agent roles</td>
+<td><a href="https://github.com/openai/codex/releases/tag/rust-v0.102.0"><code>0.102</code></a></td>
+</tr>
+<tr>
+<td>3 月</td>
+<td>Permission Profiles、Guardian、Plugin marketplace、Code Mode、Python SDK、Multi-Agent V2</td>
+<td><a href="https://github.com/openai/codex/releases/tag/rust-v0.117.0"><code>0.117</code></a></td>
+</tr>
+<tr>
+<td>4–5 月</td>
+<td>Unix / WS transport、multi-environment、ThreadStore、hooks 稳定化、goals、remote exec</td>
+<td><a href="https://github.com/openai/codex/releases/tag/rust-v0.125.0"><code>0.125</code></a></td>
+</tr>
+<tr>
+<td>5 月</td>
+<td><code>openai-codex</code> Python package、remote-control、permission inheritance、goals / history search</td>
+<td><a href="https://github.com/openai/codex/releases/tag/rust-v0.132.0"><code>0.132</code></a></td>
+</tr>
+<tr>
+<td>6 月下旬–7 月</td>
+<td>typed World State、Agent-tree budget、scheduled follow-up、MCP tool search、paginated durable history</td>
+<td><a href="https://github.com/openai/codex/releases/tag/rust-v0.142.0"><code>0.142</code></a></td>
+</tr>
+<tr>
+<td>7–8 月</td>
+<td>portable plugins、remote Code Mode、MCP 2026-07-28、auto-reviewed approvals</td>
+<td><a href="https://github.com/openai/codex/releases/tag/rust-v0.147.0"><code>0.147</code></a></td>
+</tr>
+<tr>
+<td>8 月 20 日</td>
+<td><code>codex agents</code> dashboard、<code>codex queue</code>、更强 doctor 与一批安全 hardening</td>
+<td><a href="https://github.com/openai/codex/releases/tag/rust-v0.149.0"><code>0.149</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2>11. 所以 8 月 19 日“新增了什么”应该分三层回答</h2>
+<h3>11.1 公告当天的代码增量：接近零</h3>
+<p>没有新建 <code>codex-harness</code> repo，没有重写 agent loop，也没有在当天突然开放此前私有的整套产品代码。8 月 20 日的 <code>0.149</code> 是正常连续 release。</p>
+<h3>11.2 半年累计的产品增量：很大</h3>
+<p>从 <code>0.95</code> 到 <code>0.149</code>，Codex 从“有完整会话协议的本地 coding agent”变成：</p>
+<pre><code class="language-text">Agent Loop
+  + Permission / Approval control plane
+  + Typed World State
+  + Durable ThreadStore / pagination / queue / goal
+  + Multi-Agent execution tree
+  + Plugin / Extension marketplace model
+  + App Server product protocol
+  + Python typed SDK
+  + Local / remote environment abstraction
+</code></pre>
+<p>这不是 foundation-model 算法创新，但属于非常实质的 runtime / distributed-systems / product-platform 工程。</p>
+<h3>11.3 8 月公告真正新增的公共承诺：中等</h3>
+<p>OpenAI 在 <a href="https://learn.chatgpt.com/blog/codex-as-a-platform"><em>Codex as a platform</em></a> 中第一次把积累起来的 CLI、SDK、App Server 明确包装成“open agent harness”的正式建设路径，并告诉开发者：脚本用 exec、程序调用用 SDK、深度产品嵌入用 App Server。</p>
+<p>因此这次的增量是 <strong>定位、文档、组件清单与平台承诺</strong>，而不是 source availability 本身。</p>
+<h2>12. 最终评分</h2>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th style="text-align: right;">评分</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Core agent-loop 新意</td>
+<td style="text-align: right;"><strong>2 / 5</strong></td>
+<td>主循环没变；World State、step consistency、remote compaction lineage 是真实增强</td>
+</tr>
+<tr>
+<td>Runtime / control-plane 新增</td>
+<td style="text-align: right;"><strong>5 / 5</strong></td>
+<td>Permission、ThreadStore、MAv2、Plugin、App Server、remote env 都是实质系统工程</td>
+</tr>
+<tr>
+<td>Stable public API 成熟度</td>
+<td style="text-align: right;"><strong>2.5 / 5</strong></td>
+<td>面积大、已有产品使用，但 experimental / v2 / managed seams 仍多</td>
+</tr>
+<tr>
+<td>8 月 19 日单日“开源事件”</td>
+<td style="text-align: right;"><strong>0.5 / 5</strong></td>
+<td>主要是叙事与官方承诺，不是新 repo 或首次放出源码</td>
+</tr>
+</tbody>
+</table>
+<p>最准确的总结是：</p>
+<blockquote>
+<p><strong>“Agent loop 没有新东西”是对的；“整个项目半年没有新东西”是错的。Codex 的创新重心已经从 loop 移到 control plane。</strong></p>
+</blockquote>
+<h2>13. 建议的源码学习顺序</h2>
+<ol>
+<li>用 <code>0.95 core/src/codex.rs</code> 对照 <code>0.149 core/src/session/turn.rs</code>，看不变的 loop 与新增的 step / world-state lifecycle。</li>
+<li>读 <code>protocol/src/permissions.rs</code>、<code>core/src/tools/approvals.rs</code>、<code>sandboxing/</code>，理解 declaration、approval 与 enforcement 的分层。</li>
+<li>读 <code>thread-store/</code>，追一条 append → materialize → paginate → resume / fork / revert 链路。</li>
+<li>读 <code>core/src/agent/control.rs</code> 与 <code>registry.rs</code>，画出 Agent tree、mailbox、residency 与 budget。</li>
+<li>最后读 App Server method registry 与 request serialization，理解 UI / SDK 如何安全驱动上述控制面。</li>
+</ol>
+<p>这份版本考古是 output/reports/openai-codex-open-agent-harness-analysis-2026-08-21 的时间维度补充：前者解释“当前 Harness 怎样运行”，本报告回答“2 月到 8 月究竟长出了什么”。</p>
+<h2>数据来源</h2>
+<ul>
+<li><a href="https://openai.com/index/unlocking-the-codex-harness/">OpenAI — Unlocking the Codex harness</a></li>
+<li><a href="https://learn.chatgpt.com/blog/codex-as-a-platform">OpenAI — Codex as a platform</a></li>
+<li><a href="https://github.com/openai/codex/releases/tag/rust-v0.95.0">openai/codex 0.95.0</a></li>
+<li><a href="https://github.com/openai/codex/releases/tag/rust-v0.149.0">openai/codex 0.149.0</a></li>
+<li><a href="https://github.com/openai/codex/compare/12dbb76c812afaff8daf1f3a5acf1d5ef4a75cb1...758ef40f50c1a458425c7cfbf1eb12cbc07af0b0">0.95 → 0.149 complete compare</a></li>
+<li>固定 tag 的 App Server、core、protocol、permissions、hooks、thread-store、plugin、extension、SDK 源码</li>
+<li>output/reports/openai-codex-open-agent-harness-analysis-2026-08-21</li>
+</ul>
+<hr>
+<p><em>由 LLM 从知识库查询与 OpenAI 官方 GitHub 固定版本源码生成</em></p>
+      </div>
+      <div class="post-footer">
+        来自个人知识库精选，已脱敏。
+        <a href="../index.html">← 返回文章列表</a>
+      </div>
+    </article>
+
+  </main>
+  <footer class="site-footer">
+    来自个人知识库精选，已脱敏 · <a href="../../index.html">benzema216.github.io</a>
+  </footer>
+</body>
+</html>

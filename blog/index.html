@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>写作 — 朱东哲</title>
-  <meta name="description" content="朱东哲的公开写作：Agent 产品与工程笔记" />
+  <meta name="description" content="朱东哲的公开写作：Agent 产品与工程长文" />
   <link rel="stylesheet" href="assets/blog.css" />
 </head>
 <body>
@@ -20,24 +20,72 @@
     <div class="hero">
       <span class="accent" aria-hidden="true"></span>
       <h1>写作</h1>
-      <p>关于 Agent 产品、Harness 工程与产研迭代的公开笔记。白名单发布，来自个人知识库精选。</p>
+      <p>关于 Agent 产品、Harness 工程与产研迭代的公开长文。白名单发布，来自个人知识库精选；只上结构完整、有结论的稿。</p>
     </div>
     <ul class="post-list">
       <li>
         <div class="post-meta">
-          <time datetime="2025-05-27">2025-05-27</time>
-          <span class="type">学习笔记</span>
+          <time datetime="2026-09-10">2026-09-10</time>
+          <span class="type">产品拆解</span>
         </div>
-        <h2><a href="posts/beyond-agent-tech-product-bets.html">做 Agent 不是为了搭桥玩：Dia / Youware / Lovart 背后的 bet</a></h2>
-        <p class="excerpt">Dia、Youware、Lovart 各自在赌什么；以及我自己为什么做 Agent。</p>
+        <h2><a href="posts/agent-subscription-event-triggered.html">Agent 订阅与事件触发推理：现有项目对照</a></h2>
+        <p class="excerpt">订阅式与事件触发推理：现有产品与开源框架机制对照。</p>
       </li>
       <li>
         <div class="post-meta">
-          <time datetime="2026-03-10">2026-03-10</time>
+          <time datetime="2026-08-21">2026-08-21</time>
+          <span class="type">产品拆解</span>
+        </div>
+        <h2><a href="posts/codex-harness-version-archaeology.html">Codex Harness 0.95 → 0.149：半年真正新增了什么</a></h2>
+        <p class="excerpt">Codex 0.95→0.149：半年真正新增的是控制面，不是 agent loop。</p>
+      </li>
+      <li>
+        <div class="post-meta">
+          <time datetime="2026-08-21">2026-08-21</time>
+          <span class="type">产品拆解</span>
+        </div>
+        <h2><a href="posts/openai-codex-open-agent-harness.html">OpenAI Codex 开源 Agent Harness：协议、审批与可审计 runtime</a></h2>
+        <p class="excerpt">Codex 开源 harness：协议、审批与可审计 runtime 的产品启示。</p>
+      </li>
+      <li>
+        <div class="post-meta">
+          <time datetime="2026-08-13">2026-08-13</time>
+          <span class="type">产品拆解</span>
+        </div>
+        <h2><a href="posts/deepseek-harness-dsh.html">DeepSeek Harness（dsh）：Everything-is-a-plugin 的 Agent Harness</a></h2>
+        <p class="excerpt">DeepSeek 开源 harness：一切皆插件、事件溯源与可审计 Web UI。</p>
+      </li>
+      <li>
+        <div class="post-meta">
+          <time datetime="2026-08-06">2026-08-06</time>
+          <span class="type">产品拆解</span>
+        </div>
+        <h2><a href="posts/cloud-agent-infra-vendor-selection.html">Cloud Agent Infra 2026：厂商分层、选型与验证门槛</a></h2>
+        <p class="excerpt">E2B / Modal / Daytona 怎么选；Cloud Agent Infra 分层与验证门槛。</p>
+      </li>
+      <li>
+        <div class="post-meta">
+          <time datetime="2026-08-06">2026-08-06</time>
+          <span class="type">产品拆解</span>
+        </div>
+        <h2><a href="posts/keystroke-internal-agent-platform.html">Keystroke：把 coding agent 写出的 TypeScript 变成可运营的内部 Agent</a></h2>
+        <p class="excerpt">Keystroke：coding agent 写出的 TypeScript，如何变成可运营的内部 Agent。</p>
+      </li>
+      <li>
+        <div class="post-meta">
+          <time datetime="2026-08-06">2026-08-06</time>
+          <span class="type">产品拆解</span>
+        </div>
+        <h2><a href="posts/cloudflare-os-product-mechanism.html">Cloudflare OS：企业 Agent 工作台，不是又一个 Linux Sandbox</a></h2>
+        <p class="excerpt">企业 Agent 工作台：权限、浏览器与工具分层，不是又一个 Linux Sandbox。</p>
+      </li>
+      <li>
+        <div class="post-meta">
+          <time datetime="2026-07-21">2026-07-21</time>
           <span class="type">概念</span>
         </div>
-        <h2><a href="posts/harness-engineering-is-cybernetics.html">Harness Engineering 就是控制论</a></h2>
-        <p class="excerpt">OpenAI 的 Harness Engineering，本质是控制论在 AI 编程时代的复现。</p>
+        <h2><a href="posts/agent-security-sector-core-logic.html">Agent Security 赛道：保护对象、核心逻辑与价值链</a></h2>
+        <p class="excerpt">Agent 安全保护的是被交出去的权限；赛道逻辑在 control plane。</p>
       </li>
       <li>
         <div class="post-meta">
@@ -49,19 +97,27 @@
       </li>
       <li>
         <div class="post-meta">
-          <time datetime="2025-05-13">2025-05-13</time>
+          <time datetime="2026-05-27">2026-05-27</time>
           <span class="type">产品拆解</span>
         </div>
-        <h2><a href="posts/lovart-product-teardown.html">研究 Lovart：交付产物而不是 clip，把 Agent 当实习生</a></h2>
-        <p class="excerpt">交付产物而不是 clip；把 Agent 当实习生来设计产品。</p>
+        <h2><a href="posts/generative-ui-landscape.html">Generative UI 全景：从 Vercel demo 到协议与评估体系</a></h2>
+        <p class="excerpt">Generative UI 从 demo 到协议与评估：registry / artifact / 全代码三条路线。</p>
       </li>
       <li>
         <div class="post-meta">
-          <time datetime="2026-08-21">2026-08-21</time>
+          <time datetime="2026-05-25">2026-05-25</time>
           <span class="type">产品拆解</span>
         </div>
-        <h2><a href="posts/openai-codex-open-agent-harness.html">OpenAI Codex 开源 Agent Harness：协议、审批与可审计 runtime</a></h2>
-        <p class="excerpt">Codex 开源 harness：协议、审批与可审计 runtime 的产品启示。</p>
+        <h2><a href="posts/frontend-vibe-coding-practices.html">前端 Vibe Coding 的五个固定动作</a></h2>
+        <p class="excerpt">前端 vibe coding 的五个固定动作：锚点、约束、自验证、小步提交、设计系统。</p>
+      </li>
+      <li>
+        <div class="post-meta">
+          <time datetime="2026-03-10">2026-03-10</time>
+          <span class="type">概念</span>
+        </div>
+        <h2><a href="posts/harness-engineering-is-cybernetics.html">Harness Engineering 就是控制论</a></h2>
+        <p class="excerpt">OpenAI 的 Harness Engineering，本质是控制论在 AI 编程时代的复现。</p>
       </li>
     </ul>
     <p style="margin-top:2.5rem;color:var(--ink-muted);font-size:0.95rem;">
