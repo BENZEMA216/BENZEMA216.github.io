@@ -130,7 +130,10 @@
     transition: transform .18s ease, box-shadow .18s ease;
     text-decoration: none;
   }
+  .card { cursor: pointer; }
+  a.card { text-decoration: none; color: inherit; }
   .card:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(26,24,20,.1); }
+  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .card-media {
     aspect-ratio: 16/10; background: #e8e0d4;
     overflow: hidden; position: relative;
@@ -187,10 +190,9 @@
   }
   .author strong { color: var(--ink); font-weight: 600; }
   .author .dot { opacity: .4; }
-  .author a.source {
-    color: var(--accent); font-weight: 500; text-decoration: none;
+  .author .source {
+    color: var(--accent); font-weight: 500;
   }
-  .author a.source:hover { text-decoration: underline; }
   .tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .tag {
     font-size: 11px; padding: 3px 8px; border-radius: 6px;
@@ -321,20 +323,20 @@ function cardHTML(d) {
     ? `<img class="av" src="${esc(d.avatar)}" alt="" />`
     : `<span class="av ph">${esc(initial)}</span>`;
   const who = d.handle ? `@${esc(d.handle)}` : esc(d.author || d.who || "匿名");
-  const src = d.link
-    ? `<a class="source" href="${esc(d.link)}" target="_blank" rel="noopener">查看来源</a>`
-    : `<span>${esc(d.source || "")}</span>`;
+  const srcLabel = d.link ? `<span class="source">查看来源</span>` : `<span>${esc(d.source || "")}</span>`;
   const date = d.date ? `<span class="dot">·</span><span>${esc(d.date)}</span>` : "";
   const tags = (d.tags || []).slice(0,3).map(t => `<span class="tag">${esc(t)}</span>`).join("");
-  return `<article class="card">
-    ${media}
+  const inner = `${media}
     <div class="card-body">
       <h2>${esc(d.headline)}</h2>
       ${voice}
       ${tags ? `<div class="tags">${tags}</div>` : ""}
-      <div class="author">${av}<div><strong>${who}</strong> <span class="dot">·</span> ${src} ${date}</div></div>
-    </div>
-  </article>`;
+      <div class="author">${av}<div><strong>${who}</strong> <span class="dot">·</span> ${srcLabel} ${date}</div></div>
+    </div>`;
+  if (d.link) {
+    return `<a class="card" href="${esc(d.link)}" target="_blank" rel="noopener noreferrer">${inner}</a>`;
+  }
+  return `<article class="card" aria-disabled="true">${inner}</article>`;
 }
 
 function esc(s){ return String(s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
