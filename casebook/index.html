@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Casebook · Muse Spaces 真人场景库</title>
+<meta name="description" content="真实用户如何用 Muse Spaces：原声、截图与可复用场景。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f4efe6;
+    --bg-elev: #fffdf8;
+    --ink: #1a1814;
+    --muted: #6b645a;
+    --line: #e6dfd2;
+    --accent: #c45c26;
+    --accent-soft: #f3e0d4;
+    --chip: #ebe4d8;
+    --shadow: 0 1px 0 rgba(26,24,20,.04), 0 12px 32px rgba(26,24,20,.06);
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  /* top bar */
+  .nav {
+    position: sticky; top: 0; z-index: 20;
+    backdrop-filter: blur(12px);
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    border-bottom: 1px solid transparent;
+  }
+  .nav.scrolled { border-bottom-color: var(--line); }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .mark {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(145deg, #1a1814 0%, #3d342c 55%, var(--accent) 120%);
+    display: grid; place-items: center;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.15);
+  }
+  .mark svg { width: 18px; height: 18px; }
+  .brand-name {
+    font-family: Fraunces, Georgia, serif;
+    font-weight: 600; font-size: 1.125rem; letter-spacing: -0.02em;
+  }
+  .brand-sub { font-size: 11px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+
+  /* hero */
+  .hero { padding: 56px 0 28px; }
+  .hero h1 {
+    font-family: Fraunces, Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    margin: 0 0 16px;
+    max-width: 16ch;
+  }
+  .hero p.lede {
+    font-size: 1.05rem; color: var(--muted);
+    max-width: 42ch; margin: 0 0 28px;
+  }
+  .hero-meta {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    font-size: 13px; color: var(--muted);
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px; border-radius: 999px;
+    background: var(--bg-elev); border: 1px solid var(--line);
+    font-weight: 500; color: var(--ink);
+  }
+  .pill em { font-style: normal; color: var(--accent); font-weight: 600; }
+
+  /* filters */
+  .toolbar {
+    position: sticky; top: 64px; z-index: 15;
+    padding: 12px 0 16px;
+    background: linear-gradient(var(--bg) 70%, transparent);
+  }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    appearance: none; border: 1px solid var(--line);
+    background: var(--chip); color: var(--ink);
+    padding: 8px 14px; border-radius: 999px;
+    font: 500 13px/1 Inter, sans-serif;
+    cursor: pointer; transition: .15s ease;
+  }
+  .chip:hover { border-color: #cfc5b4; }
+  .chip.active {
+    background: var(--ink); color: var(--bg-elev); border-color: var(--ink);
+  }
+  .search {
+    margin-top: 12px; width: 100%; max-width: 420px;
+    padding: 12px 16px; border-radius: 12px;
+    border: 1px solid var(--line); background: var(--bg-elev);
+    font: 400 14px/1.4 Inter, sans-serif; color: var(--ink);
+    outline: none;
+  }
+  .search:focus { border-color: #c4b8a4; box-shadow: 0 0 0 3px rgba(196,92,38,.12); }
+
+  /* grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    padding: 8px 0 80px;
+  }
+  .card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    display: flex; flex-direction: column;
+    transition: transform .18s ease, box-shadow .18s ease;
+    text-decoration: none;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(26,24,20,.1); }
+  .card-media {
+    aspect-ratio: 16/10; background: #e8e0d4;
+    overflow: hidden; position: relative;
+  }
+  .card-media img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .card-media .fallback {
+    width: 100%; height: 100%;
+    display: grid; place-items: center;
+    background:
+      radial-gradient(120% 80% at 10% 0%, #f3e0d4 0%, transparent 55%),
+      linear-gradient(160deg, #e8e0d4, #d9d0c2);
+    color: var(--muted); font-size: 13px; font-weight: 500;
+  }
+  .cat {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(255,253,248,.92); backdrop-filter: blur(6px);
+    border: 1px solid var(--line);
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 600; letter-spacing: .02em;
+  }
+  .card-body { padding: 20px 20px 18px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .card h2 {
+    font-family: Fraunces, Georgia, serif;
+    font-weight: 600; font-size: 1.28rem;
+    letter-spacing: -0.02em; line-height: 1.25;
+    margin: 0;
+  }
+  .quote {
+    font-size: 14px; color: var(--muted);
+    margin: 0; font-style: italic;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .quote::before { content: "“"; }
+  .quote::after { content: "”"; }
+  .desc {
+    font-size: 14px; color: var(--muted); margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .author {
+    margin-top: auto; padding-top: 4px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: var(--muted);
+  }
+  .av {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--chip); object-fit: cover;
+    border: 1px solid var(--line);
+  }
+  .av.ph {
+    display: grid; place-items: center;
+    font-size: 11px; font-weight: 600; color: var(--ink);
+  }
+  .author strong { color: var(--ink); font-weight: 600; }
+  .author .dot { opacity: .4; }
+  .author a.source {
+    color: var(--accent); font-weight: 500; text-decoration: none;
+  }
+  .author a.source:hover { text-decoration: underline; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px; padding: 3px 8px; border-radius: 6px;
+    background: var(--accent-soft); color: #8a3d14; font-weight: 500;
+  }
+
+  .empty { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--muted); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 28px 0 48px;
+    font-size: 13px; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between;
+  }
+  footer .logo-row { display: flex; align-items: center; gap: 10px; }
+  footer .mark { width: 28px; height: 28px; border-radius: 8px; }
+
+  @media (max-width: 640px) {
+    .hero { padding-top: 36px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#">
+        <span class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 7.5h14M5 12h10M5 16.5h7" stroke="#f4efe6" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="17.5" cy="16.5" r="2.5" fill="#c45c26"/>
+          </svg>
+        </span>
+        <span>
+          <div class="brand-name">Casebook</div>
+          <div class="brand-sub">Muse Spaces</div>
+        </span>
+      </a>
+      <div class="pill">非官方精选 · 持续更新</div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>真人怎么用<br/>Muse Spaces</h1>
+      <p class="lede">从 Meta 官方演示到 X 上的用户原声——把可复用的场景、截图与出处收进一本现代案例册。</p>
+      <div class="hero-meta">
+        <span class="pill"><em id="count">—</em> 个场景</span>
+        <span class="pill">官方 + 社区</span>
+        <span class="pill">含原声与出处</span>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <div class="filters" id="filters"></div>
+      <input class="search" id="q" type="search" placeholder="搜索标题、原声、作者…" />
+    </div>
+
+    <section class="grid" id="grid" aria-live="polite"></section>
+  </main>
+
+  <footer class="wrap">
+    <div class="logo-row">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 7.5h14M5 12h10M5 16.5h7" stroke="#f4efe6" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="17.5" cy="16.5" r="2.5" fill="#c45c26"/>
+        </svg>
+      </span>
+      <span><strong style="color:var(--ink);font-family:Fraunces,serif;">Casebook</strong> · 独立精选，与 Meta 无关</span>
+    </div>
+    <span>参照气质：useofmuse · A1 Gallery · Land-book</span>
+  </footer>
+
+<script>
+const cats = ["全部","官方演示","社区实做","生产力","生活","创作","商业"];
+let data = [];
+let active = "全部";
+
+async function boot() {
+  const res = await fetch("cases.json");
+  data = await res.json();
+  document.getElementById("count").textContent = data.length;
+  const f = document.getElementById("filters");
+  cats.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "chip" + (c === active ? " active" : "");
+    b.textContent = c;
+    b.onclick = () => { active = c; [...f.children].forEach(x => x.classList.toggle("active", x.textContent === c)); render(); };
+    f.appendChild(b);
+  });
+  document.getElementById("q").addEventListener("input", render);
+  render();
+}
+
+function matchCat(item, cat) {
+  if (cat === "全部") return true;
+  if (cat === "官方演示") return item.source.includes("官方") || item.category.includes("官方");
+  if (cat === "社区实做") return item.source.includes("X") || item.source.includes("社区") || item.category.includes("社区");
+  const map = { "生产力":["生产力","工作","办公","效率"], "生活":["生活","日常","旅行","健康"], "创作":["创作","摄影","设计","内容"], "商业":["商业","生意","销售","客户"] };
+  const keys = map[cat] || [cat];
+  const blob = [item.category, item.headline, ...(item.tags||[])].join(" ");
+  return keys.some(k => blob.includes(k));
+}
+
+function render() {
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const list = data.filter(d => matchCat(d, active)).filter(d => {
+    if (!q) return true;
+    return [d.headline, d.quote, d.author, d.handle, d.what, d.why, ...(d.tags||[])].join(" ").toLowerCase().includes(q);
+  });
+  // prefer cards with quote/thumb first
+  list.sort((a,b) => (+!!b.quote + +!!b.thumb) - (+!!a.quote + +!!a.thumb));
+  const g = document.getElementById("grid");
+  if (!list.length) { g.innerHTML = '<div class="empty">没有匹配的场景</div>'; return; }
+  g.innerHTML = list.map(cardHTML).join("");
+}
+
+function cardHTML(d) {
+  const media = d.thumb
+    ? `<div class="card-media"><img src="${esc(d.thumb)}" alt="" loading="lazy" /><span class="cat">${esc(d.category || d.source || "场景")}</span></div>`
+    : `<div class="card-media"><div class="fallback">${esc(d.category || "Muse Space")}</div><span class="cat">${esc(d.category || d.source || "场景")}</span></div>`;
+  const voice = d.quote
+    ? `<p class="quote">${esc(d.quote)}</p>`
+    : `<p class="desc">${esc(d.what || d.why || "")}</p>`;
+  const initial = (d.author || d.handle || "?").slice(0,1).toUpperCase();
+  const av = d.avatar
+    ? `<img class="av" src="${esc(d.avatar)}" alt="" />`
+    : `<span class="av ph">${esc(initial)}</span>`;
+  const who = d.handle ? `@${esc(d.handle)}` : esc(d.author || d.who || "匿名");
+  const src = d.link
+    ? `<a class="source" href="${esc(d.link)}" target="_blank" rel="noopener">查看来源</a>`
+    : `<span>${esc(d.source || "")}</span>`;
+  const date = d.date ? `<span class="dot">·</span><span>${esc(d.date)}</span>` : "";
+  const tags = (d.tags || []).slice(0,3).map(t => `<span class="tag">${esc(t)}</span>`).join("");
+  return `<article class="card">
+    ${media}
+    <div class="card-body">
+      <h2>${esc(d.headline)}</h2>
+      ${voice}
+      ${tags ? `<div class="tags">${tags}</div>` : ""}
+      <div class="author">${av}<div><strong>${who}</strong> <span class="dot">·</span> ${src} ${date}</div></div>
+    </div>
+  </article>`;
+}
+
+function esc(s){ return String(s||"").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+window.addEventListener("scroll", () => {
+  document.getElementById("nav").classList.toggle("scrolled", scrollY > 8);
+}, {passive:true});
+
+boot();
+</script>
+</body>
+</html>
